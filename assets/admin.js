@@ -273,6 +273,18 @@
     if (!r.ok) { var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
     return r.json();
   }
+  /* Lee el acceso recién guardado (la página publicada tarda 1-2 minutos en actualizarse) */
+  async function fetchAuthFresh() {
+    var g = guessRepo();
+    if (g.owner) {
+      try {
+        var r = await fetch(API + '/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) +
+          '/contents/' + AUTH_PATH + '?nocache=' + Date.now(), { headers: { 'Accept': 'application/vnd.github+json' }, cache: 'no-store' });
+        if (r.ok) return decodeJsonFile(await r.json());
+      } catch (e) { /* se usa la copia publicada */ }
+    }
+    return fetchPublic(AUTH_PATH);
+  }
   async function loadLocal() {
     S.data = normalize(await fetchPublic(DATA_PATH));
     S.sha = null;
@@ -305,7 +317,7 @@
       }
     }
     try {
-      S.auth = await fetchPublic(AUTH_PATH);
+      S.auth = await fetchAuthFresh();
     } catch (e) {
       gateView('none', e.status === 404
         ? 'Falta el archivo data/acceso.json. Volvé a subirlo desde el zip.'
@@ -346,7 +358,7 @@
     if (connected()) {
       await loadAll();
     } else {
-      if (!S.auth) S.auth = await fetchPublic(AUTH_PATH);
+      if (!S.auth) S.auth = await fetchAuthFresh();
       await loadLocal();
     }
     remember();
@@ -504,7 +516,7 @@
     var d = row('<input class="sz" placeholder="Talle" maxlength="10" aria-label="Talle">' +
                 '<input class="st" placeholder="Stock" inputmode="numeric" aria-label="Stock del talle">');
     d.querySelector('.sz').value = size == null ? '' : size;
-    d.querySelector('.st').value = st == null ? '' : st;
+    d.querySelector('.st').value = fmtNum(st);
     sizeRows.appendChild(d);
     return d;
   }
@@ -515,8 +527,8 @@
     var info = document.createElement('span');
     info.className = 'inst-info';
     d.appendChild(info);
-    d.querySelector('.in').value = n == null ? '' : n;
-    d.querySelector('.ia').value = amount == null ? '' : amount;
+    d.querySelector('.in').value = fmtNum(n);
+    d.querySelector('.ia').value = fmtNum(amount);
     instRows.appendChild(d);
     return d;
   }
@@ -524,7 +536,7 @@
     var rows = $$('.row', sizeRows).filter(function (r) { return r.querySelector('.sz').value.trim() !== ''; });
     if (rows.length) {
       stockIn.readOnly = true;
-      stockIn.value = rows.reduce(function (t, r) { return t + num(r.querySelector('.st').value); }, 0);
+      stockIn.value = fmtNum(rows.reduce(function (t, r) { return t + num(r.querySelector('.st').value); }, 0));
       $('#stockHint').textContent = 'Suma de todos los talles';
     } else {
       stockIn.readOnly = false;
@@ -542,6 +554,24 @@
       out.className = 'inst-info' + (p && tot <= p ? ' ok' : '');
     });
   }
+  /* Números con separador de miles mientras se escriben: 100000 → 100.000 */
+  function fmtNum(v) {
+    var d = String(v == null ? '' : v).replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+    return d.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+  var NUM_FIELDS = '#f_price, #f_stock, .st, .in, .ia';
+  dlg.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el.matches || !el.matches(NUM_FIELDS)) return;
+    var digitsBefore = el.value.slice(0, el.selectionStart || 0).replace(/\D/g, '').length;
+    var f = fmtNum(el.value);
+    if (f === el.value) return;
+    el.value = f;
+    var i = 0, c = 0;
+    while (i < f.length && c < digitsBefore) { if (/\d/.test(f.charAt(i))) c++; i++; }
+    try { el.setSelectionRange(i, i); } catch (err) { /* algunos campos no lo permiten */ }
+  }, true);
+
   sizeRows.addEventListener('input', recalc);
   instRows.addEventListener('input', instInfo);
   priceIn.addEventListener('input', instInfo);
@@ -594,7 +624,7 @@
     if (p) {
       setVal('#f_name', p.name); setVal('#f_category', p.category); setVal('#f_gender', p.gender);
       setVal('#f_brand', p.brand); setVal('#f_colors', p.colors); setVal('#f_sku', p.sku); setVal('#f_code', p.code);
-      setVal('#f_price', p.price); setVal('#f_stock', p.stock); setVal('#f_desc', p.description);
+      setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_desc', p.description);
       (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock); });
       (p.installments || []).forEach(function (i) { instRow(i.n, i.amount); });
       $('#f_visible').checked = !!p.visible;
