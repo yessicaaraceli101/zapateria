@@ -123,13 +123,22 @@
           </div>
 
           <div class="pos-total"><span>Total</span><strong id="posTotal">Gs. 0</strong></div>
-          <div class="pos-iva" id="posIva"></div>
 
           <div class="pay-methods" role="radiogroup" aria-label="Forma de pago">
             <button type="button" data-pay="efectivo" class="on">Efectivo</button>
-            <button type="button" data-pay="tarjeta">Tarjeta</button>
             <button type="button" data-pay="transferencia">Transferencia</button>
-            <button type="button" data-pay="qr">QR</button>
+          </div>
+
+          <div id="transferBox" class="stack transfer-box" hidden>
+            <label class="fld"><span>Banco *</span><input id="tBank" list="bankList" maxlength="60" autocomplete="off" placeholder="Ej: Banco Itaú"></label>
+            <label class="fld"><span>N° de comprobante *</span><input id="tRef" maxlength="40" autocomplete="off" inputmode="numeric"></label>
+            <label class="fld"><span>Nombre de quien envió *</span><input id="tFrom" maxlength="80" autocomplete="off"></label>
+            <datalist id="bankList">
+              <option value="Banco Itaú"><option value="Banco Continental"><option value="ueno bank"><option value="Banco Basa">
+              <option value="Banco GNB"><option value="Banco Familiar"><option value="Visión Banco"><option value="Sudameris Bank">
+              <option value="Banco Atlas"><option value="Banco Nacional de Fomento"><option value="Interfisa Banco"><option value="Banco Río">
+              <option value="Zeta Banco"><option value="Financiera FIC"><option value="Tigo Money"><option value="Personal Billetera">
+            </datalist>
           </div>
 
           <div id="cashBox">

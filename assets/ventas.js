@@ -397,11 +397,6 @@
   function updateTotals() {
     var t = totals(cart);
     $('#posTotal').textContent = money(t.total);
-    var iva = [];
-    if (t.iva10) iva.push('IVA 10 %: ' + money(t.iva10));
-    if (t.iva5) iva.push('IVA 5 %: ' + money(t.iva5));
-    if (t.exenta) iva.push('Exentas: ' + money(t.exenta));
-    $('#posIva').textContent = iva.join(' · ');
     renderQuickCash(t.total);
     updateChange();
   }
@@ -442,8 +437,18 @@
       payMethod = b.dataset.pay;
       $$('[data-pay]').forEach(function (x) { x.classList.toggle('on', x === b); });
       $('#cashBox').hidden = payMethod !== 'efectivo';
+      $('#transferBox').hidden = payMethod !== 'transferencia';
       if (payMethod !== 'efectivo') paidIn.value = '';
       updateChange();
+      if (payMethod === 'transferencia' && b.isConnected && document.activeElement === b) $('#tBank').focus();
+    });
+  });
+
+  ['#tBank', '#tRef', '#tFrom'].forEach(function (id, i, all) {
+    $(id).addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      if (i < all.length - 1) $(all[i + 1]).focus(); else charge();
     });
   });
 
@@ -493,6 +498,7 @@
     paidIn.value = '';
     client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '' };
     $('#cDoc').value = ''; $('#cName').value = ''; $('#cMail').value = '';
+    $('#tBank').value = ''; $('#tRef').value = ''; $('#tFrom').value = '';
     $('#clientForm').hidden = true;
     renderClient();
     $$('[data-pay]')[0].click();
@@ -509,6 +515,13 @@
     if (client.tipo !== 'innominado' && !client.doc) { flash('error', 'Completá el documento del cliente o elegí "Sin nombre".'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
     if (client.tipo === 'ruc' && !client.dv) { flash('error', 'Escribí el RUC con su dígito verificador (ej.: 80012345-6).'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
 
+    var transfer = null;
+    if (payMethod === 'transferencia') {
+      transfer = { banco: $('#tBank').value.trim(), comprobante: $('#tRef').value.trim(), remitente: $('#tFrom').value.trim() };
+      if (!transfer.banco) { flash('error', 'Escribí el banco de la transferencia.'); $('#tBank').focus(); return; }
+      if (!transfer.comprobante) { flash('error', 'Escribí el número de comprobante.'); $('#tRef').focus(); return; }
+      if (!transfer.remitente) { flash('error', 'Escribí el nombre de quien envió la transferencia.'); $('#tFrom').focus(); return; }
+    }
     var t = totals(cart);
     var paid = payMethod === 'efectivo' ? (num(paidIn.value) || t.total) : t.total;
     if (paid < t.total) { flash('error', 'El monto recibido es menor al total.'); paidIn.focus(); return; }
@@ -539,7 +552,8 @@
                    cantidad: l.qty, precio: l.price, iva: l.iva, subtotal: l.qty * l.price };
         }),
         totales: t, condicion: 'contado',
-        pago: { forma: payMethod, monto: t.total }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.total : 0,
+        pago: transfer ? { forma: payMethod, monto: t.total, banco: transfer.banco, comprobante: transfer.comprobante, remitente: transfer.remitente }
+                       : { forma: payMethod, monto: t.total }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.total : 0,
         estado: 'emitida', usuario: S.user,
         fiscal: fiscal ? { timbrado: f.timbrado, est: pad(f.est || '1', 3), pto: pad(f.pto || '1', 3) } : null,
         sifen: { estado: 'pendiente', cdc: '' }
@@ -670,19 +684,16 @@
     h += L('Cliente', c.tipo === 'innominado' ? 'Consumidor final' : esc((c.nombre || '') + ' ' + (c.tipo === 'ruc' ? 'RUC ' : 'CI ') + c.doc + (c.dv ? '-' + c.dv : '')));
     h += '<div class="hr"></div>';
     sale.items.forEach(function (it) {
-      h += '<div class="it">' + esc(it.descripcion) + (it.iva === 0 ? ' (Ex.)' : it.iva === 5 ? ' (5%)' : '') +
+      h += '<div class="it">' + esc(it.descripcion) +
         L(it.cantidad + ' x ' + money(it.precio).replace('Gs. ', ''), money(it.subtotal).replace('Gs. ', '')) + '</div>';
     });
     h += '<div class="hr"></div>';
     h += '<div class="big b">' + L('TOTAL', money(sale.totales.total)) + '</div>';
     h += '<div class="hr"></div>';
-    if (sale.totales.gravada10) h += L('Gravada 10%', money(sale.totales.gravada10).replace('Gs. ', ''));
-    if (sale.totales.gravada5) h += L('Gravada 5%', money(sale.totales.gravada5).replace('Gs. ', ''));
-    if (sale.totales.exenta) h += L('Exenta', money(sale.totales.exenta).replace('Gs. ', ''));
-    h += L('Liq. IVA 10%', money(sale.totales.iva10).replace('Gs. ', ''));
-    if (sale.totales.iva5) h += L('Liq. IVA 5%', money(sale.totales.iva5).replace('Gs. ', ''));
-    h += '<div class="hr"></div>';
-    h += L('Pago', esc(PAY[sale.pago.forma]));
+    h += L('Pago', esc(PAY[sale.pago.forma] || sale.pago.forma));
+    if (sale.pago.banco) h += L('Banco', esc(sale.pago.banco));
+    if (sale.pago.comprobante) h += L('Comprobante', esc(sale.pago.comprobante));
+    if (sale.pago.remitente) h += L('Envió', esc(sale.pago.remitente));
     if (sale.pago.forma === 'efectivo') { h += L('Recibido', money(sale.recibido)); h += L('Vuelto', money(sale.vuelto)); }
     if (sale.estado === 'anulada') h += '<div class="hr"></div><div class="c b">*** ANULADA ***</div>';
     h += '<div class="hr"></div><div class="c">¡Gracias por tu compra!</div>';
@@ -735,7 +746,8 @@
         '<td class="nowrap"><strong>' + esc(v.numero) + '</strong></td>' +
         '<td class="nowrap">' + esc(fmtDate(v.fecha, true)) + '</td>' +
         '<td>' + esc(cli) + '<span class="t-sub">' + v.items.length + (v.items.length === 1 ? ' producto' : ' productos') + '</span></td>' +
-        '<td>' + esc(PAY[v.pago.forma] || v.pago.forma) + '</td>' +
+        '<td>' + esc(PAY[v.pago.forma] || v.pago.forma) +
+          (v.pago.banco ? '<span class="t-sub">' + esc(v.pago.banco + ' · N° ' + v.pago.comprobante + ' · ' + v.pago.remitente) + '</span>' : '') + '</td>' +
         '<td class="ta-r nowrap"><strong>' + money(v.totales.total) + '</strong></td>' +
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
         '<td class="actions"><button type="button" class="btn btn-secondary btn-sm" data-ticket="' + esc(v.id) + '">Ticket</button>' +
@@ -771,12 +783,12 @@
   $('#expCsv').addEventListener('click', async function () {
     var m = saleMonthIn.value || monthKey();
     try { await loadMonth(m); } catch (e) { A.showMsg('error', e.message); return; }
-    var rows = [['Numero', 'Fecha', 'Cliente', 'Documento', 'Producto', 'Talle', 'Cantidad', 'Precio', 'Subtotal', 'IVA', 'Forma de pago', 'Estado']];
+    var rows = [['Numero', 'Fecha', 'Cliente', 'Documento', 'Producto', 'Talle', 'Cantidad', 'Precio', 'Subtotal', 'Forma de pago', 'Banco', 'Comprobante', 'Envió', 'Estado']];
     P.months[m].ventas.forEach(function (v) {
       v.items.forEach(function (it) {
         rows.push([v.numero, fmtDate(v.fecha, true), v.cliente.tipo === 'innominado' ? 'Consumidor final' : v.cliente.nombre,
           v.cliente.doc ? v.cliente.doc + (v.cliente.dv ? '-' + v.cliente.dv : '') : '', it.descripcion, it.talle, it.cantidad, it.precio, it.subtotal,
-          it.iva ? it.iva + '%' : 'Exenta', PAY[v.pago.forma] || v.pago.forma, v.estado]);
+          PAY[v.pago.forma] || v.pago.forma, v.pago.banco || '', v.pago.comprobante || '', v.pago.remitente || '', v.estado]);
       });
     });
     var csv = rows.map(function (r) { return r.map(function (c) { c = String(c == null ? '' : c); return /[;"\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(';'); }).join('\r\n');
@@ -803,7 +815,7 @@
             ? { naturaleza: 2, contribuyente: false, tipoDocumento: 1, documento: c.doc, nombre: c.nombre, email: c.email }
             : { naturaleza: 2, contribuyente: false, tipoDocumento: 5, documento: '0', nombre: 'Sin Nombre' },
         condicionVenta: 1, condicionVentaDescripcion: 'Contado',
-        pagos: [{ tipo: v.pago.forma, monto: v.pago.monto }],
+        pagos: [Object.assign({ tipo: v.pago.forma, monto: v.pago.monto }, v.pago.banco ? { banco: v.pago.banco, comprobante: v.pago.comprobante, remitente: v.pago.remitente } : {})],
         items: v.items.map(function (it) {
           return { codigo: it.codigo, descripcion: it.descripcion, unidadMedida: 77, cantidad: it.cantidad,
                    precioUnitario: it.precio, total: it.subtotal,

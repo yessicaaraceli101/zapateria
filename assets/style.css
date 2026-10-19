@@ -514,3 +514,5 @@ kbd { font: 600 .72rem/1 var(--font-body); padding: 3px 6px; border-radius: 5px;
   .adm-head-in { padding: 12px 16px; }
   .adm-name { font-size: 1.15rem; }
 }
+.transfer-box { gap: 10px; margin-bottom: 4px; }
+.transfer-box .fld input { min-height: 42px; }
