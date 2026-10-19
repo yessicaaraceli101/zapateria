@@ -277,6 +277,23 @@
           </form>
         </section>
 
+        <section class="panel" id="correoAuto">
+          <h2>Envío automático por correo</h2>
+          <p class="hint">Al cobrar, la factura se envía sola en PDF al correo del cliente. Usa el servicio EmailJS (plan gratis: 200 correos por mes). Estos datos se guardan cifrados.</p>
+          <form id="mailForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Service ID</span><input id="mService" placeholder="service_xxxxxxx" maxlength="60"></label>
+            <label class="fld"><span>Template ID</span><input id="mTemplate" placeholder="template_xxxxxxx" maxlength="60"></label>
+            <label class="fld"><span>Public Key</span><input id="mKey" maxlength="80"></label>
+            <label class="check"><input type="checkbox" id="mAuto" checked> Enviar la factura automáticamente al cobrar</label>
+            <label class="check"><input type="checkbox" id="mTickets"> También enviar los tickets si el cliente dejó su correo</label>
+            <label class="fld"><span>Correo para la prueba</span><input id="mTest" type="email" placeholder="tucorreo@gmail.com"></label>
+            <div class="btn-row">
+              <button class="btn btn-accent" type="submit">Guardar</button>
+              <button class="btn btn-secondary" type="button" id="mTestBtn">Enviar correo de prueba</button>
+            </div>
+          </form>
+        </section>
+
         <section class="panel" id="credenciales">
           <h2>Usuario y contraseña de administrador</h2>
           <p class="hint">Para confirmar cualquier cambio necesitás tu contraseña actual. Si solo querés cambiar el usuario, dejá la contraseña nueva en blanco.</p>
@@ -384,12 +401,14 @@
       <h2 id="doneTitle">Venta registrada</h2>
       <p id="doneNum"></p>
       <div class="done-change" id="doneChangeBox"><span>Vuelto</span><strong id="doneChange"></strong></div>
+      <p class="done-mail" id="doneMailState" hidden></p>
     </div>
     <div class="dlg-foot">
       <div class="done-actions">
-        <button type="button" class="btn btn-secondary" id="donePrint">Imprimir</button>
-        <button type="button" class="btn btn-secondary" id="donePdf">Descargar PDF</button>
+        <button type="button" class="btn btn-print" id="donePrint">Imprimir</button>
+        <button type="button" class="btn btn-pdf" id="donePdf">Descargar PDF</button>
         <button type="button" class="btn btn-wa-sm" id="doneWa">WhatsApp</button>
+        <button type="button" class="btn btn-mail" id="doneMail">Correo</button>
       </div>
       <button type="button" class="btn btn-primary btn-block" id="doneNew">Nueva venta <kbd>Enter</kbd></button>
     </div>

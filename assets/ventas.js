@@ -11,6 +11,7 @@
   if (!A) return;
   var S = A.S, $ = A.$, $$ = A.$$, esc = A.esc, money = A.money, num = A.num, lower = A.lower;
 
+  var TRASH_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
   var AJ_PATH = 'data/privado/ajustes.json';
   var PAY = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia', qr: 'QR / billetera' };
   var P = { ajustes: null, months: {}, loading: null };
@@ -32,7 +33,8 @@
     return {
       fiscal: { ruc: '', razon: '', fantasia: '', direccion: '', telefono: '', actividad: '', timbrado: '', vigencia: '', est: '001', pto: '001' },
       next: 1,
-      ticket: { auto: false, ancho: 80 }
+      ticket: { auto: false, ancho: 80 },
+      correo: { service: '', template: '', key: '', auto: true, tickets: false }
     };
   }
   function products() { return S.data ? S.data.products : []; }
@@ -108,11 +110,13 @@
       var d = defaultAjustes(), aj = res[0] || {};
       P.ajustes = Object.assign(d, aj, {
         fiscal: Object.assign(d.fiscal, aj.fiscal || {}),
-        ticket: Object.assign(d.ticket, aj.ticket || {})
+        ticket: Object.assign(d.ticket, aj.ticket || {}),
+        correo: Object.assign(d.correo, aj.correo || {})
       });
       P.months[m] = res[1] || { ventas: [], compras: [] };
       ensureMonthSource(m);
       fillFiscalForm();
+      fillMailForm();
       return true;
     })();
     P.loading.catch(function () { P.loading = null; });
@@ -600,6 +604,7 @@
       A.renderAll();
       resetSale();
       showDone(sale);
+      autoEmail(sale);
       save([A.DATA_PATH, AJ_PATH, monthPath(m)], 'Venta ' + numero + ' · ' + money(t.total));
     } catch (e) {
       flash('error', e.message || String(e));
@@ -618,6 +623,7 @@
     $('#donePrint').onclick = function () { printTicket(sale); };
     $('#donePdf').onclick = function () { downloadPdf(sale).catch(function (e) { flash('error', e.message); }); };
     $('#doneWa').onclick = function () { sendWhatsApp(sale).catch(function (e) { flash('error', e.message); }); };
+    $('#doneMail').onclick = function () { sendEmail(sale).catch(function (e) { flash('error', e.message); }); };
     $('#doneTitle').textContent = isFactura(sale) ? 'Factura generada' : 'Venta registrada';
     function close() { if (d.open) d.close(); focusQ(); }
     $('#doneNew').onclick = close;
@@ -804,7 +810,7 @@
     else c('CDC ' + sale.sifen.cdc, { size: 7 });
 
     // Alto de la hoja según el contenido
-    var probe = new lib.jsPDF({ unit: 'mm', format: [W, 100] });
+    var probe = new lib.jsPDF({ unit: 'mm', format: [W, 100], compress: true });
     var lines = rows.map(function (o) {
       if (o.hr) return { o: o, h: 3 };
       probe.setFontSize(o.size || 9);
@@ -813,7 +819,7 @@
       return { o: o, parts: parts, h: parts.length * (o.size || 9) * 0.42 + 0.8 };
     });
     var H = M * 2 + lines.reduce(function (t, x) { return t + x.h; }, 0);
-    var doc = new lib.jsPDF({ unit: 'mm', format: [W, Math.max(H, 40)] });
+    var doc = new lib.jsPDF({ unit: 'mm', format: [W, Math.max(H, 40)], compress: true });
     var y = M;
     lines.forEach(function (x) {
       var o = x.o;
@@ -876,6 +882,98 @@
     if ($('[data-pane="vender"]').hidden) A.showMsg('ok', note); else flash('ok', note);
   }
 
+  /* ---------------- Correo ---------------- */
+  function notify(type, text) { if ($('[data-pane="vender"]').hidden) A.showMsg(type, text); else flash(type, text); }
+  function mailCfg() {
+    if (!P.ajustes) P.ajustes = defaultAjustes();
+    P.ajustes.correo = Object.assign(defaultAjustes().correo, P.ajustes.correo || {});
+    return P.ajustes.correo;
+  }
+  function mailReady() { var c = mailCfg(); return !!(c.service && c.template && c.key); }
+  function mailContent(sale) {
+    var st = S.data.store, fac = isFactura(sale);
+    return {
+      subject: (fac ? 'Factura electrónica' : 'Ticket') + ' N° ' + sale.numero + ' · ' + st.store_name,
+      body: 'Hola' + (sale.cliente.nombre ? ' ' + sale.cliente.nombre : '') + ',\n\n' +
+        'Te enviamos tu ' + (fac ? 'factura electrónica' : 'ticket') + ' N° ' + sale.numero + ' por un total de ' + money(sale.totales.total) + '.\n' +
+        'El comprobante va adjunto en PDF.\n\n¡Gracias por tu compra!\n' + st.store_name
+    };
+  }
+  function blobToDataURL(blob) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () { resolve(r.result); };
+      r.onerror = function () { reject(new Error('No se pudo preparar el PDF.')); };
+      r.readAsDataURL(blob);
+    });
+  }
+  async function emailjsSend(params) {
+    var c = mailCfg(), r;
+    try {
+      r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ service_id: c.service, template_id: c.template, user_id: c.key, template_params: params })
+      });
+    } catch (e) { throw new Error('No se pudo enviar el correo: no hay conexión a internet.'); }
+    if (!r.ok) {
+      var t = ''; try { t = await r.text(); } catch (e) { /* sin detalle */ }
+      throw new Error('No se pudo enviar el correo (' + (t || 'error ' + r.status) + ').');
+    }
+  }
+  /* Envía el comprobante en PDF por EmailJS y lo deja anotado en la venta */
+  async function emailSale(sale, to) {
+    var mc = mailContent(sale);
+    var pdf = await blobToDataURL(await makePdf(sale));
+    await emailjsSend({ to_email: to, to_name: sale.cliente.nombre || 'Cliente', subject: mc.subject, message: mc.body,
+                        store_name: S.data.store.store_name, pdf: pdf, pdf_name: docName(sale) });
+    sale.correo = { enviado: new Date().toISOString(), a: to };
+    var m = monthKey(new Date(sale.fecha));
+    if (P.months[m]) { ensureMonthSource(m); save([monthPath(m)], 'Correo enviado · ' + sale.numero); }
+    if (!$('[data-pane="ventas"]').hidden) renderVentas();
+  }
+  function autoEmail(sale) {
+    var c = mailCfg(), box = $('#doneMailState');
+    var wanted = c.auto && (isFactura(sale) || c.tickets);
+    if (!wanted || !mailReady()) { box.hidden = true; return; }
+    var to = sale.cliente.email;
+    box.hidden = false;
+    if (!to) { box.className = 'done-mail is-warn'; box.textContent = 'No se envió por correo: el cliente no tiene correo cargado.'; return; }
+    box.className = 'done-mail'; box.textContent = 'Enviando por correo a ' + to + '…';
+    emailSale(sale, to).then(function () {
+      box.className = 'done-mail is-ok'; box.textContent = 'Enviada por correo a ' + to + '.';
+      if (!$('#doneDlg').open) notify('ok', (isFactura(sale) ? 'Factura ' : 'Ticket ') + sale.numero + ' enviado por correo a ' + to + '.');
+    }, function (e) {
+      box.className = 'done-mail is-warn'; box.textContent = e.message + ' Podés reenviarla desde Ventas.';
+      if (!$('#doneDlg').open) notify('error', e.message);
+    });
+  }
+  async function sendEmail(sale) {
+    if (mailReady()) {
+      var to = sale.cliente.email || (window.prompt('Correo del cliente:', '') || '').trim();
+      if (!to) return;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error('El correo «' + to + '» no es válido.');
+      notify('ok', 'Enviando a ' + to + '…');
+      await emailSale(sale, to);
+      notify('ok', (isFactura(sale) ? 'Factura ' : 'Ticket ') + sale.numero + ' enviado por correo a ' + to + '.');
+      return;
+    }
+    var mc = mailContent(sale), subject = mc.subject, body = mc.body;
+    var blob = await makePdf(sale);
+    var file = new File([blob], docName(sale), { type: 'application/pdf' });
+    var mobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    // En el teléfono se comparte el PDF directo (se elige Gmail u otra app de correo)
+    if (mobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: subject, text: body }); return; }
+      catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    // En la PC: se descarga el PDF y se abre Gmail con el correo escrito, listo para adjuntar
+    await downloadPdf(sale);
+    var to = sale.cliente.email || '';
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) +
+      '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body), '_blank', 'noopener');
+    notify('ok', 'Se descargó el PDF: adjuntalo en el correo que se abrió (clip o arrastrar).' + (to ? '' : ' El cliente no tiene correo cargado: escribilo en "Para".'));
+  }
+
   function printTicket(sale) {
     var ifr = document.createElement('iframe');
     ifr.setAttribute('aria-hidden', 'true');
@@ -920,15 +1018,17 @@
       return '<tr class="' + (v.estado === 'anulada' ? 'is-void' : '') + '">' +
         '<td class="nowrap"><strong>' + esc(v.numero) + '</strong><span class="t-sub">' + (isFactura(v) ? 'Factura electrónica' : 'Ticket') + '</span></td>' +
         '<td class="nowrap">' + esc(fmtDate(v.fecha, true)) + '</td>' +
-        '<td>' + esc(cli) + '<span class="t-sub">' + v.items.length + (v.items.length === 1 ? ' producto' : ' productos') + '</span></td>' +
+        '<td>' + esc(cli) + '<span class="t-sub">' + v.items.length + (v.items.length === 1 ? ' producto' : ' productos') +
+          (v.correo ? ' · enviado a ' + esc(v.correo.a) : '') + '</span></td>' +
         '<td>' + esc(PAY[v.pago.forma] || v.pago.forma) +
           (v.pago.banco ? '<span class="t-sub">' + esc(v.pago.banco + ' · N° ' + v.pago.comprobante + ' · ' + v.pago.remitente) + '</span>' : '') + '</td>' +
         '<td class="ta-r nowrap"><strong>' + money(v.totales.total) + '</strong></td>' +
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
-        '<td class="actions"><button type="button" class="btn btn-secondary btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
-        '<button type="button" class="btn btn-secondary btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
+        '<td class="actions"><button type="button" class="btn btn-print btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
+        '<button type="button" class="btn btn-pdf btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
         '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
-        (v.estado !== 'anulada' ? '<button type="button" class="btn btn-secondary btn-sm btn-void" data-void="' + esc(v.id) + '">Anular</button>' : '') + '</td></tr>';
+        '<button type="button" class="btn btn-mail btn-sm" data-mail="' + esc(v.id) + '">Correo</button>' +
+        (v.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-void="' + esc(v.id) + '" title="Anular venta" aria-label="Anular venta ' + esc(v.numero) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
   function fmtISODate(iso) { var d = new Date(iso); return d.getFullYear() + '-' + pad(d.getMonth() + 1, 2) + '-' + pad(d.getDate(), 2); }
@@ -942,6 +1042,7 @@
     var find = function (id) { return list.filter(function (v) { return v.id === id; })[0]; };
     if ((b = e.target.closest('[data-ticket]'))) { printTicket(find(b.dataset.ticket)); return; }
     if ((b = e.target.closest('[data-pdf]'))) { downloadPdf(find(b.dataset.pdf)).catch(function (er) { A.showMsg('error', er.message); }); return; }
+    if ((b = e.target.closest('[data-mail]'))) { sendEmail(find(b.dataset.mail)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-wa]'))) { sendWhatsApp(find(b.dataset.wa)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-void]'))) {
       var v = find(b.dataset.void);
@@ -1033,13 +1134,13 @@
     } else {
       body.innerHTML = buyItems.map(function (it, i) {
         var listId = 'bsz' + i;
-        return '<tr data-b="' + i + '"><td><strong>' + esc(it.name) + '</strong></td>' +
-          '<td>' + (it.sizes ? '<input data-f="talle" list="' + listId + '" value="' + esc(it.talle) + '" class="in-sm" placeholder="Talle">' +
+        return '<tr data-b="' + i + '"><td class="b-name"><strong>' + esc(it.name) + '</strong></td>' +
+          '<td data-label="Talle">' + (it.sizes ? '<input data-f="talle" list="' + listId + '" value="' + esc(it.talle) + '" class="in-sm" placeholder="Talle">' +
             '<datalist id="' + listId + '">' + it.sizes.map(function (s) { return '<option value="' + esc(s) + '">'; }).join('') + '</datalist>' : '<span class="t-sub">—</span>') + '</td>' +
-          '<td><input data-f="qty" class="in-sm js-num" inputmode="numeric" value="' + A.fmtNum(it.qty) + '"></td>' +
-          '<td><input data-f="cost" class="in-md js-num" inputmode="numeric" value="' + (it.cost ? A.fmtNum(it.cost) : '') + '" placeholder="0"></td>' +
-          '<td class="ta-r nowrap" data-sub>' + money(it.qty * it.cost) + '</td>' +
-          '<td><button type="button" class="row-x" data-brm aria-label="Quitar">×</button></td></tr>';
+          '<td data-label="Cantidad"><input data-f="qty" class="in-sm js-num" inputmode="numeric" value="' + A.fmtNum(it.qty) + '"></td>' +
+          '<td data-label="Costo unitario"><input data-f="cost" class="in-md js-num" inputmode="numeric" value="' + (it.cost ? A.fmtNum(it.cost) : '') + '" placeholder="0"></td>' +
+          '<td class="ta-r nowrap b-sub" data-label="Subtotal" data-sub>' + money(it.qty * it.cost) + '</td>' +
+          '<td class="b-x"><button type="button" class="row-x" data-brm aria-label="Quitar">×</button></td></tr>';
       }).join('');
     }
     buyTotal();
@@ -1122,7 +1223,7 @@
         '<td>' + units + (units === 1 ? ' unidad' : ' unidades') + '<span class="t-sub">' + esc(c.items.map(function (x) { return x.descripcion; }).join(', ')) + '</span></td>' +
         '<td class="ta-r nowrap"><strong>' + money(c.total) + '</strong></td>' +
         '<td>' + (c.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Registrada</span>') + '</td>' +
-        '<td class="actions">' + (c.estado !== 'anulada' ? '<button type="button" class="btn btn-secondary btn-sm btn-void" data-bvoid="' + esc(c.id) + '">Anular</button>' : '') + '</td></tr>';
+        '<td class="actions">' + (c.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-bvoid="' + esc(c.id) + '" title="Anular compra" aria-label="Anular compra a ' + esc(c.proveedor.nombre) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
   buyMonthIn.addEventListener('change', renderCompras);
@@ -1177,6 +1278,59 @@
       A.showMsg('error', err.message || String(err));
     } finally {
       btn.disabled = false;
+    }
+  });
+
+  /* ---------------- envío automático por correo (EmailJS) ---------------- */
+  function fillMailForm() {
+    if (!P.ajustes) return;
+    var c = mailCfg();
+    $('#mService').value = c.service; $('#mTemplate').value = c.template; $('#mKey').value = c.key;
+    $('#mAuto').checked = !!c.auto; $('#mTickets').checked = !!c.tickets;
+  }
+  function readMailForm() {
+    return { service: $('#mService').value.trim(), template: $('#mTemplate').value.trim(), key: $('#mKey').value.trim(),
+             auto: $('#mAuto').checked, tickets: $('#mTickets').checked };
+  }
+  $('#mailForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!A.connected()) { A.showMsg('error', A.NEED_CONN); return; }
+    var btn = this.querySelector('button[type=submit]');
+    btn.disabled = true;
+    try {
+      await loadPrivate();
+      P.ajustes.correo = readMailForm();
+      await A.writeFiles([AJ_PATH], 'Configurar envío por correo');
+      A.showMsg('ok', 'Envío por correo guardado.' + (mailReady() ? '' : ' Faltan datos de EmailJS: por ahora no se envía nada.'));
+    } catch (err) {
+      A.showMsg('error', err.message || String(err));
+    } finally {
+      btn.disabled = false;
+    }
+  });
+  $('#mTestBtn').addEventListener('click', async function () {
+    var to = $('#mTest').value.trim(), btn = this;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { A.showMsg('error', 'Escribí un correo válido para la prueba.'); $('#mTest').focus(); return; }
+    var saved = P.ajustes ? P.ajustes.correo : null;
+    if (!P.ajustes) P.ajustes = defaultAjustes();
+    P.ajustes.correo = readMailForm();
+    if (!mailReady()) { P.ajustes.correo = saved || P.ajustes.correo; A.showMsg('error', 'Completá Service ID, Template ID y Public Key.'); return; }
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    try {
+      var demo = { tipo: 'factura', numero: '001-001-0000000', fecha: new Date().toISOString(), estado: 'emitida',
+        fiscal: { timbrado: (P.ajustes.fiscal.timbrado || '00000000') }, sifen: { estado: 'prueba', cdc: '' },
+        cliente: { tipo: 'innominado', nombre: 'Prueba', doc: '', dv: '' },
+        items: [{ descripcion: 'Producto de prueba', cantidad: 1, precio: 100000, subtotal: 100000 }],
+        totales: { total: 100000 }, pago: { forma: 'efectivo' }, recibido: 100000, vuelto: 0 };
+      var mc = mailContent(demo);
+      await emailjsSend({ to_email: to, to_name: 'Prueba', subject: 'Prueba · ' + mc.subject, message: mc.body,
+                          store_name: S.data.store.store_name, pdf: await blobToDataURL(await makePdf(demo)), pdf_name: 'prueba.pdf' });
+      A.showMsg('ok', 'Correo de prueba enviado a ' + to + '. Revisá la bandeja de entrada (y la de spam). Si llegó bien, tocá Guardar.');
+    } catch (err) {
+      A.showMsg('error', err.message || String(err));
+    } finally {
+      P.ajustes.correo = saved || P.ajustes.correo;
+      btn.disabled = false; btn.textContent = 'Enviar correo de prueba';
     }
   });
 

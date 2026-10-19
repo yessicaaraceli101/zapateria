@@ -520,9 +520,44 @@ kbd { font: 600 .72rem/1 var(--font-body); padding: 3px 6px; border-radius: 5px;
 /* Comprobante, PDF y WhatsApp */
 .pos-doc { display: grid; gap: 6px; margin-bottom: 12px; }
 .seg.seg-2 { grid-template-columns: 1fr 1fr; }
-.done-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+.done-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
 #doneDlg .dlg-foot { flex-direction: column; align-items: stretch; gap: 10px; }
 #doneDlg .dlg-foot .btn { min-width: 0; }
 .btn-wa-sm { background: #1f9d55; color: #fff; }
 .actions .btn-sm + .btn-sm { margin-left: 0; }
 @media (max-width: 480px) { .done-actions { grid-template-columns: 1fr; } }
+.btn-mail { background: #16263a; color: #fff; }
+.done-mail { margin: 4px 0 0; font-size: .92rem; color: var(--muted); }
+.done-mail.is-ok { color: var(--ok); font-weight: 600; }
+.done-mail.is-warn { color: #b45309; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Botones de comprobante y anular */
+.btn-print { background: #6b7280; color: #fff; }
+.btn-pdf { background: #dc2626; color: #fff; }
+.icon-void { border: 1.5px solid var(--danger); }
+.actions { align-items: center; }
+
+/* Compras: que no se salga de la pantalla */
+[data-pane="compras"] { grid-template-columns: minmax(0, 1fr); }
+[data-pane="compras"] .panel { min-width: 0; }
+@media (max-width: 640px) {
+  .panel { padding: 16px; }
+  .grid-buy { grid-template-columns: 1fr 1fr; }
+  .buy-foot { justify-content: space-between; }
+  .buy-foot .btn { width: 100%; }
+  /* Productos de la compra como tarjetas */
+  .tbl-buy { min-width: 0; }
+  .tbl-buy thead { display: none; }
+  .tbl-buy tbody tr[data-b] { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; border-top: 1px solid var(--line); position: relative; }
+  .tbl-buy tbody tr[data-b]:first-child { border-top: 0; }
+  .tbl-buy tbody tr[data-b] td { border: 0; padding: 0; display: grid; gap: 4px; }
+  .tbl-buy td[data-label]::before { content: attr(data-label); font-size: .78rem; font-weight: 700; color: var(--muted); }
+  .tbl-buy td.b-name { grid-column: 1 / -1; padding-right: 40px; }
+  .tbl-buy td.b-sub { grid-column: 1 / -1; text-align: left; font-weight: 700; }
+  .tbl-buy td.b-x { position: absolute; top: 8px; right: 8px; }
+  .tbl-buy input { width: 100%; }
+}
+@media (max-width: 380px) { .grid-buy { grid-template-columns: 1fr; } }
+.grid-buy .fld input, .grid-buy .fld select { min-width: 0; width: 100%; }
+@media (max-width: 640px) { .tbl-buy td.b-sub { text-align: left !important; justify-items: start; } }
