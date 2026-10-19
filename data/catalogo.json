@@ -7,12 +7,86 @@
     "logo": ""
   },
   "brands": [
-    { "id": "beira-rio", "name": "Beira Rio", "logo": "img/marcas/beira-rio.png" },
-    { "id": "modare", "name": "Modare", "logo": "img/marcas/modare.png" },
-    { "id": "actvitta", "name": "Actvitta", "logo": "img/marcas/actvitta.png" },
-    { "id": "br-sport", "name": "BR Sport", "logo": "img/marcas/br-sport.png" },
-    { "id": "molekinha", "name": "Molekinha", "logo": "img/marcas/molekinha.png" },
-    { "id": "molekinho", "name": "Molekinho", "logo": "img/marcas/molekinho.png" }
+    {
+      "id": "beira-rio",
+      "name": "Beira Rio",
+      "logo": "img/marcas/beira-rio.png"
+    },
+    {
+      "id": "modare",
+      "name": "Modare",
+      "logo": "img/marcas/modare.png"
+    },
+    {
+      "id": "actvitta",
+      "name": "Actvitta",
+      "logo": "img/marcas/actvitta.png"
+    },
+    {
+      "id": "br-sport",
+      "name": "BR Sport",
+      "logo": "img/marcas/br-sport.png"
+    },
+    {
+      "id": "molekinha",
+      "name": "Molekinha",
+      "logo": "img/marcas/molekinha.png"
+    },
+    {
+      "id": "molekinho",
+      "name": "Molekinho",
+      "logo": "img/marcas/molekinho.png"
+    }
   ],
-  "products": []
+  "products": [
+    {
+      "id": "6f867ea56a5c",
+      "name": "Tacones",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "12345",
+      "code": "01234",
+      "price": 150000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 4
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 3
+        }
+      ],
+      "colors": "Negro",
+      "description": "Para ocasión especial",
+      "installments": [
+        {
+          "n": 2,
+          "amount": 100000
+        }
+      ],
+      "visible": true,
+      "image": "img/productos/prod-mvf3r44r029dc261c171.jpg",
+      "created_at": 1792405160,
+      "updated_at": 1792405160
+    }
+  ]
 }
