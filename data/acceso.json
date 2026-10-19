@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "owner": "",
-  "repo": "",
-  "branch": "",
-  "is_default": true,
-  "salt": "otFGBdDMEY/rnpn6VbwciQ==",
-  "iv": "WTxIkNt6pITP56EK",
-  "ct": "/PltKHdjDY+qjhTCJZGGXW13fY/1ObsbG4hq/0c=",
+  "owner": "yessicaaraceli101",
+  "repo": "zapateria",
+  "branch": "main",
+  "is_default": false,
+  "salt": "tUi98MlMfH9Pqn2MMmf2Uw==",
+  "iv": "d+1UuIPubYD8HK5F",
+  "ct": "gaZwqIwE6gcVaVF8Himup+8/5K914g81JSAYQNUR6/0utKOkSXQT5lOsfvKxhI2zS+TFU8Wv59W3vkm2o5oiTP5G+l2qGk15rXMCBAdmcOBmE1G/mKDV66J6ytaoY5Kjqcm/EzfhOIu+/0eymYhG229+8HH3ZpAcTA==",
   "iterations": 310000
 }
