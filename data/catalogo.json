@@ -36,6 +36,11 @@
       "id": "molekinho",
       "name": "Molekinho",
       "logo": "img/marcas/molekinho.png"
+    },
+    {
+      "id": "2df4c1c14100",
+      "name": "Vizzano",
+      "logo": ""
     }
   ],
   "products": [
@@ -97,7 +102,7 @@
       "sku": "",
       "code": "",
       "price": 200000,
-      "stock": 7,
+      "stock": 8,
       "sizes": [],
       "colors": "Negro",
       "description": "",
@@ -106,7 +111,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1792437580,
-      "updated_at": 1792439669
+      "updated_at": 1792439050
     }
   ]
 }
