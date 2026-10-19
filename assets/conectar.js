@@ -30,17 +30,19 @@
     var base = await crypto.subtle.importKey('raw', enc.encode(Z.lower(user.trim()) + '\n' + pass), 'PBKDF2', false, ['deriveKey']);
     return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: it, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
   }
+  /* Devuelve el contenido descifrado o null si el usuario/contraseña no coinciden */
   async function check(user, pass, auth) {
     try {
       var k = await key(user, pass, unb64(auth.salt), auth.iterations || 310000);
-      await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(auth.iv) }, k, unb64(auth.ct));
-      return true;
-    } catch (e) { return false; }
+      var pt = dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(auth.iv) }, k, unb64(auth.ct)));
+      try { var o = JSON.parse(pt); if (o && typeof o === 'object') return o; } catch (e) { /* formato anterior */ }
+      return { token: pt };
+    } catch (e) { return null; }
   }
-  async function seal(user, pass, token) {
+  async function seal(user, pass, token, dataKey) {
     var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)), it = 310000;
     var k = await key(user, pass, salt, it);
-    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, k, enc.encode(JSON.stringify({ token: token })));
+    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, k, enc.encode(JSON.stringify({ token: token, dataKey: dataKey || '' })));
     return { salt: b64(salt), iv: b64(iv), ct: b64(ct), iterations: it };
   }
   async function gh(path, token, opts) {
@@ -78,19 +80,22 @@
       var path = '/repos/' + encodeURIComponent(owner) + '/' + encodeURIComponent(repo) + '/contents/data/acceso.json';
       var remote = await gh(path + '?ref=' + encodeURIComponent(branch), token, { allow404: true });
       var current = remote ? JSON.parse(dec.decode(unb64(remote.content))) : null;
-      var ok = current && await check(user, pass, current);
+      var opened = current ? await check(user, pass, current) : null;
+      var ok = !!opened;
       if (!ok) {
         var pub = null;
         try { var r = await fetch(AUTH_PATH + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) pub = await r.json(); } catch (err) { /* nada */ }
-        ok = (pub && await check(user, pass, pub)) || (!current && !pub);
-        if (!current) current = pub;
+        opened = pub ? await check(user, pass, pub) : null;
+        ok = !!opened || (!current && !pub);
       }
       if (!ok) throw new Error('Usuario o contraseña del panel incorrectos.');
-      var auth = Object.assign({ version: 2, owner: owner, repo: repo, branch: branch, is_default: false }, await seal(nu, np, token));
+      // Se conserva la llave de las ventas y compras ya guardadas
+      var dataKey = (opened && opened.dataKey) || b64(crypto.getRandomValues(new Uint8Array(32)));
+      var auth = Object.assign({ version: 2, owner: owner, repo: repo, branch: branch, is_default: false }, await seal(nu, np, token, dataKey));
       var body = { message: 'Activar el panel', branch: branch, content: b64(enc.encode(JSON.stringify(auth, null, 2) + '\n')) };
       if (remote) body.sha = remote.sha;
       await gh(path, token, { method: 'PUT', body: JSON.stringify(body) });
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: token, user: nu, repo: { owner: owner, repo: repo, branch: branch } }));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: token, dataKey: dataKey, user: nu, repo: { owner: owner, repo: repo, branch: branch } }));
       $('#f').reset();
       $('#f').hidden = true;
       msg('ok', 'Panel activado. Desde ahora se ingresa con «' + nu + '» y la contraseña nueva.');

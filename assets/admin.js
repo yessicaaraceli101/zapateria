@@ -20,7 +20,7 @@
   var USER_RE = /^[A-Za-z0-9._@-]{3,40}$/;
   var enc = new TextEncoder(), dec = new TextDecoder();
 
-  var S = { repo: null, token: '', user: '', auth: null, authSha: null, data: null, sha: null, busy: false };
+  var S = { repo: null, token: '', dataKey: '', user: '', auth: null, authSha: null, data: null, busy: false };
 
   /* ---------------- base64 ---------------- */
   function b64(buf) {
@@ -44,18 +44,44 @@
     return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
       base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
   }
-  async function sealToken(user, pass, token) {
+  /* El contenido cifrado guarda el permiso de guardado y la llave de los datos privados (ventas y compras) */
+  async function sealPayload(user, pass, payload) {
     var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
     var iterations = 310000;
     var key = await deriveKey(user, pass, salt, iterations);
-    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(JSON.stringify({ token: token || '' })));
+    var body = { token: payload.token || '', dataKey: payload.dataKey || '' };
+    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(JSON.stringify(body)));
     return { salt: b64(salt), iv: b64(iv), ct: b64(ct), iterations: iterations };
   }
-  async function openToken(user, pass, auth) {
+  async function openPayload(user, pass, auth) {
     var key = await deriveKey(user, pass, unb64(auth.salt), auth.iterations || 310000);
     var pt = dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(auth.iv) }, key, unb64(auth.ct)));
-    try { var o = JSON.parse(pt); if (o && typeof o.token === 'string') return o.token; } catch (e) { /* formato anterior */ }
-    return pt;
+    try {
+      var o = JSON.parse(pt);
+      if (o && typeof o.token === 'string') return { token: o.token, dataKey: o.dataKey || '' };
+    } catch (e) { /* formato anterior: solo el token */ }
+    return { token: pt, dataKey: '' };
+  }
+  function newDataKey() { return b64(crypto.getRandomValues(new Uint8Array(32))); }
+
+  /* Cifrado de archivos privados (ventas, compras, datos de facturación) */
+  var dataCryptoKey = null, dataCryptoFor = '';
+  async function dataKeyObj() {
+    if (!S.dataKey) throw new Error('Falta la llave de datos privados. Cerrá sesión y volvé a entrar.');
+    if (dataCryptoFor !== S.dataKey) {
+      dataCryptoKey = await crypto.subtle.importKey('raw', unb64(S.dataKey), 'AES-GCM', false, ['encrypt', 'decrypt']);
+      dataCryptoFor = S.dataKey;
+    }
+    return dataCryptoKey;
+  }
+  async function encryptJSON(obj) {
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, await dataKeyObj(), enc.encode(JSON.stringify(obj)));
+    return { privado: 1, iv: b64(iv), ct: b64(ct) };
+  }
+  async function decryptJSON(box) {
+    var pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(box.iv) }, await dataKeyObj(), unb64(box.ct));
+    return JSON.parse(dec.decode(pt));
   }
 
   /* ---------------- API de GitHub ---------------- */
@@ -225,30 +251,80 @@
   async function loadAll() {
     var res = await Promise.all([getFile(DATA_PATH), getFile(AUTH_PATH)]);
     S.data = normalize(res[0] ? decodeJsonFile(res[0]) : null);
-    S.sha = res[0] ? res[0].sha : null;
     if (res[1]) { S.auth = decodeJsonFile(res[1]); S.authSha = res[1].sha; }
   }
-  /* Aplica un cambio sobre una copia y la guarda como commit */
+  /* ---------- Guardado de varios archivos en un solo cambio (rápido) ---------- */
+  var head = null;          // último commit conocido { commit, tree }
+  var writeChain = Promise.resolve();
+  var pendingWrites = 0;
+  var fileSources = {};     // ruta -> función async que devuelve el texto actual del archivo
+  fileSources[DATA_PATH] = function () { return JSON.stringify(S.data, null, 2) + '\n'; };
+
+  function repoBase() { return '/repos/' + encodeURIComponent(S.repo.owner) + '/' + encodeURIComponent(S.repo.repo); }
+  async function readHead() {
+    var ref = await gh(repoBase() + '/git/ref/heads/' + encodeURIComponent(S.repo.branch));
+    var c = await gh(repoBase() + '/git/commits/' + ref.object.sha);
+    head = { commit: ref.object.sha, tree: c.tree.sha };
+  }
+  async function commitFiles(paths, message) {
+    if (!connected()) throw new Error(NEED_CONN);
+    var files = [];
+    for (var i = 0; i < paths.length; i++) {
+      files.push({ path: paths[i], mode: '100644', type: 'blob', content: await fileSources[paths[i]]() });
+    }
+    for (var attempt = 0; attempt < 4; attempt++) {
+      try {
+        if (!head) await readHead();
+        var tree = await gh(repoBase() + '/git/trees', { method: 'POST', body: JSON.stringify({ base_tree: head.tree, tree: files }) });
+        var c = await gh(repoBase() + '/git/commits', { method: 'POST', body: JSON.stringify({ message: message, tree: tree.sha, parents: [head.commit] }) });
+        await gh(repoBase() + '/git/refs/heads/' + encodeURIComponent(S.repo.branch), { method: 'PATCH', body: JSON.stringify({ sha: c.sha, force: false }) });
+        head = { commit: c.sha, tree: tree.sha };
+        return;
+      } catch (e) {
+        head = null;   // otro cambio se guardó antes: se vuelve a leer y se reintenta
+        if (!(e.status === 409 || e.status === 422) || attempt === 3) throw e;
+      }
+    }
+  }
+  /* Encola el guardado; los cambios se escriben en orden */
+  function writeFiles(paths, message) {
+    pendingWrites++;
+    emit('saving', pendingWrites);
+    var p = writeChain.then(function () { return commitFiles(paths, message); });
+    writeChain = p.catch(function () { /* el error lo maneja quien llamó */ });
+    return p.then(function (v) { pendingWrites--; emit('saving', pendingWrites); return v; },
+                  function (e) { pendingWrites--; emit('saving', pendingWrites); throw e; });
+  }
+
+  /* Aplica un cambio sobre una copia y la guarda */
   async function commit(message, mutate) {
+    if (!connected()) throw new Error(NEED_CONN);
+    var backup = S.data;
     var draft = JSON.parse(JSON.stringify(S.data));
     var after = await mutate(draft);
+    S.data = draft;
     try {
-      S.sha = await putFile(DATA_PATH, jsonB64(draft), message, S.sha);
+      await writeFiles([DATA_PATH], message);
     } catch (e) {
-      if (e.status === 409 || e.status === 422) { await loadAll(); renderAll(); }
+      S.data = backup;
+      renderAll();
       throw e;
     }
-    S.data = draft;
     renderAll();
     if (typeof after === 'function') await after();
   }
+
+  /* Ganchos para los módulos de ventas y compras */
+  var listeners = {};
+  function on(ev, fn) { (listeners[ev] = listeners[ev] || []).push(fn); }
+  function emit(ev, arg) { (listeners[ev] || []).forEach(function (fn) { try { fn(arg); } catch (e) { console.error(e); } }); }
   async function saveAuth(auth, token, message) {
     var current = await getFile(AUTH_PATH, token);
     S.authSha = await putFile(AUTH_PATH, jsonB64(auth), message, current ? current.sha : null, token);
     S.auth = auth;
   }
   function remember() {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: S.token, user: S.user, repo: S.repo }));
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: S.token, dataKey: S.dataKey, user: S.user, repo: S.repo }));
   }
 
   /* =================================================================
@@ -287,7 +363,6 @@
   }
   async function loadLocal() {
     S.data = normalize(await fetchPublic(DATA_PATH));
-    S.sha = null;
   }
   async function brandGate() {
     try {
@@ -309,7 +384,7 @@
     var saved = null;
     try { saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch (e) { saved = null; }
     if (saved && saved.user && saved.repo) {
-      S.token = saved.token || ''; S.user = saved.user; S.repo = saved.repo;
+      S.token = saved.token || ''; S.dataKey = saved.dataKey || ''; S.user = saved.user; S.repo = saved.repo;
       try { await enterPanel(); return; } catch (e) {
         sessionStorage.removeItem(SESSION_KEY);
         S.token = '';
@@ -332,16 +407,22 @@
     e.preventDefault();
     var user = $('#lUser').value.trim(), pass = $('#lPass').value;
     run($('#loginForm button'), 'Verificando…', async function () {
-      var token;
-      try { token = await openToken(user, pass, S.auth); } catch (err) {
+      var payload;
+      try { payload = await openPayload(user, pass, S.auth); } catch (err) {
         showMsg('error', 'Usuario o contraseña incorrectos.', '#gateMsgs');
         $('#lPass').value = ''; $('#lPass').focus();
         return;
       }
-      S.token = token; S.user = user;
+      S.token = payload.token; S.dataKey = payload.dataKey; S.user = user;
       S.repo = S.auth.owner ? { owner: S.auth.owner, repo: S.auth.repo, branch: S.auth.branch || 'main' }
                             : Object.assign(guessRepo(), { branch: 'main' });
       try {
+        if (connected() && !S.dataKey) {
+          // Primera vez con ventas: se crea la llave de los datos privados
+          S.dataKey = newDataKey();
+          var sealed = await sealPayload(user, pass, { token: S.token, dataKey: S.dataKey });
+          await saveAuth(Object.assign({}, S.auth, sealed), null, 'Preparar datos privados');
+        }
         await enterPanel();
       } catch (err) {
         if (err.status === 401) {
@@ -365,7 +446,8 @@
     $('#gate').hidden = true;
     $('#panel').hidden = false;
     renderAll();
-    showTab((location.hash || '#productos').slice(1));
+    emit('ready');
+    showTab((location.hash || '#vender').slice(1));
   }
 
   $('#logoutBtn').addEventListener('click', async function () {
@@ -379,9 +461,10 @@
      Panel
      ================================================================= */
   function showTab(name) {
-    if (['productos', 'marcas', 'config'].indexOf(name) === -1) name = 'productos';
+    if (!$('[data-pane="' + name + '"]')) name = 'vender';
     $$('[data-tab]').forEach(function (a) { a.classList.toggle('active', a.dataset.tab === name); });
     $$('[data-pane]').forEach(function (p) { p.hidden = p.dataset.pane !== name; });
+    emit('tab', name);
   }
   $$('[data-tab]').forEach(function (a) {
     a.addEventListener('click', function (e) {
@@ -410,13 +493,16 @@
     }
     document.title = st.store_name + ' · Panel';
     var ban = '';
-    if (S.auth && S.auth.is_default) {
+    if (!connected()) {
+      ban += '<div class="alert alert-error"><strong>Panel sin activar:</strong> los cambios no se guardan. Quien instaló el sistema tiene que activarlo desde <a href="conectar.html">conectar.html</a>.</div>';
+    } else if (S.auth && S.auth.is_default) {
       ban += '<div class="alert alert-warn">Estás usando el usuario y la contraseña de fábrica (admin / admin123). <a href="#config" data-goto="config">Cambialos</a> para que nadie más pueda entrar.</div>';
     }
     $('#banners').innerHTML = ban;
     renderProducts();
     renderBrandAdmin();
     renderConfig();
+    emit('render');
   }
 
   /* ---------------- Productos ---------------- */
@@ -504,7 +590,8 @@
   var preview = $('#f_preview'), fileIn = $('#f_image');
   var dlgMsgs = document.createElement('div');
   dlgMsgs.id = 'dlgMsgs';
-  $('.dlg-body').prepend(dlgMsgs);
+  dlgMsgs.className = 'dlg-msgs';
+  $('#productForm .dlg-foot').before(dlgMsgs);
 
   function row(html) {
     var d = document.createElement('div');
@@ -624,7 +711,7 @@
     if (p) {
       setVal('#f_name', p.name); setVal('#f_category', p.category); setVal('#f_gender', p.gender);
       setVal('#f_brand', p.brand); setVal('#f_colors', p.colors); setVal('#f_sku', p.sku); setVal('#f_code', p.code);
-      setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_desc', p.description);
+      setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_iva', p.iva == null ? '10' : String(p.iva)); setVal('#f_desc', p.description);
       (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock); });
       (p.installments || []).forEach(function (i) { instRow(i.n, i.amount); });
       $('#f_visible').checked = !!p.visible;
@@ -671,7 +758,7 @@
       sku: $('#f_sku').value.trim(), code: $('#f_code').value.trim(), price: price,
       stock: sizes.length ? sizes.reduce(function (t, s) { return t + s.stock; }, 0) : num(stockIn.value),
       sizes: sizes, colors: $('#f_colors').value.trim(), description: $('#f_desc').value.trim(),
-      installments: inst, visible: $('#f_visible').checked
+      installments: inst, visible: $('#f_visible').checked, iva: Number($('#f_iva').value)
     };
 
     run($('#saveBtn'), 'Guardando…', async function () {
@@ -804,7 +891,7 @@
   });
 
   async function checkCurrent(pass) {
-    try { await openToken(S.user, pass, S.auth); return true; } catch (e) { return false; }
+    try { await openPayload(S.user, pass, S.auth); return true; } catch (e) { return false; }
   }
 
   $('#credForm').addEventListener('submit', function (e) {
@@ -817,7 +904,7 @@
     if (!connected()) return showMsg('error', NEED_CONN);
     run($('#credForm button'), 'Guardando…', async function () {
       if (!(await checkCurrent(cur))) throw new Error('La contraseña actual no es correcta.');
-      var auth = Object.assign({}, S.auth, await sealToken(user, pass || cur, S.token), { is_default: false });
+      var auth = Object.assign({}, S.auth, await sealPayload(user, pass || cur, { token: S.token, dataKey: S.dataKey }), { is_default: false });
       await saveAuth(auth, null, 'Cambiar usuario o contraseña del panel');
       S.user = user;
       remember();
@@ -827,6 +914,15 @@
       showMsg('ok', 'Usuario y contraseña actualizados. Empiezan a valer en 1 o 2 minutos; hasta entonces puede seguir funcionando la contraseña anterior.');
     });
   });
+
+  /* Lo que usan los módulos de ventas y compras */
+  window.ZA = {
+    S: S, $: $, $$: $$, esc: esc, money: money, num: num, lower: lower, fmtNum: fmtNum, rid: rid,
+    getFile: getFile, decodeJsonFile: decodeJsonFile, connected: connected, NEED_CONN: NEED_CONN,
+    writeFiles: writeFiles, fileSources: fileSources, encryptJSON: encryptJSON, decryptJSON: decryptJSON,
+    showMsg: showMsg, ask: ask, renderAll: renderAll, imgUrl: imgUrl, on: on,
+    pending: function () { return pendingWrites; }, DATA_PATH: DATA_PATH, NOTE: NOTE
+  };
 
   init();
 })();
