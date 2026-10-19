@@ -87,6 +87,26 @@
       "image": "img/productos/prod-mvf3r44r029dc261c171.jpg",
       "created_at": 1792405160,
       "updated_at": 1792436551
+    },
+    {
+      "id": "11840bb2e881",
+      "name": "Zapatillas",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "stock": 10,
+      "sizes": [],
+      "colors": "Negro",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1792437580,
+      "updated_at": 1792437580
     }
   ]
 }
