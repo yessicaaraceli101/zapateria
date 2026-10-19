@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Panel de administración</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" type="image/svg+xml" href="assets/icono.svg">
+</head>
+<body class="admin">
+
+<!-- ================= Ingreso ================= -->
+<div id="gate" class="login-page">
+  <main class="login-card">
+    <div class="login-brand">
+      <span id="gateLogo" class="logo logo-ph login-ico" aria-hidden="true"></span>
+      <span class="login-name" id="gateName">Mi <span class="name-2">Zapatería</span></span>
+    </div>
+    <p class="login-sub" id="gateSub">Panel de administración</p>
+    <div id="gateMsgs"></div>
+
+    <form id="loginForm" class="stack login-form">
+      <label class="fld"><span>Usuario</span><input id="lUser" autocomplete="username" required></label>
+      <label class="fld"><span>Contraseña</span><input id="lPass" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+    </form>
+
+
+    <a class="login-back" href="./">← Volver al catálogo</a>
+  </main>
+</div>
+
+<!-- ================= Panel ================= -->
+<div id="panel" hidden>
+  <header class="adm-head">
+    <div class="adm-head-in">
+      <a class="adm-brand" href="admin.html">
+        <span id="admLogo" class="logo logo-ph" aria-hidden="true"></span>
+        <span class="adm-name" id="admName"></span>
+        <small>/ admin</small>
+      </a>
+      <nav class="adm-nav">
+        <a href="./" target="_blank" rel="noopener">Ver catálogo</a>
+        <button class="btn btn-ghost" type="button" id="logoutBtn">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap adm-main">
+    <div id="banners"></div>
+    <div id="msgs" aria-live="polite"></div>
+    <nav class="tabs" role="tablist">
+      <a href="#productos" data-tab="productos">Productos</a>
+      <a href="#marcas" data-tab="marcas">Marcas</a>
+      <a href="#config" data-tab="config">Configuración</a>
+    </nav>
+
+    <!-- Productos -->
+    <section data-pane="productos">
+      <div class="toolbar">
+        <label class="search search-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="tableSearch" placeholder="Buscar en mis productos" aria-label="Buscar en mis productos">
+        </label>
+        <button class="btn btn-accent" type="button" id="btnNew">+ Nuevo producto</button>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Foto</th><th>Nombre</th><th>SKU</th><th>Código</th><th>Precio</th><th>Talles</th><th>Stock</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
+          <tbody id="prodRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Marcas -->
+    <section data-pane="marcas" hidden>
+      <p class="hint tab-intro">Las marcas aparecen arriba del catálogo y sirven de filtro. Al cargar un producto elegís su marca de la lista.</p>
+      <div class="brand-admin" id="brandAdmin"></div>
+    </section>
+
+    <!-- Configuración -->
+    <section data-pane="config" hidden>
+      <div class="cfg-grid">
+        <section class="panel">
+          <h2>Datos de la tienda</h2>
+          <form id="storeForm" class="stack">
+            <div class="fld">
+              <span>Logo de la tienda</span>
+              <div class="photo">
+                <img id="logoPreview" alt="" hidden>
+                <input type="file" id="logoInput" accept="image/jpeg,image/png,image/webp,image/gif">
+              </div>
+              <label class="check" id="logoRemoveWrap" hidden><input type="checkbox" id="logoRemove"> Quitar el logo</label>
+            </div>
+            <label class="fld"><span>Nombre de la tienda</span><input id="cName" required maxlength="80"></label>
+            <label class="fld"><span>Bajada / descripción corta</span><input id="cTag" maxlength="140"></label>
+            <label class="fld"><span>Dirección u horario (aparece al pie del catálogo)</span><input id="cAddr" maxlength="160" placeholder="Ej: Av. Principal 123 · Lun a Sáb 8 a 18 h"></label>
+            <label class="fld"><span>Número de WhatsApp (con código de país, sin +, ej: 595981234567)</span><input id="cWa" inputmode="numeric" maxlength="20"></label>
+            <div><button class="btn btn-accent" type="submit">Guardar cambios</button></div>
+          </form>
+        </section>
+
+        <section class="panel" id="credenciales">
+          <h2>Usuario y contraseña de administrador</h2>
+          <p class="hint">Para confirmar cualquier cambio necesitás tu contraseña actual. Si solo querés cambiar el usuario, dejá la contraseña nueva en blanco.</p>
+          <form id="credForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Usuario</span><input id="kUser" required pattern="[A-Za-z0-9._@\-]{3,40}" autocomplete="username"></label>
+            <label class="fld"><span>Nueva contraseña</span><input id="kPass" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres"></label>
+            <label class="fld"><span>Repetir nueva contraseña</span><input id="kPass2" type="password" autocomplete="new-password"></label>
+            <label class="fld"><span>Contraseña actual *</span><input id="kCur" type="password" required autocomplete="current-password"></label>
+            <div><button class="btn btn-accent" type="submit">Guardar usuario y contraseña</button></div>
+          </form>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Formulario de producto -->
+  <dialog id="productDialog" class="dlg" aria-labelledby="dlgTitle">
+    <form id="productForm" class="dlg-form">
+      <input type="hidden" id="f_id">
+      <div class="dlg-head">
+        <h2 id="dlgTitle">Nuevo producto</h2>
+        <button type="button" class="dlg-x" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="dlg-body">
+        <div class="grid-form">
+          <label class="fld span-2"><span>Nombre *</span><input id="f_name" required maxlength="120" placeholder="Ej: Zapatilla urbana Runner"></label>
+          <label class="fld"><span>Categoría *</span><input id="f_category" list="catList" required maxlength="60" placeholder="Zapatillas"></label>
+          <label class="fld"><span>Para quién</span>
+            <select id="f_gender">
+              <option value="">Sin especificar</option>
+              <option>Dama</option><option>Caballero</option><option>Unisex</option><option>Niños</option>
+            </select>
+          </label>
+          <label class="fld"><span>Marca</span>
+            <select id="f_brand"><option value="">Sin marca</option></select>
+            <small class="hint">¿Falta alguna? Agregala en la pestaña Marcas.</small>
+          </label>
+          <label class="fld"><span>Colores</span><input id="f_colors" maxlength="120" placeholder="Negro, blanco"></label>
+          <label class="fld"><span>SKU</span><input id="f_sku" maxlength="40"></label>
+          <label class="fld"><span>Código</span><input id="f_code" maxlength="40"></label>
+          <label class="fld"><span>Precio (Gs.) *</span><input id="f_price" inputmode="numeric" required placeholder="250000"></label>
+          <label class="fld"><span>Stock *</span><input id="f_stock" inputmode="numeric" placeholder="0"><small class="hint" id="stockHint"></small></label>
+        </div>
+
+        <fieldset class="block">
+          <legend>Talles y stock de cada talle</legend>
+          <p class="hint">Opcional. Si cargás talles, el stock total se calcula solo.</p>
+          <div class="quick">
+            <span>Cargar rápido:</span>
+            <button type="button" class="chip-btn" data-range="18-26">Bebés 18–26</button>
+            <button type="button" class="chip-btn" data-range="27-34">Niños 27–34</button>
+            <button type="button" class="chip-btn" data-range="35-40">Dama 35–40</button>
+            <button type="button" class="chip-btn" data-range="38-44">Caballero 38–44</button>
+          </div>
+          <div id="sizeRows" class="rows rows-sizes"></div>
+          <button type="button" class="btn btn-line" id="addSize">+ Agregar talle</button>
+        </fieldset>
+
+        <label class="fld"><span>Descripción corta</span><textarea id="f_desc" rows="2" maxlength="400" placeholder="Material, suela, uso recomendado…"></textarea></label>
+
+        <div class="fld">
+          <span>Foto del producto</span>
+          <div class="photo">
+            <img id="f_preview" alt="" hidden>
+            <input type="file" id="f_image" accept="image/jpeg,image/png,image/webp,image/gif">
+          </div>
+          <label class="check" id="removeWrap" hidden><input type="checkbox" id="f_remove"> Quitar la foto actual</label>
+        </div>
+
+        <fieldset class="block">
+          <legend>Cuotas disponibles</legend>
+          <p class="hint">Cargá la cantidad de cuotas y el monto de cada una. El interés se calcula comparando con el precio.</p>
+          <div id="instRows" class="rows"></div>
+          <button type="button" class="btn btn-line" id="addInst">+ Agregar cuota</button>
+        </fieldset>
+
+        <label class="check"><input type="checkbox" id="f_visible" checked> Producto visible en el catálogo</label>
+      </div>
+      <div class="dlg-foot">
+        <button type="button" class="btn btn-secondary" data-close>Cancelar</button>
+        <button type="submit" class="btn btn-accent" id="saveBtn">Guardar producto</button>
+      </div>
+    </form>
+  </dialog>
+  <datalist id="catList"></datalist>
+
+  <!-- Ventana de confirmación -->
+  <dialog id="confirmDlg" class="dlg dlg-sm" aria-labelledby="cTitle" aria-describedby="cText">
+    <div class="confirm-body">
+      <span class="confirm-ico" id="cIco"></span>
+      <h2 id="cTitle"></h2>
+      <p id="cText"></p>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn btn-secondary" id="cNo">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="cYes">Aceptar</button>
+    </div>
+  </dialog>
+</div>
+
+<script src="assets/comun.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

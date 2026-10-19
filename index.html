@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" type="image/svg+xml" href="assets/icono.svg">
+</head>
+<body class="catalog">
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="./" id="storeBrand">
+      <span class="logo logo-ph" id="storeLogo" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-name" id="storeName">Cargando…</span>
+        <span class="brand-tag" id="storeTag"></span>
+      </span>
+    </a>
+    <a class="btn btn-outline" href="admin.html">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+      Acceder
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="brand-strip" id="brandStrip" aria-label="Marcas" hidden></nav>
+
+  <form class="filters" id="filters" role="search">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="fQ" placeholder="Buscar por modelo, marca, SKU o código" aria-label="Buscar">
+    </label>
+    <select id="fCat" aria-label="Categoría"><option value="">Todas las categorías</option></select>
+    <select id="fGen" aria-label="Para quién"><option value="">Dama, caballero y niños</option></select>
+    <select id="fTalle" aria-label="Talle"><option value="">Todos los talles</option></select>
+    <select id="fOrden" aria-label="Ordenar">
+      <option value="recientes">Más recientes</option>
+      <option value="precio_asc">Menor precio</option>
+      <option value="precio_desc">Mayor precio</option>
+      <option value="nombre">Nombre A–Z</option>
+    </select>
+    <button class="btn btn-primary" type="submit">Filtrar</button>
+  </form>
+
+  <p class="count" id="count"></p>
+  <div id="results"></div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap" id="foot"></div>
+</footer>
+<script src="assets/comun.js"></script>
+<script src="assets/catalogo.js"></script>
+</body>
+</html>

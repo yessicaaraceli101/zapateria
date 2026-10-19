@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Activar panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" type="image/svg+xml" href="assets/icono.svg">
+</head>
+<body class="admin">
+<div class="login-page">
+  <main class="login-card">
+    <div class="login-brand">
+      <span class="logo logo-ph login-ico" id="ico" aria-hidden="true"></span>
+      <span class="login-name">Activar panel</span>
+    </div>
+    <p class="login-sub">Solo para quien instala el sistema. Se hace una vez, o cuando vence el token.</p>
+    <div id="msgs"></div>
+    <form id="f" class="stack">
+      <label class="fld"><span>Usuario actual del panel</span><input id="u" required autocomplete="username" placeholder="admin"></label>
+      <label class="fld"><span>Contraseña actual del panel</span><input id="p" type="password" required autocomplete="current-password"></label>
+      <hr class="sep">
+      <p class="hint">Elegí el usuario y la contraseña definitivos. Reemplazan a los de fábrica en el mismo paso.</p>
+      <label class="fld"><span>Nuevo usuario</span><input id="nu" required pattern="[A-Za-z0-9._@\-]{3,40}" autocomplete="off"></label>
+      <label class="fld"><span>Nueva contraseña (mínimo 8 caracteres)</span><input id="np" type="password" required minlength="8" autocomplete="new-password"></label>
+      <label class="fld"><span>Repetir nueva contraseña</span><input id="np2" type="password" required minlength="8" autocomplete="new-password"></label>
+      <hr class="sep">
+      <div class="grid-form">
+        <label class="fld"><span>Usuario de GitHub</span><input id="owner" required autocomplete="off"></label>
+        <label class="fld"><span>Repositorio</span><input id="repo" required autocomplete="off"></label>
+      </div>
+      <label class="fld"><span>Rama (vacía = la principal)</span><input id="branch" placeholder="main" autocomplete="off"></label>
+      <label class="fld"><span>Token de GitHub</span><input id="token" type="password" required autocomplete="off" placeholder="github_pat_…"></label>
+      <button class="btn btn-primary btn-block" type="submit" id="go">Activar</button>
+    </form>
+    <a class="login-back" href="admin.html">← Ir al panel</a>
+  </main>
+</div>
+<script src="assets/comun.js"></script>
+<script src="assets/conectar.js"></script>
+</body>
+</html>

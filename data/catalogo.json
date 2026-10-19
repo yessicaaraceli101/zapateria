@@ -1,0 +1,18 @@
+{
+  "store": {
+    "store_name": "Mi Zapatería",
+    "tagline": "Calzados para toda la familia",
+    "whatsapp": "",
+    "address": "",
+    "logo": ""
+  },
+  "brands": [
+    { "id": "beira-rio", "name": "Beira Rio", "logo": "img/marcas/beira-rio.png" },
+    { "id": "modare", "name": "Modare", "logo": "img/marcas/modare.png" },
+    { "id": "actvitta", "name": "Actvitta", "logo": "img/marcas/actvitta.png" },
+    { "id": "br-sport", "name": "BR Sport", "logo": "img/marcas/br-sport.png" },
+    { "id": "molekinha", "name": "Molekinha", "logo": "img/marcas/molekinha.png" },
+    { "id": "molekinho", "name": "Molekinho", "logo": "img/marcas/molekinho.png" }
+  ],
+  "products": []
+}
