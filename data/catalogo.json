@@ -48,7 +48,7 @@
       "sku": "12345",
       "code": "01234",
       "price": 150000,
-      "stock": 7,
+      "stock": 6,
       "sizes": [
         {
           "size": "35",
@@ -60,7 +60,7 @@
         },
         {
           "size": "37",
-          "stock": 4
+          "stock": 3
         },
         {
           "size": "38",
@@ -86,7 +86,7 @@
       "visible": true,
       "image": "img/productos/prod-mvf3r44r029dc261c171.jpg",
       "created_at": 1792405160,
-      "updated_at": 1792405160
+      "updated_at": 1792434803
     }
   ]
 }
