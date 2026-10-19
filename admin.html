@@ -104,6 +104,13 @@
         </div>
 
         <aside class="pos-side">
+          <div class="pos-doc">
+            <span class="pos-label">Comprobante</span>
+            <div class="seg seg-2" role="radiogroup" aria-label="Tipo de comprobante">
+              <button type="button" data-doc="ticket" class="on">Ticket</button>
+              <button type="button" data-doc="factura">Factura electrónica</button>
+            </div>
+          </div>
           <div class="pos-client">
             <span class="pos-label">Cliente</span>
             <button type="button" class="client-btn" id="clientBtn">Consumidor final</button>
@@ -117,6 +124,7 @@
                 <input id="cDoc" placeholder="RUC con DV (80012345-6)" autocomplete="off">
                 <input id="cName" placeholder="Nombre o razón social" autocomplete="off">
                 <input id="cMail" type="email" placeholder="Correo (opcional, para la factura)" autocomplete="off">
+                <input id="cTel" inputmode="tel" placeholder="Celular para WhatsApp (opcional)" autocomplete="off">
               </div>
               <button type="button" class="btn btn-secondary btn-sm" id="clientOk">Listo</button>
             </div>
@@ -378,8 +386,12 @@
       <div class="done-change" id="doneChangeBox"><span>Vuelto</span><strong id="doneChange"></strong></div>
     </div>
     <div class="dlg-foot">
-      <button type="button" class="btn btn-secondary" id="donePrint">Imprimir ticket</button>
-      <button type="button" class="btn btn-primary" id="doneNew">Nueva venta <kbd>Enter</kbd></button>
+      <div class="done-actions">
+        <button type="button" class="btn btn-secondary" id="donePrint">Imprimir</button>
+        <button type="button" class="btn btn-secondary" id="donePdf">Descargar PDF</button>
+        <button type="button" class="btn btn-wa-sm" id="doneWa">WhatsApp</button>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="doneNew">Nueva venta <kbd>Enter</kbd></button>
     </div>
   </dialog>
 

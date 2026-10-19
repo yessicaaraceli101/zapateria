@@ -14,8 +14,8 @@
   var AJ_PATH = 'data/privado/ajustes.json';
   var PAY = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia', qr: 'QR / billetera' };
   var P = { ajustes: null, months: {}, loading: null };
-  var cart = [], payMethod = 'efectivo';
-  var client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '' };
+  var cart = [], payMethod = 'efectivo', docType = 'ticket';
+  var client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '', tel: '' };
   var failedPaths = {}, failedMsg = '';
 
   /* ---------------- utilidades ---------------- */
@@ -452,6 +452,32 @@
     });
   });
 
+  /* Ticket o factura electrónica */
+  function fiscalReady() { var f = P.ajustes && P.ajustes.fiscal; return !!(f && f.ruc && f.timbrado); }
+  function setDoc(t) {
+    docType = t;
+    $$('[data-doc]').forEach(function (b) { b.classList.toggle('on', b.dataset.doc === t); });
+    $('#posCharge').firstChild.textContent = t === 'factura' ? 'Cobrar y facturar ' : 'Cobrar ';
+  }
+  $$('[data-doc]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.dataset.doc === 'factura') {
+        if (!fiscalReady()) { flash('error', 'Para emitir facturas cargá el RUC y el timbrado en Configuración → Datos para factura electrónica.'); focusQ(); return; }
+        setDoc('factura');
+        if (client.tipo === 'innominado') {
+          client.tipo = 'ruc';
+          $('#clientForm').hidden = false;
+          renderClient();
+          $('#cDoc').focus();
+          flash('ok', 'Cargá el RUC o la cédula del cliente para la factura.');
+        }
+      } else {
+        setDoc('ticket');
+        focusQ();
+      }
+    });
+  });
+
   /* Cliente */
   function renderClient() {
     var label = 'Consumidor final';
@@ -475,13 +501,14 @@
     });
   });
   function readClient() {
-    if (client.tipo === 'innominado') { client.doc = client.dv = client.nombre = client.email = ''; return; }
+    if (client.tipo === 'innominado') { client.doc = client.dv = client.nombre = client.email = ''; client.tel = $('#cTel').value.trim(); return; }
     var raw = $('#cDoc').value.trim().replace(/[.\s]/g, '');
     var m = raw.match(/^(\d+)-?(\d)?$/);
     if (client.tipo === 'ruc' && m && m[2] != null) { client.doc = m[1]; client.dv = m[2]; }
     else { client.doc = raw.replace(/-/g, ''); client.dv = ''; }
     client.nombre = $('#cName').value.trim();
     client.email = $('#cMail').value.trim();
+    client.tel = $('#cTel').value.trim();
   }
   $('#clientOk').addEventListener('click', function () {
     readClient();
@@ -489,15 +516,16 @@
     renderClient();
     focusQ();
   });
-  ['#cDoc', '#cName', '#cMail'].forEach(function (id) {
+  ['#cDoc', '#cName', '#cMail', '#cTel'].forEach(function (id) {
     $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('#clientOk').click(); } });
   });
 
   function resetSale() {
     cart = [];
     paidIn.value = '';
-    client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '' };
-    $('#cDoc').value = ''; $('#cName').value = ''; $('#cMail').value = '';
+    client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '', tel: '' };
+    $('#cDoc').value = ''; $('#cName').value = ''; $('#cMail').value = ''; $('#cTel').value = '';
+    setDoc('ticket');
     $('#tBank').value = ''; $('#tRef').value = ''; $('#tFrom').value = '';
     $('#clientForm').hidden = true;
     renderClient();
@@ -515,6 +543,10 @@
     if (client.tipo !== 'innominado' && !client.doc) { flash('error', 'Completá el documento del cliente o elegí "Sin nombre".'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
     if (client.tipo === 'ruc' && !client.dv) { flash('error', 'Escribí el RUC con su dígito verificador (ej.: 80012345-6).'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
 
+    if (docType === 'factura') {
+      if (!fiscalReady()) { flash('error', 'Faltan el RUC y el timbrado en Configuración → Datos para factura electrónica.'); return; }
+      if (client.tipo === 'innominado') { flash('error', 'La factura necesita el RUC o la cédula del cliente.'); client.tipo = 'ruc'; $('#clientForm').hidden = false; renderClient(); $('#cDoc').focus(); return; }
+    }
     var transfer = null;
     if (payMethod === 'transferencia') {
       transfer = { banco: $('#tBank').value.trim(), comprobante: $('#tRef').value.trim(), remitente: $('#tFrom').value.trim() };
@@ -540,13 +572,18 @@
         if (inCart(l.pid, l.talle) > availFor(p, l.talle)) throw new Error('No alcanza el stock de «' + l.name + '»' + (l.talle ? ' talle ' + l.talle : '') + '.');
       }
 
-      var aj = P.ajustes, f = aj.fiscal, n = Math.max(1, +aj.next || 1);
-      aj.next = n + 1;
-      var fiscal = !!(f.ruc && f.timbrado);
-      var numero = fiscal ? pad(f.est || '1', 3) + '-' + pad(f.pto || '1', 3) + '-' + pad(n, 7) : 'V-' + pad(n, 6);
+      var aj = P.ajustes, f = aj.fiscal, n, numero;
+      var fiscal = docType === 'factura';
+      if (fiscal) {
+        n = Math.max(1, +aj.next || 1); aj.next = n + 1;
+        numero = pad(f.est || '1', 3) + '-' + pad(f.pto || '1', 3) + '-' + pad(n, 7);
+      } else {
+        n = Math.max(1, +aj.nextTicket || 1); aj.nextTicket = n + 1;
+        numero = 'T-' + pad(n, 6);
+      }
       var sale = {
-        id: A.rid(), numero: numero, nro: n, fecha: new Date().toISOString(),
-        cliente: { tipo: client.tipo, doc: client.doc, dv: client.dv, nombre: client.nombre, email: client.email },
+        id: A.rid(), tipo: docType, numero: numero, nro: n, fecha: new Date().toISOString(),
+        cliente: { tipo: client.tipo, doc: client.doc, dv: client.dv, nombre: client.nombre, email: client.email, tel: client.tel },
         items: cart.map(function (l) {
           return { product_id: l.pid, codigo: l.code, descripcion: l.name + (l.talle ? ' T. ' + l.talle : ''), talle: l.talle,
                    cantidad: l.qty, precio: l.price, iva: l.iva, subtotal: l.qty * l.price };
@@ -556,7 +593,7 @@
                        : { forma: payMethod, monto: t.total }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.total : 0,
         estado: 'emitida', usuario: S.user,
         fiscal: fiscal ? { timbrado: f.timbrado, est: pad(f.est || '1', 3), pto: pad(f.pto || '1', 3) } : null,
-        sifen: { estado: 'pendiente', cdc: '' }
+        sifen: fiscal ? { estado: 'pendiente', cdc: '' } : null
       };
       applyStock(sale.items, -1);
       P.months[m].ventas.push(sale);
@@ -579,6 +616,9 @@
     $('#doneChangeBox').hidden = sale.pago.forma !== 'efectivo';
     $('#doneChange').textContent = money(sale.vuelto);
     $('#donePrint').onclick = function () { printTicket(sale); };
+    $('#donePdf').onclick = function () { downloadPdf(sale).catch(function (e) { flash('error', e.message); }); };
+    $('#doneWa').onclick = function () { sendWhatsApp(sale).catch(function (e) { flash('error', e.message); }); };
+    $('#doneTitle').textContent = isFactura(sale) ? 'Factura generada' : 'Venta registrada';
     function close() { if (d.open) d.close(); focusQ(); }
     $('#doneNew').onclick = close;
     d.oncancel = function (e) { e.preventDefault(); close(); };
@@ -678,7 +718,8 @@
     if (f.telefono) h += '<div class="c">Tel. ' + esc(f.telefono) + '</div>';
     if (sale.fiscal) h += '<div class="c">Timbrado N° ' + esc(sale.fiscal.timbrado) + (f.vigencia ? ' · desde ' + esc(fmtDate(f.vigencia + 'T12:00:00')) : '') + '</div>';
     h += '<div class="hr"></div>';
-    h += L('<span class="b">' + (sale.fiscal ? 'Comprobante' : 'Ticket') + '</span>', '<span class="b">' + esc(sale.numero) + '</span>');
+    h += '<div class="c b">' + (isFactura(sale) ? 'FACTURA ELECTRÓNICA' : 'TICKET') + '</div>';
+    h += L('<span class="b">N°</span>', '<span class="b">' + esc(sale.numero) + '</span>');
     h += L('Fecha', esc(fmtDate(sale.fecha, true)));
     var c = sale.cliente;
     h += L('Cliente', c.tipo === 'innominado' ? 'Consumidor final' : esc((c.nombre || '') + ' ' + (c.tipo === 'ruc' ? 'RUC ' : 'CI ') + c.doc + (c.dv ? '-' + c.dv : '')));
@@ -697,10 +738,144 @@
     if (sale.pago.forma === 'efectivo') { h += L('Recibido', money(sale.recibido)); h += L('Vuelto', money(sale.vuelto)); }
     if (sale.estado === 'anulada') h += '<div class="hr"></div><div class="c b">*** ANULADA ***</div>';
     h += '<div class="hr"></div><div class="c">¡Gracias por tu compra!</div>';
-    if (!(sale.sifen && sale.sifen.cdc)) h += '<div class="c" style="font-size:10px;margin-top:4px">Comprobante interno, no válido como factura.</div>';
+    if (!isFactura(sale)) h += '<div class="c" style="font-size:10px;margin-top:4px">Comprobante interno, no válido como factura.</div>';
+    else if (!(sale.sifen && sale.sifen.cdc)) h += '<div class="c" style="font-size:10px;margin-top:4px">Pendiente de aprobación en SIFEN.</div>';
     else h += '<div class="c" style="font-size:10px;margin-top:4px">CDC ' + esc(sale.sifen.cdc) + '</div>';
     return h + '</body></html>';
   }
+  function isFactura(sale) { return sale.tipo ? sale.tipo === 'factura' : !!sale.fiscal; }
+  function docName(sale) { return (isFactura(sale) ? 'factura-' : 'ticket-') + String(sale.numero).replace(/[^A-Za-z0-9-]/g, '') + '.pdf'; }
+
+  /* ---------------- PDF ---------------- */
+  var pdfLib = null;
+  function loadPdfLib() {
+    if (window.jspdf) return Promise.resolve(window.jspdf);
+    if (pdfLib) return pdfLib;
+    pdfLib = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.onload = function () { resolve(window.jspdf); };
+      s.onerror = function () { pdfLib = null; reject(new Error('No se pudo preparar el PDF. Revisá tu internet.')); };
+      document.head.appendChild(s);
+    });
+    return pdfLib;
+  }
+  async function makePdf(sale) {
+    var lib = await loadPdfLib();
+    var aj = P.ajustes || defaultAjustes(), f = aj.fiscal, st = S.data.store;
+    var W = +aj.ticket.ancho === 58 ? 58 : 80, M = 4, CW = W - M * 2;
+    var rows = [];   // { t, r, align, bold, size, hr }
+    var add = function (o) { rows.push(o); };
+    var c = function (t, o) { add(Object.assign({ t: t, align: 'center' }, o || {})); };
+    var lr = function (a, b, o) { add(Object.assign({ t: a, r: b }, o || {})); };
+    var hr = function () { add({ hr: true }); };
+    var plain = function (m) { return String(m).replace('Gs. ', ''); };
+    c(f.fantasia || st.store_name, { bold: true, size: 11 });
+    if (f.razon) c(f.razon);
+    if (f.ruc) c('RUC ' + f.ruc);
+    if (f.direccion || st.address) c(f.direccion || st.address);
+    if (f.telefono) c('Tel. ' + f.telefono);
+    if (sale.fiscal) c('Timbrado N° ' + sale.fiscal.timbrado + (f.vigencia ? ' · desde ' + fmtDate(f.vigencia + 'T12:00:00') : ''));
+    hr();
+    c(isFactura(sale) ? 'FACTURA ELECTRÓNICA' : 'TICKET', { bold: true });
+    lr('N°', sale.numero, { bold: true });
+    lr('Fecha', fmtDate(sale.fecha, true));
+    var cl = sale.cliente;
+    lr('Cliente', cl.tipo === 'innominado' ? 'Consumidor final' : (cl.nombre || ''));
+    if (cl.tipo !== 'innominado') lr(cl.tipo === 'ruc' ? 'RUC' : 'CI', cl.doc + (cl.dv ? '-' + cl.dv : ''));
+    hr();
+    sale.items.forEach(function (it) {
+      add({ t: it.descripcion });
+      lr(it.cantidad + ' x ' + plain(money(it.precio)), plain(money(it.subtotal)));
+    });
+    hr();
+    lr('TOTAL', money(sale.totales.total), { bold: true, size: 11 });
+    hr();
+    lr('Pago', PAY[sale.pago.forma] || sale.pago.forma);
+    if (sale.pago.banco) lr('Banco', sale.pago.banco);
+    if (sale.pago.comprobante) lr('Comprobante', sale.pago.comprobante);
+    if (sale.pago.remitente) lr('Envió', sale.pago.remitente);
+    if (sale.pago.forma === 'efectivo') { lr('Recibido', money(sale.recibido)); lr('Vuelto', money(sale.vuelto)); }
+    if (sale.estado === 'anulada') { hr(); c('*** ANULADA ***', { bold: true }); }
+    hr();
+    c('¡Gracias por tu compra!');
+    if (!isFactura(sale)) c('Comprobante interno, no válido como factura.', { size: 7 });
+    else if (!(sale.sifen && sale.sifen.cdc)) c('Pendiente de aprobación en SIFEN.', { size: 7 });
+    else c('CDC ' + sale.sifen.cdc, { size: 7 });
+
+    // Alto de la hoja según el contenido
+    var probe = new lib.jsPDF({ unit: 'mm', format: [W, 100] });
+    var lines = rows.map(function (o) {
+      if (o.hr) return { o: o, h: 3 };
+      probe.setFontSize(o.size || 9);
+      var avail = o.r != null ? CW * 0.55 : CW;
+      var parts = probe.splitTextToSize(String(o.t), avail);
+      return { o: o, parts: parts, h: parts.length * (o.size || 9) * 0.42 + 0.8 };
+    });
+    var H = M * 2 + lines.reduce(function (t, x) { return t + x.h; }, 0);
+    var doc = new lib.jsPDF({ unit: 'mm', format: [W, Math.max(H, 40)] });
+    var y = M;
+    lines.forEach(function (x) {
+      var o = x.o;
+      if (o.hr) {
+        doc.setLineDashPattern([0.8, 0.8], 0); doc.setLineWidth(0.2);
+        doc.line(M, y + 1.5, W - M, y + 1.5); y += 3; return;
+      }
+      var size = o.size || 9;
+      doc.setFont('helvetica', o.bold ? 'bold' : 'normal');
+      doc.setFontSize(size);
+      var lh = size * 0.42, yy = y + lh;
+      x.parts.forEach(function (part, i) {
+        if (o.align === 'center') doc.text(part, W / 2, yy + i * lh, { align: 'center' });
+        else doc.text(part, M, yy + i * lh);
+      });
+      if (o.r != null) doc.text(String(o.r), W - M, yy, { align: 'right' });
+      y += x.h;
+    });
+    return doc.output('blob');
+  }
+  async function downloadPdf(sale) {
+    var blob = await makePdf(sale);
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = docName(sale);
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+
+  /* ---------------- WhatsApp ---------------- */
+  function waNumber(tel) {
+    var d = String(tel || '').replace(/\D/g, '');
+    if (!d) return '';
+    if (d.indexOf('595') === 0) return d;
+    if (d.charAt(0) === '0') return '595' + d.slice(1);
+    if (d.length === 9 && d.charAt(0) === '9') return '595' + d;
+    return d;
+  }
+  function waText(sale) {
+    var st = S.data.store;
+    return '¡Hola' + (sale.cliente.nombre ? ' ' + sale.cliente.nombre : '') + '! Te enviamos tu ' +
+      (isFactura(sale) ? 'factura electrónica' : 'ticket') + ' N° ' + sale.numero + ' de ' + st.store_name +
+      '.\nTotal: ' + money(sale.totales.total) + '\n¡Gracias por tu compra!';
+  }
+  async function sendWhatsApp(sale) {
+    var blob = await makePdf(sale);
+    var file = new File([blob], docName(sale), { type: 'application/pdf' });
+    var mobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    // En el teléfono se comparte el PDF directo (se elige WhatsApp en la lista)
+    if (mobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], text: waText(sale) }); return; }
+      catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    // En la PC: se descarga el PDF y se abre WhatsApp con el mensaje para adjuntarlo
+    await downloadPdf(sale);
+    var n = waNumber(sale.cliente.tel);
+    window.open('https://wa.me/' + n + '?text=' + encodeURIComponent(waText(sale) + '\n(Te adjunto el comprobante en PDF)'), '_blank', 'noopener');
+    var note = 'Se descargó el PDF: adjuntalo en el chat de WhatsApp que se abrió.';
+    if ($('[data-pane="vender"]').hidden) A.showMsg('ok', note); else flash('ok', note);
+  }
+
   function printTicket(sale) {
     var ifr = document.createElement('iframe');
     ifr.setAttribute('aria-hidden', 'true');
@@ -743,14 +918,16 @@
       var c = v.cliente;
       var cli = c.tipo === 'innominado' ? 'Consumidor final' : (c.nombre || '') + ' · ' + (c.tipo === 'ruc' ? 'RUC ' : 'CI ') + c.doc + (c.dv ? '-' + c.dv : '');
       return '<tr class="' + (v.estado === 'anulada' ? 'is-void' : '') + '">' +
-        '<td class="nowrap"><strong>' + esc(v.numero) + '</strong></td>' +
+        '<td class="nowrap"><strong>' + esc(v.numero) + '</strong><span class="t-sub">' + (isFactura(v) ? 'Factura electrónica' : 'Ticket') + '</span></td>' +
         '<td class="nowrap">' + esc(fmtDate(v.fecha, true)) + '</td>' +
         '<td>' + esc(cli) + '<span class="t-sub">' + v.items.length + (v.items.length === 1 ? ' producto' : ' productos') + '</span></td>' +
         '<td>' + esc(PAY[v.pago.forma] || v.pago.forma) +
           (v.pago.banco ? '<span class="t-sub">' + esc(v.pago.banco + ' · N° ' + v.pago.comprobante + ' · ' + v.pago.remitente) + '</span>' : '') + '</td>' +
         '<td class="ta-r nowrap"><strong>' + money(v.totales.total) + '</strong></td>' +
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
-        '<td class="actions"><button type="button" class="btn btn-secondary btn-sm" data-ticket="' + esc(v.id) + '">Ticket</button>' +
+        '<td class="actions"><button type="button" class="btn btn-secondary btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
+        '<button type="button" class="btn btn-secondary btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
+        '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
         (v.estado !== 'anulada' ? '<button type="button" class="btn btn-secondary btn-sm btn-void" data-void="' + esc(v.id) + '">Anular</button>' : '') + '</td></tr>';
     }).join('');
   }
@@ -764,6 +941,8 @@
     var m = saleMonthIn.value || monthKey(), list = (P.months[m] || { ventas: [] }).ventas, b;
     var find = function (id) { return list.filter(function (v) { return v.id === id; })[0]; };
     if ((b = e.target.closest('[data-ticket]'))) { printTicket(find(b.dataset.ticket)); return; }
+    if ((b = e.target.closest('[data-pdf]'))) { downloadPdf(find(b.dataset.pdf)).catch(function (er) { A.showMsg('error', er.message); }); return; }
+    if ((b = e.target.closest('[data-wa]'))) { sendWhatsApp(find(b.dataset.wa)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-void]'))) {
       var v = find(b.dataset.void);
       A.ask({ title: '¿Anular la venta ' + v.numero + '?', text: 'Se devuelve el stock de los productos y la venta queda marcada como anulada. Total: ' + money(v.totales.total) + '.', ok: 'Sí, anular', danger: true })
@@ -800,7 +979,7 @@
     var m = saleMonthIn.value || monthKey();
     try { await loadMonth(m); } catch (e) { A.showMsg('error', e.message); return; }
     var f = P.ajustes.fiscal, rucParts = String(f.ruc || '').split('-');
-    var docs = P.months[m].ventas.filter(function (v) { return v.estado !== 'anulada'; }).map(function (v) {
+    var docs = P.months[m].ventas.filter(function (v) { return v.estado !== 'anulada' && isFactura(v); }).map(function (v) {
       var c = v.cliente;
       return {
         tipoDocumento: 1, tipoDocumentoDescripcion: 'Factura electrónica',
