@@ -4,8 +4,8 @@
   "repo": "zapateria",
   "branch": "main",
   "is_default": false,
-  "salt": "tUi98MlMfH9Pqn2MMmf2Uw==",
-  "iv": "d+1UuIPubYD8HK5F",
-  "ct": "gaZwqIwE6gcVaVF8Himup+8/5K914g81JSAYQNUR6/0utKOkSXQT5lOsfvKxhI2zS+TFU8Wv59W3vkm2o5oiTP5G+l2qGk15rXMCBAdmcOBmE1G/mKDV66J6ytaoY5Kjqcm/EzfhOIu+/0eymYhG229+8HH3ZpAcTA==",
+  "salt": "thtkMedjfkrPtDJ6i6lUDg==",
+  "iv": "tievO8Wza2qBkc4x",
+  "ct": "Wsvym0BuRtnjMiISdO9GRoxX0PdPQCGk54wIZIEiAh3gQAX17CKDoFdkfn9sET/Z+KB/xI/eVe5pm/6fNFP9kov3+rLmiOi2a8MlHRFoLtz83ebBUl+DkO6NWJtlQDZJZgtK+sY23NVoKUktGYV+M4Yo14kIswTULllB+saxDZXRzcHSJuWyuI9+1qmXUXpCbfehRpsT850WL4Jbua4ju3hlIZIgoyTYWfPPQwvbZOufLg==",
   "iterations": 310000
 }
