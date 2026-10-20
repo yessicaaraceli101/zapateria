@@ -50,48 +50,44 @@
       "category": "Sandalias",
       "gender": "Dama",
       "brand": "Beira Rio",
-      "sku": "12345",
-      "code": "01234",
-      "price": 150000,
-      "stock": 4,
+      "sku": "646",
+      "code": "716831",
+      "price": 170000,
+      "stock": 7,
       "sizes": [
         {
           "size": "35",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "36",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "37",
-          "stock": 3
+          "stock": 0
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "40",
-          "stock": 1
+          "stock": 0
         }
       ],
       "colors": "Negro",
       "description": "Para ocasión especial",
-      "installments": [
-        {
-          "n": 2,
-          "amount": 100000
-        }
-      ],
+      "installments": [],
       "visible": true,
-      "image": "img/productos/prod-mvf3r44r029dc261c171.jpg",
+      "iva": 10,
+      "image": "img/productos/prod-mvgoveu7a10b1e9bdebf.jpg",
       "created_at": 1792405160,
-      "updated_at": 1792437914
+      "updated_at": 1792501099
     },
     {
       "id": "11840bb2e881",
