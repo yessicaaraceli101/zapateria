@@ -53,11 +53,15 @@
       "sku": "",
       "code": "7900350933054",
       "price": 150000,
-      "stock": 14,
+      "stock": 7,
       "sizes": [
         {
+          "size": "17",
+          "stock": 1
+        },
+        {
           "size": "18",
-          "stock": 7
+          "stock": 1
         },
         {
           "size": "19",
@@ -65,7 +69,7 @@
         },
         {
           "size": "20",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "21",
@@ -73,15 +77,15 @@
         },
         {
           "size": "22",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "23",
-          "stock": 7
+          "stock": 0
         },
         {
           "size": "24",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "25",
@@ -99,7 +103,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793046678,
-      "updated_at": 1793047480
+      "updated_at": 1793047677
     },
     {
       "id": "7ff4b7964f93",
