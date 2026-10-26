@@ -90,26 +90,6 @@
       "updated_at": 1793023929
     },
     {
-      "id": "11840bb2e881",
-      "name": "Zapatillas",
-      "category": "Zapatillas",
-      "gender": "Dama",
-      "brand": "Modare",
-      "sku": "",
-      "code": "",
-      "price": 200000,
-      "stock": 7,
-      "sizes": [],
-      "colors": "Negro",
-      "description": "",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1792437580,
-      "updated_at": 1792441226
-    },
-    {
       "id": "cae3a71fb8b5",
       "name": "CHAMPION",
       "category": "Zapatos",
