@@ -45,51 +45,6 @@
   ],
   "products": [
     {
-      "id": "6f867ea56a5c",
-      "name": "Tacones",
-      "category": "Sandalias",
-      "gender": "Dama",
-      "brand": "Beira Rio",
-      "sku": "646",
-      "code": "7900350716831",
-      "price": 170000,
-      "stock": 7,
-      "sizes": [
-        {
-          "size": "35",
-          "stock": 2
-        },
-        {
-          "size": "36",
-          "stock": 2
-        },
-        {
-          "size": "37",
-          "stock": 0
-        },
-        {
-          "size": "38",
-          "stock": 2
-        },
-        {
-          "size": "39",
-          "stock": 1
-        },
-        {
-          "size": "40",
-          "stock": 0
-        }
-      ],
-      "colors": "Negro",
-      "description": "Para ocasión especial",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "img/productos/prod-mvgoveu7a10b1e9bdebf.jpg",
-      "created_at": 1792405160,
-      "updated_at": 1793046895
-    },
-    {
       "id": "cae3a71fb8b5",
       "name": "CHAMPION",
       "category": "Zapatos",
