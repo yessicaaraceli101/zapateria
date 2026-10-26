@@ -51,7 +51,7 @@
       "gender": "Dama",
       "brand": "Beira Rio",
       "sku": "646",
-      "code": "716831",
+      "code": "7900350716831",
       "price": 170000,
       "stock": 7,
       "sizes": [
@@ -87,7 +87,7 @@
       "iva": 10,
       "image": "img/productos/prod-mvgoveu7a10b1e9bdebf.jpg",
       "created_at": 1792405160,
-      "updated_at": 1793023929
+      "updated_at": 1793046895
     },
     {
       "id": "cae3a71fb8b5",
