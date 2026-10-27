@@ -1731,6 +1731,51 @@
       "image": "",
       "created_at": 1793121617,
       "updated_at": 1793121617
+    },
+    {
+      "id": "f7a63ea63f9a",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "HYL",
+      "sku": "",
+      "code": "",
+      "price": 70000,
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "VARIADOS",
+      "description": "E8023A COLORES VARIADOS ADULTO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793121982,
+      "updated_at": 1793121982
     }
   ]
 }
