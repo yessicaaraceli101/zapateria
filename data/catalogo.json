@@ -1170,6 +1170,55 @@
       "image": "",
       "created_at": 1793114140,
       "updated_at": 1793114140
+    },
+    {
+      "id": "2a1f7705f984",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407303946",
+      "price": 210000,
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "NAPA TURIM/NAPA SOFT MILANO-CHOCOLATE 1271/BLANCO OFF 526",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793114270,
+      "updated_at": 1793114270
     }
   ]
 }
