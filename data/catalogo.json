@@ -2180,7 +2180,7 @@
       "sku": "",
       "code": "",
       "price": 240000,
-      "stock": 1,
+      "stock": 3,
       "sizes": [
         {
           "size": "35",
@@ -2192,11 +2192,11 @@
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "39",
@@ -2208,13 +2208,13 @@
         }
       ],
       "colors": "BEIGE",
-      "description": "",
+      "description": "GRECIA/BEIGE/BEIGE",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793123703,
-      "updated_at": 1793123703
+      "updated_at": 1793123751
     }
   ]
 }
