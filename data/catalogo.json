@@ -925,6 +925,55 @@
       "image": "",
       "created_at": 1793112787,
       "updated_at": 1793112806
+    },
+    {
+      "id": "4d4a20ea4739",
+      "name": "ZAPATO CON TACO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407073221",
+      "price": 165000,
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "NAPA TURIM/NAPA TRAME GRECIA-CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793113125,
+      "updated_at": 1793113125
     }
   ]
 }
