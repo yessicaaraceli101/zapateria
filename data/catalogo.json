@@ -634,7 +634,7 @@
     },
     {
       "id": "46b1fd16e5e5",
-      "name": "RASTRERA CON ELASTICA",
+      "name": "RASTRERA CON ELASTICO",
       "category": "Zapatos",
       "gender": "Dama",
       "brand": "Beira Rio",
@@ -679,7 +679,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793111145,
-      "updated_at": 1793111145
+      "updated_at": 1793112191
     },
     {
       "id": "f095b82346cf",
