@@ -1072,6 +1072,55 @@
       "image": "",
       "created_at": 1793113513,
       "updated_at": 1793113513
+    },
+    {
+      "id": "b9fd08f993be",
+      "name": "SANDALIA CON TACO GRUESO",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900350716831",
+      "price": 170000,
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM/TIRA PRONTA XANGAI-NEGRO 01/NEGRO 01 HEMATITES",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793113903,
+      "updated_at": 1793113903
     }
   ]
 }
