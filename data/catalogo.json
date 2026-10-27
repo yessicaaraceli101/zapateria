@@ -251,6 +251,55 @@
       "image": "",
       "created_at": 1793108380,
       "updated_at": 1793108380
+    },
+    {
+      "id": "787ffa26f13f",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407301850",
+      "price": 110000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "NAPA TRESSE-TORONTO CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793108562,
+      "updated_at": 1793108562
     }
   ]
 }
