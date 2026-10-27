@@ -2568,19 +2568,23 @@
       "sku": "",
       "code": "7900407425020",
       "price": 160000,
-      "stock": 0,
+      "stock": 6,
       "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
         {
           "size": "35",
           "stock": 0
         },
         {
           "size": "36",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3
         },
         {
           "size": "38",
@@ -2592,17 +2596,17 @@
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 1
         }
       ],
       "colors": "AVELLANA",
-      "description": "",
+      "description": "NAPA FLOATHER NATURE/BRILHO ITALIA-AVELLANA 1248",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793125583,
-      "updated_at": 1793125583
+      "updated_at": 1793126410
     }
   ]
 }
