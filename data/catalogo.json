@@ -1219,6 +1219,55 @@
       "image": "",
       "created_at": 1793114270,
       "updated_at": 1793114270
+    },
+    {
+      "id": "bfb2e1b3f84e",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407304189",
+      "price": 210000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 2
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "BLANCO OFF BEIGE",
+      "description": "NYLON FREE SPORT/NAPA TURIM-BRANCO OFF 526BEGE 435-SOLARE 1468",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793114523,
+      "updated_at": 1793114523
     }
   ]
 }
