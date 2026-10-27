@@ -582,6 +582,55 @@
       "image": "",
       "created_at": 1793110372,
       "updated_at": 1793110372
+    },
+    {
+      "id": "b087e39a9157",
+      "name": "RASTRERA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407116041",
+      "price": 115000,
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "NAPA TURIM-CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793110577,
+      "updated_at": 1793110577
     }
   ]
 }
