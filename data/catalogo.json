@@ -443,6 +443,55 @@
       "image": "",
       "created_at": 1793109523,
       "updated_at": 1793109523
+    },
+    {
+      "id": "c0a1c961f974",
+      "name": "RASTRERA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900294403712",
+      "price": 115000,
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA TURIM-BLANCO OFF 526",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793109830,
+      "updated_at": 1793109830
     }
   ]
 }
