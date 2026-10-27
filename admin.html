@@ -56,10 +56,12 @@
     <div id="banners"></div>
     <div id="msgs" aria-live="polite"></div>
     <nav class="tabs" role="tablist">
+      <a href="#caja" data-tab="caja">Caja</a>
       <a href="#vender" data-tab="vender">Vender</a>
       <a href="#productos" data-tab="productos">Productos</a>
       <a href="#ventas" data-tab="ventas">Ventas</a>
       <a href="#compras" data-tab="compras">Compras</a>
+      <a href="#reportes" data-tab="reportes">Reportes</a>
       <a href="#marcas" data-tab="marcas">Marcas</a>
       <a href="#config" data-tab="config">Configuración</a>
     </nav>
@@ -83,7 +85,11 @@
 
 
     <!-- Vender -->
+    <!-- Caja y Reportes: el contenido está en caja.html (lo carga assets/caja.js) -->
+    <div id="cajaMount"></div>
+
     <section data-pane="vender" hidden>
+      <div id="cajaWarn"></div>
       <div class="pos">
         <div class="pos-main">
           <div class="pos-search">
@@ -166,7 +172,7 @@
       <div class="hist-head">
         <label class="fld fld-inline"><span>Mes</span><input type="month" id="saleMonth"></label>
         <div class="hist-actions">
-          <button type="button" class="btn btn-secondary" id="expCsv">Descargar planilla (CSV)</button>
+          <button type="button" class="btn btn-pdf" id="expCsv">Descargar PDF</button>
           <button type="button" class="btn btn-secondary" id="expSifen">Exportar para factura electrónica</button>
         </div>
       </div>
@@ -176,6 +182,10 @@
           <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Pago</th><th class="ta-r">Total</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
           <tbody id="saleRows"></tbody>
         </table>
+      </div>
+      <div class="list-foot">
+        <label class="check check-sm"><input type="checkbox" id="saleShowVoid"> Mostrar anuladas</label>
+        <div class="pager" id="salePager"></div>
       </div>
     </section>
 
@@ -190,6 +200,7 @@
           <label class="fld"><span>N° de factura</span><input id="bFac" maxlength="20" placeholder="001-001-0000123" autocomplete="off"></label>
           <label class="fld"><span>Fecha</span><input id="bDate" type="date"></label>
           <label class="fld"><span>Condición</span><select id="bCond"><option value="contado">Contado</option><option value="credito">Crédito</option></select></label>
+          <label class="fld" id="bPagoW"><span>Pagado con</span><select id="bPago"><option value="efectivo">Efectivo (sale de la caja)</option><option value="transferencia">Transferencia</option></select></label>
         </div>
         <div class="pos-search buy-search">
           <label class="scan">
@@ -220,6 +231,10 @@
             <thead><tr><th>Fecha</th><th>Proveedor</th><th>Factura</th><th>Productos</th><th class="ta-r">Total</th><th>Estado</th><th class="ta-r">Acciones</th></tr></thead>
             <tbody id="buyHist"></tbody>
           </table>
+        </div>
+        <div class="list-foot">
+          <label class="check check-sm"><input type="checkbox" id="buyShowVoid"> Mostrar anuladas</label>
+          <div class="pager" id="buyPager"></div>
         </div>
       </section>
     </section>
@@ -277,6 +292,21 @@
           </form>
         </section>
 
+        <section class="panel" id="factuflex">
+          <h2>Factura electrónica (FactuFlex)</h2>
+          <p class="hint">Con esto, cada factura se envía al SIFEN al cobrar y vuelve con su CDC. El PDF que se manda al cliente es el KuDE oficial. Estos datos se guardan cifrados.</p>
+          <form id="ffForm" class="stack" autocomplete="off">
+            <label class="fld"><span>Dirección de la API</span><input id="ffUrl" maxlength="200"></label>
+            <label class="fld"><span>Usuario de FactuFlex (correo)</span><input id="ffUser" maxlength="120" autocomplete="off"></label>
+            <label class="fld"><span>Contraseña de FactuFlex</span><input id="ffPass" type="password" maxlength="120" autocomplete="new-password"></label>
+            <label class="check"><input type="checkbox" id="ffOn"> Emitir facturas electrónicas por FactuFlex al cobrar</label>
+            <div class="btn-row">
+              <button class="btn btn-accent" type="submit">Guardar</button>
+              <button class="btn btn-secondary" type="button" id="ffTest">Probar conexión</button>
+            </div>
+          </form>
+        </section>
+
         <section class="panel" id="correoAuto">
           <h2>Envío automático por correo</h2>
           <p class="hint">Al cobrar, la factura se envía sola en PDF al correo del cliente. Usa el servicio EmailJS (plan gratis: 200 correos por mes). Estos datos se guardan cifrados.</p>
@@ -292,6 +322,16 @@
               <button class="btn btn-secondary" type="button" id="mTestBtn">Enviar correo de prueba</button>
             </div>
           </form>
+        </section>
+
+        <section class="panel panel-danger" id="resetDatos">
+          <h2>Empezar con datos reales</h2>
+          <p class="hint">Borra las ventas, compras, aperturas y cierres de caja que hiciste de prueba, y vuelve a 1 la numeración de tickets y facturas. Los productos, precios, marcas, fotos y la configuración <strong>no se tocan</strong>.</p>
+          <div class="stack">
+            <label class="check"><input type="checkbox" id="rsStock"> Poner también en 0 el stock de todos los productos (para cargarlo de nuevo con Compras)</label>
+            <label class="fld"><span>Para confirmar, escribí BORRAR</span><input id="rsConfirm" autocomplete="off" placeholder="BORRAR"></label>
+            <div><button class="btn btn-danger" type="button" id="rsBtn">Borrar datos de prueba</button></div>
+          </div>
         </section>
 
         <section class="panel" id="credenciales">
@@ -401,6 +441,7 @@
       <h2 id="doneTitle">Venta registrada</h2>
       <p id="doneNum"></p>
       <div class="done-change" id="doneChangeBox"><span>Vuelto</span><strong id="doneChange"></strong></div>
+      <p class="done-mail" id="doneSifenState" hidden></p>
       <p class="done-mail" id="doneMailState" hidden></p>
     </div>
     <div class="dlg-foot">
@@ -441,5 +482,6 @@
 <script src="assets/comun.js"></script>
 <script src="assets/admin.js"></script>
 <script src="assets/ventas.js"></script>
+<script src="assets/caja.js"></script>
 </body>
 </html>

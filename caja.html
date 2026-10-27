@@ -1,0 +1,106 @@
+<!-- Caja y Reportes del panel. Lo carga assets/caja.js dentro de admin.html: no se abre solo. -->
+<!-- ================= CAJA ================= -->
+<section data-pane="caja" hidden>
+  <div id="cajaBox"><p class="hint">Cargando…</p></div>
+
+  <section class="panel cj-report">
+    <div class="cj-rep-head">
+      <div>
+        <h2>Reporte diario de caja</h2>
+        <p class="hint"><span class="is-in">Ingreso</span>: ventas cobradas · <span class="is-out">Egreso</span>: compras pagadas.</p>
+      </div>
+      <div class="hist-actions">
+        <button type="button" class="btn btn-pdf" id="cjDiarioPdf">Descargar PDF</button>
+        <button type="button" class="btn btn-print" id="cjDiarioPrint">Imprimir</button>
+      </div>
+    </div>
+    <div class="cj-search">
+      <div class="cj-quick" role="group" aria-label="Período rápido">
+        <button type="button" data-crange="hoy">Hoy</button>
+        <button type="button" data-crange="7d">Últimos 7 días</button>
+        <button type="button" data-crange="mes">Este mes</button>
+        <button type="button" data-crange="mesant">Mes anterior</button>
+      </div>
+      <label class="fld"><span>Desde</span><input type="date" id="cjDesde"></label>
+      <label class="fld"><span>Hasta</span><input type="date" id="cjHasta"></label>
+      <button type="button" class="btn btn-primary" id="cjBuscar">Buscar</button>
+    </div>
+
+    <div id="cjSummary"></div>
+
+    <div class="cj-charts">
+      <div class="ch-box">
+        <div class="ch-head">
+          <h3>Ingreso y egreso por día</h3>
+          <span class="ch-legend"><i class="ch-in"></i> Ingreso <i class="ch-out"></i> Egreso <i class="ch-wk"></i> Fin de semana</span>
+        </div>
+        <div class="ch-scroll"><div class="ch-days" id="cjChartDays"></div></div>
+        <p class="hint" id="cjChartMax"></p>
+      </div>
+      <div class="ch-box">
+        <div class="ch-head"><h3>Promedio por día de la semana</h3></div>
+        <div class="wk-list" id="cjChartWeek"></div>
+        <p class="hint">Verde: ingreso promedio de ese día · Rojo: egreso promedio.</p>
+      </div>
+    </div>
+
+    <div class="dia-tables">
+      <div class="dia-box">
+        <h3 class="dia-title"><span class="dia-ico is-ef"></span>Caja Efectivo</h3>
+        <div class="table-wrap">
+          <table class="tbl tbl-dia">
+            <thead><tr><th>Fecha</th><th class="ta-r">Ingreso</th><th class="ta-r">Egreso</th><th class="ta-r">Saldo</th></tr></thead>
+            <tbody id="cjDiaEf"></tbody>
+            <tfoot id="cjDiaEfFoot"></tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="dia-box">
+        <h3 class="dia-title"><span class="dia-ico is-tr"></span>Caja Transferencia</h3>
+        <div class="table-wrap">
+          <table class="tbl tbl-dia">
+            <thead><tr><th>Fecha</th><th class="ta-r">Ingreso</th><th class="ta-r">Egreso</th><th class="ta-r">Saldo</th></tr></thead>
+            <tbody id="cjDiaTr"></tbody>
+            <tfoot id="cjDiaTrFoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="dia-grand" id="cjGrand"></div>
+    <div class="list-foot"><span class="hint">Los sábados y domingos aparecen marcados.</span><div class="pager" id="cjPager"></div></div>
+  </section>
+
+  <section class="panel">
+    <div class="hist-head"><h2>Cierres de caja</h2></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Caja</th><th>Apertura</th><th>Cierre</th><th>Usuario</th><th class="ta-r">Cobrado</th><th class="ta-r">Egresos</th><th class="ta-r">Saldo al cerrar</th><th class="ta-r">Acciones</th></tr></thead>
+        <tbody id="cajaHist"></tbody>
+      </table>
+    </div>
+    <div class="list-foot"><span></span><div class="pager" id="cajaPager"></div></div>
+  </section>
+</section>
+
+<!-- ================= REPORTES ================= -->
+<section data-pane="reportes" hidden>
+  <div class="rep-head">
+    <label class="fld"><span>Período</span>
+      <select id="repPeriod">
+        <option value="hoy">Hoy</option>
+        <option value="ayer">Ayer</option>
+        <option value="7d">Últimos 7 días</option>
+        <option value="mes" selected>Este mes</option>
+        <option value="mesant">Mes anterior</option>
+        <option value="custom">Elegir fechas</option>
+      </select>
+    </label>
+    <label class="fld" id="repFromW" hidden><span>Desde</span><input type="date" id="repFrom"></label>
+    <label class="fld" id="repToW" hidden><span>Hasta</span><input type="date" id="repTo"></label>
+    <div class="rep-actions">
+      <button type="button" class="btn btn-pdf" id="repPdf">Descargar PDF</button>
+      <button type="button" class="btn btn-print" id="repPrint">Imprimir</button>
+    </div>
+  </div>
+  <div id="repBody"><p class="hint">Cargando…</p></div>
+</section>

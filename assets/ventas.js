@@ -13,6 +13,7 @@
 
   var TRASH_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
   var AJ_PATH = 'data/privado/ajustes.json';
+  var CAJA_PATH = 'data/privado/cajas.json';
   var PAY = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia', qr: 'QR / billetera' };
   var P = { ajustes: null, months: {}, loading: null };
   var cart = [], payMethod = 'efectivo', docType = 'ticket';
@@ -34,7 +35,8 @@
       fiscal: { ruc: '', razon: '', fantasia: '', direccion: '', telefono: '', actividad: '', timbrado: '', vigencia: '', est: '001', pto: '001' },
       next: 1,
       ticket: { auto: false, ancho: 80 },
-      correo: { service: '', template: '', key: '', auto: true, tickets: false }
+      correo: { service: '', template: '', key: '', auto: true, tickets: false },
+      factuflex: { activo: false, url: 'https://login.flexpdv.app:8444/FactuFlex/api', usuario: '', clave: '' }
     };
   }
   function products() { return S.data ? S.data.products : []; }
@@ -75,6 +77,7 @@
 
   /* ---------------- datos privados (cifrados) ---------------- */
   A.fileSources[AJ_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.ajustes)) + '\n'; };
+  A.fileSources[CAJA_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.caja)) + '\n'; };
   function ensureMonthSource(m) {
     var path = monthPath(m);
     if (!A.fileSources[path]) {
@@ -106,17 +109,21 @@
     if (P.loading) return P.loading;
     var m = monthKey();
     P.loading = (async function () {
-      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m))]);
+      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m)), readPrivate(CAJA_PATH)]);
       var d = defaultAjustes(), aj = res[0] || {};
       P.ajustes = Object.assign(d, aj, {
         fiscal: Object.assign(d.fiscal, aj.fiscal || {}),
         ticket: Object.assign(d.ticket, aj.ticket || {}),
-        correo: Object.assign(d.correo, aj.correo || {})
+        correo: Object.assign(d.correo, aj.correo || {}),
+        factuflex: Object.assign(d.factuflex, aj.factuflex || {})
       });
       P.months[m] = res[1] || { ventas: [], compras: [] };
+      P.caja = Object.assign({ abierta: null, cierres: [] }, res[2] || {});
       ensureMonthSource(m);
+      if (A.V && A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
       fillFiscalForm();
       fillMailForm();
+      fillFfForm();
       return true;
     })();
     P.loading.catch(function () { P.loading = null; });
@@ -456,8 +463,16 @@
     });
   });
 
+  /* Dígito verificador del RUC paraguayo (módulo 11) */
+  function rucDv(num) {
+    var d = String(num).replace(/\D/g, ''), total = 0, k = 2;
+    for (var i = d.length - 1; i >= 0; i--) { total += +d.charAt(i) * k; k = k < 11 ? k + 1 : 2; }
+    var r = total % 11;
+    return r > 1 ? 11 - r : 0;
+  }
+
   /* Ticket o factura electrónica */
-  function fiscalReady() { var f = P.ajustes && P.ajustes.fiscal; return !!(f && f.ruc && f.timbrado); }
+  function fiscalReady() { var f = P.ajustes && P.ajustes.fiscal; return ffReady() || !!(f && f.ruc && f.timbrado); }
   function setDoc(t) {
     docType = t;
     $$('[data-doc]').forEach(function (b) { b.classList.toggle('on', b.dataset.doc === t); });
@@ -546,6 +561,10 @@
     if (!$('#clientForm').hidden) readClient();
     if (client.tipo !== 'innominado' && !client.doc) { flash('error', 'Completá el documento del cliente o elegí "Sin nombre".'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
     if (client.tipo === 'ruc' && !client.dv) { flash('error', 'Escribí el RUC con su dígito verificador (ej.: 80012345-6).'); $('#clientForm').hidden = false; $('#cDoc').focus(); return; }
+    if (client.tipo === 'ruc' && rucDv(client.doc) !== +client.dv) {
+      flash('error', 'El RUC ' + client.doc + '-' + client.dv + ' no es válido: el dígito verificador debería ser ' + rucDv(client.doc) + '. Revisalo.');
+      $('#clientForm').hidden = false; $('#cDoc').focus(); return;
+    }
 
     if (docType === 'factura') {
       if (!fiscalReady()) { flash('error', 'Faltan el RUC y el timbrado en Configuración → Datos para factura electrónica.'); return; }
@@ -557,6 +576,13 @@
       if (!transfer.banco) { flash('error', 'Escribí el banco de la transferencia.'); $('#tBank').focus(); return; }
       if (!transfer.comprobante) { flash('error', 'Escribí el número de comprobante.'); $('#tRef').focus(); return; }
       if (!transfer.remitente) { flash('error', 'Escribí el nombre de quien envió la transferencia.'); $('#tFrom').focus(); return; }
+    }
+    try { await loadPrivate(); } catch (e) { flash('error', e.message); return; }
+    var cajaId = A.V.hooks.cajaFor ? A.V.hooks.cajaFor(payMethod) : null;
+    if (!cajaId) {
+      flash('error', 'La caja de ' + (payMethod === 'transferencia' ? 'transferencias' : 'efectivo') + ' está cerrada. Abrila en la pestaña Caja para poder cobrar.');
+      if (A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
+      return;
     }
     var t = totals(cart);
     var paid = payMethod === 'efectivo' ? (num(paidIn.value) || t.total) : t.total;
@@ -595,7 +621,7 @@
         totales: t, condicion: 'contado',
         pago: transfer ? { forma: payMethod, monto: t.total, banco: transfer.banco, comprobante: transfer.comprobante, remitente: transfer.remitente }
                        : { forma: payMethod, monto: t.total }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.total : 0,
-        estado: 'emitida', usuario: S.user,
+        estado: 'emitida', usuario: S.user, caja: cajaId,
         fiscal: fiscal ? { timbrado: f.timbrado, est: pad(f.est || '1', 3), pto: pad(f.pto || '1', 3) } : null,
         sifen: fiscal ? { estado: 'pendiente', cdc: '' } : null
       };
@@ -604,8 +630,8 @@
       A.renderAll();
       resetSale();
       showDone(sale);
-      autoEmail(sale);
       save([A.DATA_PATH, AJ_PATH, monthPath(m)], 'Venta ' + numero + ' · ' + money(t.total));
+      if (fiscal && ffReady()) sifenAfterSale(sale); else autoEmail(sale);
     } catch (e) {
       flash('error', e.message || String(e));
     } finally {
@@ -617,6 +643,8 @@
 
   function showDone(sale) {
     var d = $('#doneDlg');
+    $('#doneSifenState').hidden = true;
+    $('#doneMailState').hidden = true;
     $('#doneNum').textContent = 'N° ' + sale.numero + ' · Total ' + money(sale.totales.total) + ' · ' + PAY[sale.pago.forma];
     $('#doneChangeBox').hidden = sale.pago.forma !== 'efectivo';
     $('#doneChange').textContent = money(sale.vuelto);
@@ -841,7 +869,7 @@
     return doc.output('blob');
   }
   async function downloadPdf(sale) {
-    var blob = await makePdf(sale);
+    var blob = await docPdf(sale);
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = docName(sale);
@@ -923,7 +951,7 @@
   /* Envía el comprobante en PDF por EmailJS y lo deja anotado en la venta */
   async function emailSale(sale, to) {
     var mc = mailContent(sale);
-    var pdf = await blobToDataURL(await makePdf(sale));
+    var pdf = await blobToDataURL(await docPdf(sale));
     await emailjsSend({ to_email: to, to_name: sale.cliente.nombre || 'Cliente', subject: mc.subject, message: mc.body,
                         store_name: S.data.store.store_name, pdf: pdf, pdf_name: docName(sale) });
     sale.correo = { enviado: new Date().toISOString(), a: to };
@@ -993,13 +1021,41 @@
      ================================================================= */
   var saleMonthIn = $('#saleMonth');
   saleMonthIn.value = monthKey();
+  /* ---------------- paginación ---------------- */
+  var PAGE_SIZE = 10, pages = { ventas: 1, compras: 1, caja: 1, diario: 1 };
+  function paginate(list, key) {
+    var max = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    if (pages[key] > max) pages[key] = max;
+    if (pages[key] < 1) pages[key] = 1;
+    var from = (pages[key] - 1) * PAGE_SIZE;
+    return { items: list.slice(from, from + PAGE_SIZE), from: from, total: list.length, page: pages[key], max: max };
+  }
+  function renderPager(el, key, pg, rerender) {
+    if (pg.total <= PAGE_SIZE) { el.innerHTML = pg.total ? '<span class="pager-info">' + pg.total + (pg.total === 1 ? ' registro' : ' registros') + '</span>' : ''; return; }
+    var nums = '', start = Math.max(1, Math.min(pg.page - 2, pg.max - 4)), end = Math.min(pg.max, start + 4);
+    for (var i = start; i <= end; i++) {
+      nums += '<button type="button" class="pg-num' + (i === pg.page ? ' on' : '') + '" data-pg="' + i + '"' + (i === pg.page ? ' aria-current="page"' : '') + '>' + i + '</button>';
+    }
+    el.innerHTML = '<span class="pager-info">' + (pg.from + 1) + '–' + (pg.from + pg.items.length) + ' de ' + pg.total + '</span>' +
+      '<div class="pager-btns">' +
+      '<button type="button" class="pg-nav" data-pg="' + (pg.page - 1) + '"' + (pg.page === 1 ? ' disabled' : '') + ' aria-label="Página anterior">‹</button>' + nums +
+      '<button type="button" class="pg-nav" data-pg="' + (pg.page + 1) + '"' + (pg.page === pg.max ? ' disabled' : '') + ' aria-label="Página siguiente">›</button></div>';
+    el.onclick = function (e) {
+      var b = e.target.closest('[data-pg]');
+      if (!b || b.disabled) return;
+      pages[key] = +b.dataset.pg;
+      rerender();
+    };
+  }
+
   async function renderVentas() {
     var m = saleMonthIn.value || monthKey(), body = $('#saleRows');
     if (!A.connected()) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">' + esc(A.NEED_CONN) + '</td></tr>'; $('#saleKpis').innerHTML = ''; return; }
     if (!P.months[m]) body.innerHTML = '<tr><td colspan="7" class="tbl-empty">Cargando…</td></tr>';
     var data;
     try { data = await loadMonth(m); } catch (e) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">' + esc(e.message) + '</td></tr>'; return; }
-    var ventas = data.ventas.slice().reverse();
+    var showVoid = $('#saleShowVoid').checked;
+    var ventas = data.ventas.slice().reverse().filter(function (v) { return showVoid || v.estado !== 'anulada'; });
     var ok = data.ventas.filter(function (v) { return v.estado !== 'anulada'; });
     var today = todayISO();
     var hoy = ok.filter(function (v) { return fmtISODate(v.fecha) === today; });
@@ -1011,12 +1067,15 @@
     k += kpi('Total del mes', money(sum(ok)), ok.length + (ok.length === 1 ? ' venta' : ' ventas'));
     Object.keys(byPay).forEach(function (f) { k += kpi(PAY[f] || f, money(byPay[f]), 'en el mes'); });
     $('#saleKpis').innerHTML = k;
+    var pg = paginate(ventas, 'ventas');
+    renderPager($('#salePager'), 'ventas', pg, renderVentas);
     if (!ventas.length) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">No hay ventas en este mes.</td></tr>'; return; }
-    body.innerHTML = ventas.map(function (v) {
+    body.innerHTML = pg.items.map(function (v) {
       var c = v.cliente;
       var cli = c.tipo === 'innominado' ? 'Consumidor final' : (c.nombre || '') + ' · ' + (c.tipo === 'ruc' ? 'RUC ' : 'CI ') + c.doc + (c.dv ? '-' + c.dv : '');
       return '<tr class="' + (v.estado === 'anulada' ? 'is-void' : '') + '">' +
-        '<td class="nowrap"><strong>' + esc(v.numero) + '</strong><span class="t-sub">' + (isFactura(v) ? 'Factura electrónica' : 'Ticket') + '</span></td>' +
+        '<td class="nowrap"><strong>' + esc(v.numero) + '</strong><span class="t-sub">' + (isFactura(v) ? 'Factura electrónica' : 'Ticket') + '</span>' +
+          (isFactura(v) ? sifenBadge(v) : '') + '</td>' +
         '<td class="nowrap">' + esc(fmtDate(v.fecha, true)) + '</td>' +
         '<td>' + esc(cli) + '<span class="t-sub">' + v.items.length + (v.items.length === 1 ? ' producto' : ' productos') +
           (v.correo ? ' · enviado a ' + esc(v.correo.a) : '') + '</span></td>' +
@@ -1028,6 +1087,8 @@
         '<button type="button" class="btn btn-pdf btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
         '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
         '<button type="button" class="btn btn-mail btn-sm" data-mail="' + esc(v.id) + '">Correo</button>' +
+        (isFactura(v) && ffReady() && v.estado !== 'anulada' && !(v.sifen && v.sifen.cdc) ? '<button type="button" class="btn btn-accent btn-sm" data-sifen="' + esc(v.id) + '">Enviar al SIFEN</button>' : '') +
+        (isFactura(v) && ffReady() && v.sifen && v.sifen.cdc ? '<button type="button" class="btn btn-secondary btn-sm" data-sstate="' + esc(v.id) + '">Estado</button>' : '') +
         (v.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-void="' + esc(v.id) + '" title="Anular venta" aria-label="Anular venta ' + esc(v.numero) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
@@ -1035,7 +1096,8 @@
   function kpi(label, value, sub) {
     return '<div class="kpi"><span>' + esc(label) + '</span><strong>' + esc(value) + '</strong><small>' + esc(sub) + '</small></div>';
   }
-  saleMonthIn.addEventListener('change', renderVentas);
+  saleMonthIn.addEventListener('change', function () { pages.ventas = 1; renderVentas(); });
+  $('#saleShowVoid').addEventListener('change', function () { pages.ventas = 1; renderVentas(); });
 
   $('#saleRows').addEventListener('click', function (e) {
     var m = saleMonthIn.value || monthKey(), list = (P.months[m] || { ventas: [] }).ventas, b;
@@ -1044,11 +1106,33 @@
     if ((b = e.target.closest('[data-pdf]'))) { downloadPdf(find(b.dataset.pdf)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-mail]'))) { sendEmail(find(b.dataset.mail)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-wa]'))) { sendWhatsApp(find(b.dataset.wa)).catch(function (er) { A.showMsg('error', er.message); }); return; }
+    if ((b = e.target.closest('[data-sifen]'))) {
+      var sv = find(b.dataset.sifen), sb = b;
+      sb.disabled = true; sb.textContent = 'Enviando…';
+      ffEmit(sv).then(function () {
+        A.showMsg('ok', 'Factura ' + sv.numero + ' enviada al SIFEN. CDC ' + sv.sifen.cdc);
+        if (sv.cliente.email && mailReady() && mailCfg().auto) emailSale(sv, sv.cliente.email).catch(function () {});
+      }, function (er) { A.showMsg('error', er.message); }).then(function () { saveSale(sv, 'SIFEN · ' + sv.numero); renderVentas(); });
+      return;
+    }
+    if ((b = e.target.closest('[data-sstate]'))) {
+      var qv = find(b.dataset.sstate);
+      b.disabled = true;
+      ffStatus(qv).then(function () { A.showMsg('ok', 'Estado en el SIFEN: ' + qv.sifen.estado + '.'); saveSale(qv, 'Estado SIFEN · ' + qv.numero); },
+                        function (er) { A.showMsg('error', er.message); }).then(renderVentas);
+      return;
+    }
     if ((b = e.target.closest('[data-void]'))) {
       var v = find(b.dataset.void);
-      A.ask({ title: '¿Anular la venta ' + v.numero + '?', text: 'Se devuelve el stock de los productos y la venta queda marcada como anulada. Total: ' + money(v.totales.total) + '.', ok: 'Sí, anular', danger: true })
-        .then(function (ok) {
+      var cancelSifen = isFactura(v) && v.sifen && v.sifen.cdc && ffReady();
+      A.ask({ title: '¿Anular la venta ' + v.numero + '?', text: 'Se devuelve el stock de los productos y la venta queda marcada como anulada. Total: ' + money(v.totales.total) + '.' +
+              (cancelSifen ? ' También se cancela la factura en el SIFEN.' : ''), ok: 'Sí, anular', danger: true })
+        .then(async function (ok) {
           if (!ok) return;
+          if (cancelSifen) {
+            try { await ffCancel(v, 'Anulación de la venta'); }
+            catch (er) { A.showMsg('error', 'No se pudo cancelar en el SIFEN: ' + er.message + ' La venta no se anuló.'); return; }
+          }
           v.estado = 'anulada';
           v.anulada_en = new Date().toISOString();
           v.anulada_por = S.user;
@@ -1060,19 +1144,33 @@
     }
   });
 
+  /* Listado de ventas del mes en PDF */
   $('#expCsv').addEventListener('click', async function () {
-    var m = saleMonthIn.value || monthKey();
-    try { await loadMonth(m); } catch (e) { A.showMsg('error', e.message); return; }
-    var rows = [['Numero', 'Fecha', 'Cliente', 'Documento', 'Producto', 'Talle', 'Cantidad', 'Precio', 'Subtotal', 'Forma de pago', 'Banco', 'Comprobante', 'Envió', 'Estado']];
-    P.months[m].ventas.forEach(function (v) {
-      v.items.forEach(function (it) {
-        rows.push([v.numero, fmtDate(v.fecha, true), v.cliente.tipo === 'innominado' ? 'Consumidor final' : v.cliente.nombre,
-          v.cliente.doc ? v.cliente.doc + (v.cliente.dv ? '-' + v.cliente.dv : '') : '', it.descripcion, it.talle, it.cantidad, it.precio, it.subtotal,
-          PAY[v.pago.forma] || v.pago.forma, v.pago.banco || '', v.pago.comprobante || '', v.pago.remitente || '', v.estado]);
-      });
-    });
-    var csv = rows.map(function (r) { return r.map(function (c) { c = String(c == null ? '' : c); return /[;"\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(';'); }).join('\r\n');
-    download('ventas-' + m + '.csv', '\ufeff' + csv, 'text/csv;charset=utf-8');
+    var m = saleMonthIn.value || monthKey(), btn = this;
+    if (!A.V.reportPdf) { A.showMsg('error', 'Falta assets/caja.js para armar el PDF.'); return; }
+    btn.disabled = true;
+    try {
+      await loadMonth(m);
+      var list = P.months[m].ventas.filter(function (v) { return v.estado !== 'anulada'; });
+      var sum = function (arr) { return arr.reduce(function (t, v) { return t + v.totales.total; }, 0); };
+      var ef = list.filter(function (v) { return v.pago.forma !== 'transferencia'; }), tr = list.filter(function (v) { return v.pago.forma === 'transferencia'; });
+      var p2 = m.split('-');
+      await A.V.reportPdf('ventas-' + m + '.pdf', [
+        { t: 'title', v: S.data.store.store_name + ' · Ventas de ' + p2[1] + '/' + p2[0] },
+        { t: 'sub', v: list.length + (list.length === 1 ? ' venta' : ' ventas') + ' (sin contar las anuladas)' },
+        { t: 'kv', items: [{ k: 'Total del mes', v: money(sum(list)), main: true }, { k: 'Efectivo', v: money(sum(ef)) }, { k: 'Transferencias', v: money(sum(tr)) }] },
+        { t: 'table', title: 'Detalle de ventas', head: ['N°', 'Fecha', 'Cliente', 'Pago', 'Total'], widths: [0.2, 0.2, 0.3, 0.13, 0.17],
+          align: ['left', 'left', 'left', 'left', 'right'], boldFirst: true, empty: 'No hay ventas en este mes',
+          rows: list.slice().reverse().map(function (v) {
+            var c = v.cliente;
+            return [v.numero, fmtDate(v.fecha, true), c.tipo === 'innominado' ? 'Consumidor final' : (c.nombre || '') + ' ' + c.doc + (c.dv ? '-' + c.dv : ''),
+                    PAY[v.pago.forma] || v.pago.forma, money(v.totales.total)];
+          }),
+          foot: ['Total', '', '', '', money(sum(list))] }
+      ]);
+    } catch (e) {
+      A.showMsg('error', e.message || String(e));
+    } finally { btn.disabled = false; }
   });
 
   /* Archivo con la estructura de datos que pide el SIFEN (factura electrónica de Paraguay) */
@@ -1117,6 +1215,8 @@
   $('#bDate').value = todayISO();
   var buyMonthIn = $('#buyMonth');
   buyMonthIn.value = monthKey();
+
+  $('#bCond').addEventListener('change', function () { $('#bPagoW').hidden = this.value !== 'contado'; });
 
   makePicker($('#buyQ'), $('#buyResults'), function (p) {
     buyItems.push({ pid: p.id, name: p.name, sizes: hasSizes(p) ? p.sizes.map(function (s) { return String(s.size); }) : null, talle: '', qty: 1, cost: 0 });
@@ -1187,8 +1287,10 @@
           return { product_id: it.pid, descripcion: it.name + (it.talle ? ' T. ' + it.talle : ''), talle: it.talle || '',
                    cantidad: it.qty, costo: it.cost, subtotal: it.qty * it.cost };
         }),
-        estado: 'registrada', usuario: S.user
+        estado: 'registrada', usuario: S.user,
+        pago: $('#bCond').value === 'contado' ? $('#bPago').value : null
       };
+      compra.caja = compra.pago && A.V.hooks.cajaFor ? A.V.hooks.cajaFor(compra.pago) : null;
       compra.total = compra.items.reduce(function (t, x) { return t + x.subtotal; }, 0);
       applyStock(compra.items, +1);
       P.months[m].compras.push(compra);
@@ -1212,21 +1314,25 @@
     if (!A.connected()) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">' + esc(A.NEED_CONN) + '</td></tr>'; return; }
     var data;
     try { data = await loadMonth(m); } catch (e) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">' + esc(e.message) + '</td></tr>'; return; }
-    var list = data.compras.slice().reverse();
+    var showVoid = $('#buyShowVoid').checked;
+    var list = data.compras.slice().reverse().filter(function (c) { return showVoid || c.estado !== 'anulada'; });
+    var pg = paginate(list, 'compras');
+    renderPager($('#buyPager'), 'compras', pg, renderCompras);
     if (!list.length) { body.innerHTML = '<tr><td colspan="7" class="tbl-empty">No hay compras en este mes.</td></tr>'; return; }
-    body.innerHTML = list.map(function (c) {
+    body.innerHTML = pg.items.map(function (c) {
       var units = c.items.reduce(function (t, x) { return t + x.cantidad; }, 0);
       return '<tr class="' + (c.estado === 'anulada' ? 'is-void' : '') + '">' +
         '<td class="nowrap">' + esc(fmtDate(c.fecha)) + '</td>' +
         '<td>' + esc(c.proveedor.nombre) + (c.proveedor.ruc ? '<span class="t-sub">RUC ' + esc(c.proveedor.ruc) + '</span>' : '') + '</td>' +
-        '<td>' + esc(c.factura || '—') + '</td>' +
+        '<td>' + esc(c.factura || '—') + '<span class="t-sub">' + (c.pago ? 'Pagado con ' + (c.pago === 'transferencia' ? 'transferencia' : 'efectivo') : (c.condicion === 'credito' ? 'A crédito' : '')) + '</span></td>' +
         '<td>' + units + (units === 1 ? ' unidad' : ' unidades') + '<span class="t-sub">' + esc(c.items.map(function (x) { return x.descripcion; }).join(', ')) + '</span></td>' +
         '<td class="ta-r nowrap"><strong>' + money(c.total) + '</strong></td>' +
         '<td>' + (c.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Registrada</span>') + '</td>' +
         '<td class="actions">' + (c.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-bvoid="' + esc(c.id) + '" title="Anular compra" aria-label="Anular compra a ' + esc(c.proveedor.nombre) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
-  buyMonthIn.addEventListener('change', renderCompras);
+  buyMonthIn.addEventListener('change', function () { pages.compras = 1; renderCompras(); });
+  $('#buyShowVoid').addEventListener('change', function () { pages.compras = 1; renderCompras(); });
   $('#buyHist').addEventListener('click', function (e) {
     var b = e.target.closest('[data-bvoid]');
     if (!b) return;
@@ -1278,6 +1384,244 @@
       A.showMsg('error', err.message || String(err));
     } finally {
       btn.disabled = false;
+    }
+  });
+
+  /* =================================================================
+     Factura electrónica con FactuFlex (proveedor SIFEN)
+     ================================================================= */
+  function ffCfg() {
+    if (!P.ajustes) P.ajustes = defaultAjustes();
+    P.ajustes.factuflex = Object.assign(defaultAjustes().factuflex, P.ajustes.factuflex || {});
+    return P.ajustes.factuflex;
+  }
+  function ffReady() { if (!P.ajustes) return false; var c = ffCfg(); return !!(c.activo && c.url && c.usuario && c.clave); }
+  /* Busca un dato dentro de la respuesta, sin importar dónde venga */
+  function findKey(obj, names) {
+    var want = names.map(function (n) { return n.toLowerCase(); }), queue = [obj], seen = 0;
+    while (queue.length && seen++ < 500) {
+      var o = queue.shift();
+      if (!o || typeof o !== 'object') continue;
+      var keys = Object.keys(o);
+      for (var i = 0; i < want.length; i++) {
+        for (var k = 0; k < keys.length; k++) {
+          var v = o[keys[k]];
+          if (keys[k].toLowerCase() === want[i] && v != null && v !== '' && typeof v !== 'object') return v;
+        }
+      }
+      keys.forEach(function (k) { if (o[k] && typeof o[k] === 'object') queue.push(o[k]); });
+    }
+    return null;
+  }
+  /* Igual que findKey, pero devuelve una lista de textos (por ejemplo, los errores) */
+  function findList(obj, names) {
+    var want = names.map(function (n) { return n.toLowerCase(); }), queue = [obj], seen = 0;
+    while (queue.length && seen++ < 500) {
+      var o = queue.shift();
+      if (!o || typeof o !== 'object') continue;
+      var keys = Object.keys(o);
+      for (var k = 0; k < keys.length; k++) {
+        if (want.indexOf(keys[k].toLowerCase()) !== -1 && Array.isArray(o[keys[k]]) && o[keys[k]].length) {
+          return o[keys[k]].map(function (x) { return typeof x === 'object' ? (findKey(x, ['mensaje', 'message', 'descripcion']) || JSON.stringify(x)) : String(x); });
+        }
+      }
+      keys.forEach(function (k) { if (o[k] && typeof o[k] === 'object') queue.push(o[k]); });
+    }
+    return [];
+  }
+  var ffToken = '', ffTokenExp = 0;
+  function jwtExp(t) {
+    try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp * 1000; }
+    catch (e) { return Date.now() + 20 * 60000; }
+  }
+  async function ffFetch(path, opts) {
+    var url = ffCfg().url.replace(/\/+$/, '') + path;
+    try { return await fetch(url, opts); }
+    catch (e) {
+      throw new Error('No se pudo conectar con FactuFlex. Si tu internet funciona, FactuFlex tiene que habilitar el acceso (CORS) para ' + location.origin + '.');
+    }
+  }
+  async function ffLogin(force) {
+    if (!force && ffToken && Date.now() < ffTokenExp - 60000) return ffToken;
+    var c = ffCfg(), last = '';
+    var paths = ['/auth/token', '/auth/authenticate'];
+    for (var i = 0; i < paths.length; i++) {
+      var r = await ffFetch(paths[i], { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: c.usuario, password: c.clave }) });
+      var txt = await r.text();
+      if (!r.ok) { last = 'error ' + r.status; continue; }
+      var tok = null;
+      try { var j = JSON.parse(txt); tok = typeof j === 'string' ? j : findKey(j, ['token', 'accessToken', 'access_token', 'jwt', 'id_token']); }
+      catch (e) { tok = txt.trim(); }
+      if (tok && /^[\w-]+\.[\w-]+\.[\w-]+$/.test(String(tok))) { ffToken = String(tok); ffTokenExp = jwtExp(ffToken); return ffToken; }
+      last = 'respuesta sin token';
+    }
+    throw new Error('FactuFlex no aceptó el usuario o la contraseña (' + last + ').');
+  }
+  async function ffApi(path, method, body) {
+    for (var attempt = 0; attempt < 2; attempt++) {
+      var tok = await ffLogin(attempt > 0);
+      var h = { 'Authorization': 'Bearer ' + tok };
+      if (body) h['Content-Type'] = 'application/json';
+      var r = await ffFetch(path, { method: method, headers: h, body: body ? JSON.stringify(body) : undefined });
+      if ((r.status === 401 || r.status === 403) && attempt === 0) continue;
+      return r;
+    }
+  }
+  async function ffJson(r) {
+    var t = await r.text(), j = null;
+    try { j = JSON.parse(t); } catch (e) { /* texto plano */ }
+    if (!r.ok) {
+      var msg = j ? (findKey(j, ['mensaje', 'message', 'error', 'detalle', 'descripcion', 'msg']) || t) : t;
+      throw new Error('FactuFlex: ' + String(msg || ('error ' + r.status)).slice(0, 300));
+    }
+    return j !== null ? j : t;
+  }
+  function ffBody(sale) {
+    var c = sale.cliente, receptor = { nombre: c.nombre || 'Sin nombre' };
+    if (c.tipo === 'ruc') receptor.ruc = c.doc + (c.dv ? '-' + c.dv : '');
+    else if (c.tipo === 'ci') receptor.documento = c.doc;
+    if (c.email) receptor.email = c.email;
+    var monto = sale.totales.total, contado = {};
+    if (sale.pago.forma === 'transferencia') contado.transferencia = { monto: monto, banco: sale.pago.banco, numero: sale.pago.comprobante };
+    else contado.efectivo = { monto: monto };
+    return {
+      receptor: receptor, tipoDocumento: 'FACTURA', moneda: 'PYG', pago: { contado: contado },
+      itens: sale.items.map(function (it) {
+        return { codigo: String(it.codigo || it.product_id || '1'), descripcion: it.descripcion, cantidad: it.cantidad,
+                 iva: it.iva == null ? 10 : +it.iva, precioUnitario: it.precio, unidadMedida: 'UNIDAD' };
+      })
+    };
+  }
+  function numFromCdc(cdc) {
+    return /^\d{44}$/.test(cdc) ? cdc.substr(11, 3) + '-' + cdc.substr(14, 3) + '-' + cdc.substr(17, 7) : '';
+  }
+  async function ffEmit(sale) {
+    var j = await ffJson(await ffApi('/factuflex/emitir', 'POST', ffBody(sale)));
+    var cdc = String(findKey(j, ['cdc', 'codigoControl', 'id_cdc']) || '');
+    var estado = findKey(j, ['estado', 'status', 'situacion', 'estadoSifen']);
+    var errores = findList(j, ['errores', 'errors', 'observaciones']);
+    sale.sifen = { estado: estado ? String(estado) : (cdc ? 'enviado' : 'pendiente'), cdc: cdc,
+                   id: String(findKey(j, ['id', 'idDocumento', 'idDe']) || ''), mensaje: String(findKey(j, ['mensaje', 'message']) || ''),
+                   enviado: new Date().toISOString() };
+    if (!cdc) {
+      var why = errores.length ? errores.join(' ') : JSON.stringify(j).slice(0, 200);
+      sale.sifen.estado = 'rechazada';
+      sale.sifen.mensaje = why;
+      var err = new Error('La factura fue rechazada: ' + why);
+      err.sifen = true;
+      throw err;
+    }
+    var n = numFromCdc(cdc);
+    if (n) { sale.numeroLocal = sale.numeroLocal || sale.numero; sale.numero = n; }
+    return sale;
+  }
+  async function ffStatus(sale) {
+    var j = await ffJson(await ffApi('/historico/consulta/cdc/' + encodeURIComponent(sale.sifen.cdc), 'GET'));
+    var last = Array.isArray(j) ? j[j.length - 1] : j;
+    var est = findKey(last, ['estado', 'status', 'situacion', 'estadoSifen', 'descripcion']);
+    if (est) sale.sifen.estado = String(est);
+    sale.sifen.consultado = new Date().toISOString();
+    return sale;
+  }
+  async function ffCancel(sale, motivo) {
+    await ffJson(await ffApi('/evento/emisor/cancelacion', 'POST', { motivo: motivo, cdc: sale.sifen.cdc }));
+    sale.sifen.estado = 'cancelado';
+  }
+  async function ffKude(sale) {
+    var r = await ffApi('/de/kude/cdc/' + encodeURIComponent(sale.sifen.cdc), 'GET');
+    if (!r.ok) throw new Error('KuDE no disponible (' + r.status + ')');
+    var ct = (r.headers.get('content-type') || '').toLowerCase();
+    if (/pdf|octet-stream/.test(ct)) return new Blob([await r.arrayBuffer()], { type: 'application/pdf' });
+    var j = JSON.parse(await r.text());
+    var b = findKey(j, ['kude', 'pdf', 'base64', 'archivo', 'contenido', 'data']);
+    if (!b) throw new Error('KuDE sin PDF');
+    var bin = atob(String(b).replace(/^data:[^,]+,/, '').replace(/\s/g, '')), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: 'application/pdf' });
+  }
+  /* PDF del comprobante: el KuDE oficial si la factura ya tiene CDC, si no el propio */
+  async function docPdf(sale) {
+    if (isFactura(sale) && sale.sifen && sale.sifen.cdc && ffReady()) {
+      try { return await ffKude(sale); } catch (e) { console.warn('KuDE:', e); }
+    }
+    return makePdf(sale);
+  }
+  function saveSale(sale, msg) {
+    var m = monthKey(new Date(sale.fecha));
+    if (P.months[m]) { ensureMonthSource(m); save([monthPath(m)], msg); }
+  }
+  function sifenBadge(v) {
+    var s = v.sifen || {}, est = lower(s.estado || 'pendiente');
+    var cls = /aprob/.test(est) ? 'ok' : /rechaz|error|cancel/.test(est) ? 'bad' : 'wait';
+    var txt = s.cdc ? 'SIFEN: ' + (s.estado || 'enviado') : (s.estado === 'rechazada' ? 'SIFEN: rechazada' : s.estado === 'error' ? 'SIFEN: error' : 'SIFEN: sin enviar');
+    if (!s.cdc && s.estado !== 'rechazada' && s.estado !== 'error') cls = 'wait';
+    return '<span class="sifen-tag is-' + cls + '" title="' + esc(s.cdc ? 'CDC ' + s.cdc : (s.mensaje || '')) + '">' + esc(txt) + '</span>' +
+      (!s.cdc && s.mensaje && (s.estado === 'rechazada' || s.estado === 'error') ? '<span class="sifen-why">' + esc(String(s.mensaje).slice(0, 120)) + '</span>' : '');
+  }
+  function sifenAfterSale(sale) {
+    var box = $('#doneSifenState');
+    box.hidden = false; box.className = 'done-mail'; box.textContent = 'Enviando la factura al SIFEN…';
+    ffEmit(sale).then(function () {
+      box.className = 'done-mail is-ok';
+      box.textContent = 'Factura ' + sale.numero + ' en el SIFEN (' + sale.sifen.estado + ').';
+      $('#doneNum').textContent = 'N° ' + sale.numero + ' · Total ' + money(sale.totales.total) + ' · ' + PAY[sale.pago.forma];
+      saveSale(sale, 'SIFEN · ' + sale.numero);
+      autoEmail(sale);
+    }, function (e) {
+      if (!e.sifen) sale.sifen = Object.assign(sale.sifen || {}, { estado: 'error', mensaje: e.message });
+      saveSale(sale, 'SIFEN con error · ' + sale.numero);
+      box.className = 'done-mail is-warn';
+      box.textContent = (e.sifen ? e.message : 'No se pudo enviar al SIFEN: ' + e.message) + ' Corregilo y reintentá desde Ventas con «Enviar al SIFEN».';
+      if (!$('#doneDlg').open) notify('error', 'Factura ' + sale.numero + ': ' + e.message);
+    });
+  }
+
+  function fillFfForm() {
+    if (!P.ajustes) return;
+    var c = ffCfg();
+    $('#ffUrl').value = c.url; $('#ffUser').value = c.usuario; $('#ffPass').value = c.clave; $('#ffOn').checked = !!c.activo;
+  }
+  function readFfForm() {
+    return { url: $('#ffUrl').value.trim() || defaultAjustes().factuflex.url, usuario: $('#ffUser').value.trim(),
+             clave: $('#ffPass').value, activo: $('#ffOn').checked };
+  }
+  $('#ffForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!A.connected()) { A.showMsg('error', A.NEED_CONN); return; }
+    var btn = this.querySelector('button[type=submit]'), c = readFfForm();
+    if (c.activo && (!c.usuario || !c.clave)) { A.showMsg('error', 'Completá el usuario y la contraseña de FactuFlex.'); return; }
+    btn.disabled = true;
+    try {
+      await loadPrivate();
+      P.ajustes.factuflex = c;
+      ffToken = '';
+      await A.writeFiles([AJ_PATH], 'Configurar FactuFlex');
+      A.showMsg('ok', c.activo ? 'FactuFlex activado: las facturas se envían al SIFEN al cobrar.' : 'Datos de FactuFlex guardados (desactivado).');
+    } catch (err) {
+      A.showMsg('error', err.message || String(err));
+    } finally { btn.disabled = false; }
+  });
+  $('#ffTest').addEventListener('click', async function () {
+    var btn = this, saved = P.ajustes ? P.ajustes.factuflex : null;
+    if (!P.ajustes) P.ajustes = defaultAjustes();
+    P.ajustes.factuflex = Object.assign(readFfForm(), { activo: true });
+    if (!P.ajustes.factuflex.usuario || !P.ajustes.factuflex.clave) { P.ajustes.factuflex = saved || P.ajustes.factuflex; A.showMsg('error', 'Completá el usuario y la contraseña de FactuFlex.'); return; }
+    btn.disabled = true; btn.textContent = 'Probando…';
+    try {
+      ffToken = '';
+      await ffLogin(true);
+      var info = '';
+      try {
+        var cfg = await ffJson(await ffApi('/configuracion/cargar', 'GET'));
+        var rs = findKey(cfg, ['razonSocial', 'nombreEmpresa', 'empresa', 'nombre']), ruc = findKey(cfg, ['ruc']);
+        if (rs || ruc) info = ' Empresa: ' + [rs, ruc ? 'RUC ' + ruc : ''].filter(Boolean).join(' · ') + '.';
+      } catch (er) { /* el ingreso ya funcionó */ }
+      A.showMsg('ok', 'Conexión correcta con FactuFlex.' + info + ' Si está todo bien, marcá «Emitir facturas…» y tocá Guardar.');
+    } catch (err) {
+      A.showMsg('error', err.message || String(err));
+    } finally {
+      P.ajustes.factuflex = saved || P.ajustes.factuflex;
+      btn.disabled = false; btn.textContent = 'Probar conexión';
     }
   });
 
@@ -1333,6 +1677,49 @@
       btn.disabled = false; btn.textContent = 'Enviar correo de prueba';
     }
   });
+
+
+  /* ---------------- Borrar datos de prueba ---------------- */
+  $('#rsBtn').addEventListener('click', async function () {
+    if (!A.connected()) { A.showMsg('error', A.NEED_CONN); return; }
+    if ($('#rsConfirm').value.trim().toUpperCase() !== 'BORRAR') { A.showMsg('error', 'Para confirmar escribí BORRAR en el campo.'); $('#rsConfirm').focus(); return; }
+    var zeroStock = $('#rsStock').checked;
+    var ok = await A.ask({ title: '¿Borrar los datos de prueba?', danger: true, ok: 'Sí, borrar todo',
+      text: 'Se borran todas las ventas, compras y cajas, y la numeración vuelve a 1.' + (zeroStock ? ' El stock de todos los productos queda en 0.' : '') + ' No se puede deshacer.' });
+    if (!ok) return;
+    var btn = this;
+    btn.disabled = true; btn.textContent = 'Borrando…';
+    try {
+      await loadPrivate();
+      var list = await A.getFile('data/privado'), paths = [AJ_PATH, CAJA_PATH];
+      (Array.isArray(list) ? list : []).forEach(function (f) {
+        var mm = /^mov-(\d{4}-\d{2})\.json$/.exec(f.name);
+        if (mm) { P.months[mm[1]] = { ventas: [], compras: [] }; ensureMonthSource(mm[1]); paths.push(monthPath(mm[1])); }
+      });
+      Object.keys(P.months).forEach(function (m) { P.months[m] = { ventas: [], compras: [] }; ensureMonthSource(m); if (paths.indexOf(monthPath(m)) === -1) paths.push(monthPath(m)); });
+      P.caja = { abiertas: { efectivo: null, transferencia: null }, cierres: [] };
+      P.ajustes.next = 1; P.ajustes.nextTicket = 1;
+      if (zeroStock) {
+        products().forEach(function (p) { p.stock = 0; (p.sizes || []).forEach(function (s) { s.stock = 0; }); });
+        paths.push(A.DATA_PATH);
+      }
+      await A.writeFiles(paths, 'Borrar datos de prueba');
+      fillFiscalForm();
+      A.renderAll();
+      if (A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
+      $('#rsConfirm').value = ''; $('#rsStock').checked = false;
+      A.showMsg('ok', 'Listo: se borraron los datos de prueba. Abrí la caja y empezá a vender con datos reales.');
+    } catch (e) {
+      A.showMsg('error', e.message || String(e));
+    } finally {
+      btn.disabled = false; btn.textContent = 'Borrar datos de prueba';
+    }
+  });
+
+  /* Lo que usa assets/caja.js (Caja y Reportes) */
+  A.V = { P: P, CAJA_PATH: CAJA_PATH, save: save, loadPrivate: loadPrivate, loadMonth: loadMonth, monthKey: monthKey,
+          fmtDate: fmtDate, pad: pad, kpi: kpi, paginate: paginate, renderPager: renderPager, isFactura: isFactura,
+          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, hooks: {} };
 
   /* ---------------- conexión con el panel ---------------- */
   A.on('ready', function () {

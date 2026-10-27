@@ -61,6 +61,12 @@
 
   $('fQ').value = st.q; $('fCat').value = st.cat; $('fGen').value = st.gen;
   $('fTalle').value = st.talle; $('fOrden').value = st.orden;
+  /* Si el enlace trae un filtro que ya no existe (por ejemplo un talle agotado), se quita
+     para que la lista coincida con lo que muestran los menús */
+  if ($('fCat').value !== st.cat) st.cat = '';
+  if ($('fGen').value !== st.gen) st.gen = '';
+  if ($('fTalle').value !== st.talle) st.talle = '';
+  if (!$('fOrden').value) { st.orden = 'recientes'; $('fOrden').value = 'recientes'; }
 
   /* ----- Franja de marcas ----- */
   function renderBrands() {
