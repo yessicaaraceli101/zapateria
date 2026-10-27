@@ -1580,6 +1580,95 @@
       "image": "",
       "created_at": 1793120522,
       "updated_at": 1793120522
+    },
+    {
+      "id": "b21b5c499bbf",
+      "name": "HUALUN",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "HUALUN",
+      "sku": "",
+      "code": "",
+      "price": 70000,
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 0
+        },
+        {
+          "size": "21",
+          "stock": 2
+        },
+        {
+          "size": "22",
+          "stock": 2
+        },
+        {
+          "size": "23",
+          "stock": 2
+        },
+        {
+          "size": "24",
+          "stock": 3
+        },
+        {
+          "size": "25",
+          "stock": 2
+        },
+        {
+          "size": "26",
+          "stock": 0
+        },
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMUFLADO",
+      "description": "YT503C - CAMUFLADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793121351,
+      "updated_at": 1793121351
     }
   ]
 }
