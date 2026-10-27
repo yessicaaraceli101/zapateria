@@ -3004,6 +3004,55 @@
       "image": "",
       "created_at": 1793130172,
       "updated_at": 1793130172
+    },
+    {
+      "id": "81cf05e035d1",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "7900407179404",
+      "price": 115000,
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NP FLOATHER LIBERTY/NP SARDENHA NEO-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793130347,
+      "updated_at": 1793130347
     }
   ]
 }
