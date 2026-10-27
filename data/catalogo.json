@@ -654,7 +654,7 @@
       "sku": "",
       "code": "7890468827591",
       "price": 100000,
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
@@ -674,7 +674,7 @@
         },
         {
           "size": "38",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "39",
@@ -692,7 +692,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793111460,
-      "updated_at": 1793111460
+      "updated_at": 1793126785
     },
     {
       "id": "2d7e85c57ead",
