@@ -1464,6 +1464,55 @@
       "image": "",
       "created_at": 1793116179,
       "updated_at": 1793116204
+    },
+    {
+      "id": "e0be7775c2a5",
+      "name": "BOTA TACO ALTO GRUESO",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407081844",
+      "price": 260000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GENEBRA/TP NAPA PELE STRECH-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793116476,
+      "updated_at": 1793116476
     }
   ]
 }
