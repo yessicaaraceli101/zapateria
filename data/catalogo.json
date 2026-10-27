@@ -2906,6 +2906,55 @@
       "image": "",
       "created_at": 1793128960,
       "updated_at": 1793129562
+    },
+    {
+      "id": "a2849339c241",
+      "name": "CHATITA CON CORDON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "7900407578818",
+      "price": 120000,
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA SARDENHA NEO-BLANCO 99/ROJO 1025",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793129912,
+      "updated_at": 1793129912
     }
   ]
 }
