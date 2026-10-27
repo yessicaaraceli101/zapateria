@@ -2808,6 +2808,55 @@
       "image": "",
       "created_at": 1793128471,
       "updated_at": 1793128471
+    },
+    {
+      "id": "e441ca79f622",
+      "name": "CHATITA CON CORDON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "7900407239207",
+      "price": 120000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "AVELA",
+      "description": "NAPA SNAKE TUNISIA-AVELA 1248",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793128852,
+      "updated_at": 1793128852
     }
   ]
 }
