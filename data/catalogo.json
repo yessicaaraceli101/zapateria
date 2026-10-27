@@ -1883,6 +1883,63 @@
       "image": "",
       "created_at": 1793122684,
       "updated_at": 1793122684
+    },
+    {
+      "id": "e6858c564e04",
+      "name": "CHAMPION DAWI M FASHION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "DAWI",
+      "sku": "",
+      "code": "",
+      "price": 70000,
+      "stock": 15,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 15
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "CALZADO DAWI CON CORDONES M FASHION PARA DAMA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793122926,
+      "updated_at": 1793122926
     }
   ]
 }
