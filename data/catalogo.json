@@ -2705,6 +2705,55 @@
       "image": "",
       "created_at": 1793127532,
       "updated_at": 1793127532
+    },
+    {
+      "id": "4579354112d3",
+      "name": "BOTA GENEBRA",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900407121397",
+      "price": 220000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "CAFE",
+      "description": "NAPA GENEBRA-CAFE 856",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793128250,
+      "updated_at": 1793128250
     }
   ]
 }
