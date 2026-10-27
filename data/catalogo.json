@@ -1791,7 +1791,7 @@
       "sku": "",
       "code": "",
       "price": 50000,
-      "stock": 0,
+      "stock": 22,
       "sizes": [
         {
           "size": "35",
@@ -1815,17 +1815,17 @@
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 22
         }
       ],
       "colors": "VARIADOS",
-      "description": "",
+      "description": "CALZADO SIN CORDONES FASHION-COLORES VARIADOS",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793122206,
-      "updated_at": 1793122206
+      "updated_at": 1793122428
     }
   ]
 }
