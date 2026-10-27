@@ -778,6 +778,55 @@
       "image": "",
       "created_at": 1793111912,
       "updated_at": 1793111912
+    },
+    {
+      "id": "6be7df8ca8f5",
+      "name": "ZAPATILLAS",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900466353630",
+      "price": 105000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "AVELLANA",
+      "description": "NAPA SEVILLE-AVELLANA 1248",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793112095,
+      "updated_at": 1793112095
     }
   ]
 }
