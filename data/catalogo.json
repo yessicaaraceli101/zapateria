@@ -107,7 +107,7 @@
     },
     {
       "id": "7ff4b7964f93",
-      "name": "SANDALIAS",
+      "name": "SANDALIA",
       "category": "Sandalias",
       "gender": "Dama",
       "brand": "Beira Rio",
@@ -152,7 +152,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793047293,
-      "updated_at": 1793047399
+      "updated_at": 1793112224
     },
     {
       "id": "bc4625d2f261",
