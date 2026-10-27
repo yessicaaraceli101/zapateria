@@ -599,11 +599,14 @@
     d.innerHTML = html + '<button type="button" class="row-x" aria-label="Quitar">×</button>';
     return d;
   }
-  function sizeRow(size, st) {
+  function sizeRow(size, st, code) {
     var d = row('<input class="sz" placeholder="Talle" maxlength="10" aria-label="Talle">' +
-                '<input class="st" placeholder="Stock" inputmode="numeric" aria-label="Stock del talle">');
+                '<input class="st" placeholder="Stock" inputmode="numeric" aria-label="Stock del talle">' +
+                '<input class="sc" placeholder="Código de barras de la caja" maxlength="40" aria-label="Código de barras de este talle">');
     d.querySelector('.sz').value = size == null ? '' : size;
     d.querySelector('.st').value = fmtNum(st);
+    d.querySelector('.sc').value = code || '';
+    d.querySelector('.sc').addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
     sizeRows.appendChild(d);
     return d;
   }
@@ -713,7 +716,7 @@
       setVal('#f_brand', p.brand); setVal('#f_colors', p.colors); setVal('#f_sku', p.sku); setVal('#f_code', p.code);
       setVal('#f_codes', (p.codes || []).join(', '));
       setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_iva', p.iva == null ? '10' : String(p.iva)); setVal('#f_desc', p.description);
-      (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock); });
+      (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock, [s.code].concat(s.codes || []).filter(Boolean).join(', ')); });
       (p.installments || []).forEach(function (i) { instRow(i.n, i.amount); });
       $('#f_visible').checked = !!p.visible;
     } else {
@@ -736,11 +739,15 @@
     var name = $('#f_name').value.trim(), category = $('#f_category').value.trim(), price = num(priceIn.value);
     if (!name || !category) return showMsg('error', 'Completá el nombre y la categoría.', '#dlgMsgs');
     // Un mismo código no puede estar en dos productos: el lector agarraría siempre el primero
-    var myCodes = [$('#f_code').value].concat($('#f_codes').value.split(/[,;\n]+/)).map(function (x) { return x.toLowerCase().replace(/[^0-9a-z]/g, ''); }).filter(Boolean);
+    var sizeCodes = $$('.row .sc', sizeRows).map(function (i) { return i.value; }).join(',').split(/[,;]+/);
+    var myCodes = [$('#f_code').value].concat($('#f_codes').value.split(/[,;\n]+/), sizeCodes).map(function (x) { return x.toLowerCase().replace(/[^0-9a-z]/g, ''); }).filter(Boolean);
+    var seenCode = {}, rep = null;
+    myCodes.forEach(function (c) { if (seenCode[c]) rep = c; seenCode[c] = 1; });
+    if (rep) return showMsg('error', 'El código ' + rep + ' está repetido en este producto. Cada talle tiene que tener su propio código.', '#dlgMsgs');
     var curId = $('#f_id').value, dup = null;
     S.data.products.forEach(function (o) {
       if (dup || o.id === curId) return;
-      [o.code].concat(o.codes || []).forEach(function (c) {
+      [o.code].concat(o.codes || [], (o.sizes || []).reduce(function (t, z) { return t.concat([z.code], z.codes || []); }, [])).forEach(function (c) {
         var n = String(c || '').toLowerCase().replace(/[^0-9a-z]/g, '');
         if (n && myCodes.indexOf(n) !== -1) dup = { p: o, c: c };
       });
@@ -753,7 +760,10 @@
       var sz = r.querySelector('.sz').value.trim().slice(0, 10);
       if (!sz || seen[sz]) return;
       seen[sz] = 1;
-      sizes.push({ size: sz, stock: num(r.querySelector('.st').value) });
+      var sc = r.querySelector('.sc').value.split(/[,;]+/).map(function (x) { return x.trim().replace(/\s+/g, ''); }).filter(Boolean);
+      var item = { size: sz, stock: num(r.querySelector('.st').value) };
+      if (sc.length) { item.code = sc[0]; if (sc.length > 1) item.codes = sc.slice(1); }
+      sizes.push(item);
     });
     sizes.sort(function (a, b) { return Z.natCmp(a.size, b.size); });
 

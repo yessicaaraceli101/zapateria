@@ -767,3 +767,8 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
 .code-body h2, .code-body > p { text-align: center; }
 .code-q { min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); width: 100%; }
 .code-list { display: grid; max-height: 300px; overflow-y: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+/* Talles con su código de barras */
+.rows-sizes { grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }
+.rows-sizes .row input.sz { flex: 0 0 64px; }
+.rows-sizes .row input.st { flex: 0 0 70px; }
+.rows-sizes .row input.sc { flex: 1 1 140px; min-width: 120px; font-size: .9rem; }

@@ -219,7 +219,16 @@
     for (var i = 0; i < n - 1; i++) sum += (+d.charAt(n - 2 - i)) * (i % 2 === 0 ? 3 : 1);
     return (10 - sum % 10) % 10 === +d.charAt(n - 1);
   }
-  function codesOf(p) { return [p.code, p.sku].concat(p.codes || []).map(normCode).filter(Boolean); }
+  function codesOf(p) { return codeEntries(p).map(function (e) { return e.c; }); }
+  /* Todos los códigos del producto; los de cada talle llevan el talle */
+  function codeEntries(p) {
+    var out = [];
+    [p.code, p.sku].concat(p.codes || []).forEach(function (c) { c = normCode(c); if (c) out.push({ c: c, talle: null }); });
+    (p.sizes || []).forEach(function (s) {
+      [s.code].concat(s.codes || []).forEach(function (c) { c = normCode(c); if (c) out.push({ c: c, talle: String(s.size) }); });
+    });
+    return out;
+  }
   function exactCode(q) {
     var k = normCode(q);
     if (!k) return null;
@@ -230,8 +239,10 @@
       function (c) { return digits && validCheck(k) && /^\d+$/.test(c) && c.length >= 6 && noZeros(c) === noZeros(k.slice(0, -1)); }
     ];
     for (var i = 0; i < pass.length; i++) {
-      var hit = all.filter(function (p) { return codesOf(p).some(pass[i]); });
-      if (hit.length) return hit[0];
+      for (var j = 0; j < all.length; j++) {
+        var e = codeEntries(all[j]).filter(function (x) { return pass[i](x.c); })[0];
+        if (e) return { p: all[j], talle: e.talle };   // si es el código de un talle, viene con el talle
+      }
     }
     return null;
   }
@@ -258,7 +269,7 @@
       }).join('');
     }
     function close() { items = []; box.hidden = true; box.innerHTML = ''; }
-    function pick(p) { close(); input.value = ''; onPick(p); }
+    function pick(p, talle) { close(); input.value = ''; onPick(p, talle); }
     input.addEventListener('input', function () { items = searchProducts(input.value); sel = 0; render(); });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown' && items.length) { sel = (sel + 1) % items.length; render(); e.preventDefault(); }
@@ -268,7 +279,7 @@
         var q = input.value.trim();
         if (!q) { if (onEmptyEnter) onEmptyEnter(); return; }
         var ex = exactCode(q);
-        if (ex) { pick(ex); return; }
+        if (ex) { pick(ex.p, ex.talle); return; }
         if (!items.length) items = searchProducts(q);
         if (items.length) { pick(items[sel] || items[0]); return; }
         if (onNotFound) onNotFound(q);
@@ -284,7 +295,7 @@
     return {
       byCode: function (code) {
         var ex = exactCode(code);
-        if (ex) { pick(ex); return true; }
+        if (ex) { pick(ex.p, ex.talle); return true; }
         return false;
       }
     };
@@ -334,7 +345,8 @@
       var items = q.value.trim() ? searchProducts(q.value, 8) : products().slice().sort(function (a, b) { return (b.updated_at || 0) - (a.updated_at || 0); }).slice(0, 6);
       list.innerHTML = items.length ? items.map(function (p) {
         return '<button type="button" class="pick" data-cp="' + esc(p.id) + '">' + thumb(p) + '<span class="pick-txt"><strong>' + esc(p.name) + '</strong><small>' +
-          esc([p.brand, p.code ? 'Código actual: ' + p.code : 'Sin código'].filter(Boolean).join(' · ')) + '</small></span></button>';
+          esc([p.brand, hasSizes(p) ? 'Talles ' + p.sizes.map(function (z) { return z.size + (z.code ? '' : ' (sin código)'); }).join(', ')
+                : (p.code ? 'Código actual: ' + p.code : 'Sin código')].filter(Boolean).join(' · ')) + '</small></span></button>';
       }).join('') : '<div class="pick-empty">Sin resultados</div>';
     }
     function done() { list.onclick = null; q.oninput = null; d.oncancel = null; $('#codeCancel').onclick = null; if (d.open) d.close(); focusQ(); }
@@ -344,15 +356,30 @@
       if (!b) return;
       var p = findP(b.dataset.cp);
       if (!p) return;
+      done();
+      if (hasSizes(p)) {
+        // cada caja de un talle tiene su propio código: se guarda en ese talle
+        pickTalle(p, code).then(function (t) {
+          if (t == null) { focusQ(); return; }
+          var s = p.sizes.filter(function (x) { return String(x.size) === String(t); })[0];
+          if (!s.code) s.code = code;
+          else if ([s.code].concat(s.codes || []).map(normCode).indexOf(normCode(code)) === -1) s.codes = (s.codes || []).concat(code);
+          finishAssign(p, code, ' talle ' + t);
+          addToCart(p, t);
+        });
+        return;
+      }
       if (!p.code) p.code = code;
       else if (codesOf(p).indexOf(normCode(code)) === -1) p.codes = (p.codes || []).concat(code);
-      p.updated_at = Math.floor(Date.now() / 1000);
-      A.renderAll();
-      save([A.DATA_PATH], 'Código ' + code + ' asignado a ' + p.name);
-      done();
-      flash('ok', 'Listo: el código ' + code + ' ahora es de «' + p.name + '».');
+      finishAssign(p, code, '');
       addToCart(p);
     };
+    function finishAssign(p, code, extra) {
+      p.updated_at = Math.floor(Date.now() / 1000);
+      A.renderAll();
+      save([A.DATA_PATH], 'Código ' + code + ' asignado a ' + p.name + extra);
+      flash('ok', 'Listo: el código ' + code + ' ahora es de «' + p.name + '»' + extra + '.');
+    }
     $('#codeCancel').onclick = done;
     d.oncancel = function (e) { e.preventDefault(); done(); };
     render();
@@ -360,7 +387,8 @@
     q.focus();
   }
 
-  function addToCart(p) {
+  function addToCart(p, talle) {
+    if (talle != null && hasSizes(p)) { addLine(p, talle); return; }   // se escaneó la caja de un talle: va directo
     if (hasSizes(p)) {
       chooseSize(p).then(function (t) { if (t != null) addLine(p, t); else focusQ(); });
     } else {
@@ -380,7 +408,8 @@
       cart.splice(cart.indexOf(line), 1);
       cart.unshift(line);
     } else {
-      cart.unshift({ pid: p.id, name: p.name, code: p.code || p.sku || '', talle: talle, qty: 1, price: +p.price || 0, iva: p.iva == null ? 10 : +p.iva });
+      var sObj = talle && hasSizes(p) ? p.sizes.filter(function (x) { return String(x.size) === talle; })[0] : null;
+      cart.unshift({ pid: p.id, name: p.name, code: (sObj && sObj.code) || p.code || p.sku || '', talle: talle, qty: 1, price: +p.price || 0, iva: p.iva == null ? 10 : +p.iva });
     }
     flash('ok', 'Agregado: ' + p.name + (talle ? ' · talle ' + talle : ''));
     renderCart();
@@ -412,6 +441,30 @@
       d.showModal();
       var first = $('.size-opt:not([disabled])', box);
       if (first) first.focus(); else $('#sizeCancel').focus();
+    });
+  }
+
+  function pickTalle(p, code) {
+    return new Promise(function (resolve) {
+      var d = $('#sizeDlg'), box = $('#sizePick');
+      $('#sizeTitle').textContent = '¿De qué talle es esta caja?';
+      $('#sizeName').textContent = p.name + ' · código ' + code;
+      box.innerHTML = p.sizes.map(function (s) {
+        return '<button type="button" class="size-opt" data-size="' + esc(s.size) + '"><strong>' + esc(s.size) + '</strong><small>' +
+          (s.code ? 'ya tiene código' : 'sin código') + '</small></button>';
+      }).join('');
+      function done(v) {
+        box.onclick = null; d.oncancel = null; $('#sizeCancel').onclick = null;
+        $('#sizeTitle').textContent = 'Elegí el talle';
+        if (d.open) d.close();
+        resolve(v);
+      }
+      box.onclick = function (e) { var b = e.target.closest('[data-size]'); if (b) done(b.dataset.size); };
+      $('#sizeCancel').onclick = function () { done(null); };
+      d.oncancel = function (e) { e.preventDefault(); done(null); };
+      d.showModal();
+      var first = $('.size-opt', box);
+      if (first) first.focus();
     });
   }
 
@@ -1278,8 +1331,8 @@
 
   $('#bCond').addEventListener('change', function () { $('#bPagoW').hidden = this.value !== 'contado'; });
 
-  makePicker($('#buyQ'), $('#buyResults'), function (p) {
-    buyItems.push({ pid: p.id, name: p.name, sizes: hasSizes(p) ? p.sizes.map(function (s) { return String(s.size); }) : null, talle: '', qty: 1, cost: 0 });
+  makePicker($('#buyQ'), $('#buyResults'), function (p, talle) {
+    buyItems.push({ pid: p.id, name: p.name, sizes: hasSizes(p) ? p.sizes.map(function (s) { return String(s.size); }) : null, talle: talle || '', qty: 1, cost: 0 });
     renderBuy();
     var rows = $$('#buyRows tr[data-b]');
     var last = rows[rows.length - 1];
