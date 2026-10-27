@@ -1319,26 +1319,6 @@
       "updated_at": 1793114714
     },
     {
-      "id": "0e75fab094d0",
-      "name": "BOTA",
-      "category": "Botas",
-      "gender": "Dama",
-      "brand": "Beira Rio",
-      "sku": "",
-      "code": "7900350897103",
-      "price": 130000,
-      "stock": 8,
-      "sizes": [],
-      "colors": "NEGRO",
-      "description": "",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793115039,
-      "updated_at": 1793115039
-    },
-    {
       "id": "2177302a0a41",
       "name": "BOTA",
       "category": "Botas",
