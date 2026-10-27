@@ -537,6 +537,51 @@
       "image": "",
       "created_at": 1793110165,
       "updated_at": 1793110185
+    },
+    {
+      "id": "9a36f337d018",
+      "name": "RASTRERA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900015536866",
+      "price": 115000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793110372,
+      "updated_at": 1793110372
     }
   ]
 }
