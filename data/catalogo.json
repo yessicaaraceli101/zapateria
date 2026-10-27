@@ -1669,6 +1669,63 @@
       "image": "",
       "created_at": 1793121351,
       "updated_at": 1793121470
+    },
+    {
+      "id": "7a20a007be01",
+      "name": "HUALUN NIÑAS",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "HUALUN",
+      "sku": "",
+      "code": "",
+      "price": 70000,
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 0
+        },
+        {
+          "size": "21",
+          "stock": 3
+        },
+        {
+          "size": "22",
+          "stock": 3
+        },
+        {
+          "size": "23",
+          "stock": 2
+        },
+        {
+          "size": "24",
+          "stock": 2
+        },
+        {
+          "size": "25",
+          "stock": 1
+        },
+        {
+          "size": "26",
+          "stock": 0
+        }
+      ],
+      "colors": "VARIADOS CON LUCES",
+      "description": "YT505C COLORES VARIADOS CON LUCES EN LAS SUELAS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793121617,
+      "updated_at": 1793121617
     }
   ]
 }
