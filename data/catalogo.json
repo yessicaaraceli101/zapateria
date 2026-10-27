@@ -781,7 +781,7 @@
     },
     {
       "id": "6be7df8ca8f5",
-      "name": "ZAPATILLAS",
+      "name": "ZAPATILLA",
       "category": "Zapatillas",
       "gender": "Dama",
       "brand": "Beira Rio",
@@ -826,7 +826,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793112095,
-      "updated_at": 1793112139
+      "updated_at": 1793112205
     }
   ]
 }
