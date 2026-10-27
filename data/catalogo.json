@@ -1781,6 +1781,51 @@
       "image": "",
       "created_at": 1793121982,
       "updated_at": 1793121982
+    },
+    {
+      "id": "d1bd0ec7c229",
+      "name": "CHAMPION DAWI FASHION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "DAWI",
+      "sku": "",
+      "code": "",
+      "price": 50000,
+      "stock": 0,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "VARIADOS",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793122206,
+      "updated_at": 1793122206
     }
   ]
 }
