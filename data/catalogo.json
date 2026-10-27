@@ -1567,6 +1567,75 @@
       "image": "",
       "created_at": 1793116841,
       "updated_at": 1793116841
+    },
+    {
+      "id": "d36e629a5feb",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "L.D.",
+      "sku": "",
+      "code": "",
+      "price": 85000,
+      "stock": 34,
+      "sizes": [
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 4
+        },
+        {
+          "size": "31",
+          "stock": 6
+        },
+        {
+          "size": "32",
+          "stock": 4
+        },
+        {
+          "size": "33",
+          "stock": 5
+        },
+        {
+          "size": "34",
+          "stock": 4
+        },
+        {
+          "size": "35",
+          "stock": 5
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "A52760 BLANCO 33",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793120522,
+      "updated_at": 1793120522
     }
   ]
 }
