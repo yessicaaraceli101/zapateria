@@ -876,6 +876,55 @@
       "image": "",
       "created_at": 1793112581,
       "updated_at": 1793112581
+    },
+    {
+      "id": "df89772e9a3c",
+      "name": "ZAPATO CON TACON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900350827827",
+      "price": 165000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "NAPA TURIM/NAPA TRAME GRECIA-CAMEL 1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793112787,
+      "updated_at": 1793112787
     }
   ]
 }
