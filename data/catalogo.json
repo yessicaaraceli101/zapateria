@@ -1121,6 +1121,55 @@
       "image": "",
       "created_at": 1793113903,
       "updated_at": 1793113924
+    },
+    {
+      "id": "555acc71b7c9",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407415755",
+      "price": 210000,
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM/NAPA SOFT MILANO-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793114140,
+      "updated_at": 1793114140
     }
   ]
 }
