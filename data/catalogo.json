@@ -1826,6 +1826,63 @@
       "image": "",
       "created_at": 1793122206,
       "updated_at": 1793122428
+    },
+    {
+      "id": "a026860f6dc2",
+      "name": "CHAMPION DAWI",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "DAWI",
+      "sku": "",
+      "code": "",
+      "price": 35000,
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 9
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 0
+        },
+        {
+          "size": "21",
+          "stock": 0
+        },
+        {
+          "size": "22",
+          "stock": 0
+        },
+        {
+          "size": "23",
+          "stock": 0
+        },
+        {
+          "size": "24",
+          "stock": 0
+        },
+        {
+          "size": "25",
+          "stock": 0
+        },
+        {
+          "size": "26",
+          "stock": 0
+        }
+      ],
+      "colors": "VARIADOS",
+      "description": "CALZADOS SIN CORDONES DAWI P/ NIÑOS-COLORES VARIADOS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793122684,
+      "updated_at": 1793122684
     }
   ]
 }
