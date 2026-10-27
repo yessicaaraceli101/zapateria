@@ -879,7 +879,7 @@
     },
     {
       "id": "df89772e9a3c",
-      "name": "ZAPATO CON TACON",
+      "name": "ZAPATO CON TACO",
       "category": "Zapatos",
       "gender": "Dama",
       "brand": "Beira Rio",
@@ -924,7 +924,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793112787,
-      "updated_at": 1793112787
+      "updated_at": 1793112806
     }
   ]
 }
