@@ -492,6 +492,51 @@
       "image": "",
       "created_at": 1793109830,
       "updated_at": 1793109830
+    },
+    {
+      "id": "c93dcf3b1055",
+      "name": "RASTRERA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "",
+      "sku": "",
+      "code": "7900407048021",
+      "price": 115000,
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA TURIM/TP CORDAO STRASS-BLANCO OFF 526/CHAMPAN DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793110165,
+      "updated_at": 1793110165
     }
   ]
 }
