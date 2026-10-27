@@ -300,6 +300,51 @@
       "image": "",
       "created_at": 1793108562,
       "updated_at": 1793108562
+    },
+    {
+      "id": "d0ee1798ca1c",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900123665304",
+      "price": 120000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE",
+      "description": "NAPA TURIM/TIRA PRONTA PELE STRECH NUDE 658",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793108728,
+      "updated_at": 1793108728
     }
   ]
 }
