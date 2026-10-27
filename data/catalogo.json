@@ -680,6 +680,55 @@
       "image": "",
       "created_at": 1793111145,
       "updated_at": 1793111145
+    },
+    {
+      "id": "f095b82346cf",
+      "name": "RASTRERA CON ELASTICO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7890468827591",
+      "price": 100000,
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM/MILANO-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793111460,
+      "updated_at": 1793111460
     }
   ]
 }
