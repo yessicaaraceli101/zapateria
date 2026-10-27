@@ -2509,6 +2509,55 @@
       "image": "",
       "created_at": 1793125286,
       "updated_at": 1793125286
+    },
+    {
+      "id": "d63c8bb211df",
+      "name": "SANDALIA",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900466298641",
+      "price": 150000,
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CACAO",
+      "description": "NAPA TRENTO-CACAO 1277",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793125490,
+      "updated_at": 1793125490
     }
   ]
 }
