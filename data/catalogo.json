@@ -1583,7 +1583,7 @@
     },
     {
       "id": "b21b5c499bbf",
-      "name": "HUALUN",
+      "name": "HUALUN NIÑOS",
       "category": "Zapatos",
       "gender": "Niños",
       "brand": "HUALUN",
@@ -1668,7 +1668,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793121351,
-      "updated_at": 1793121351
+      "updated_at": 1793121470
     }
   ]
 }
