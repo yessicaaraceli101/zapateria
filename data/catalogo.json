@@ -2411,6 +2411,55 @@
       "image": "",
       "created_at": 1793124667,
       "updated_at": 1793124667
+    },
+    {
+      "id": "fde01e3bff91",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900350344683",
+      "price": 120000,
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE",
+      "description": "NAPA FLOATHER NATURE-NUDE 658",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793125149,
+      "updated_at": 1793125149
     }
   ]
 }
