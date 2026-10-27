@@ -1075,7 +1075,7 @@
     },
     {
       "id": "b9fd08f993be",
-      "name": "SANDALIA CON TACO GRUESO",
+      "name": "SANDALIA TACO GRUESO",
       "category": "Sandalias",
       "gender": "Dama",
       "brand": "Beira Rio",
@@ -1120,7 +1120,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793113903,
-      "updated_at": 1793113903
+      "updated_at": 1793113924
     }
   ]
 }
