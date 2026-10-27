@@ -2857,6 +2857,55 @@
       "image": "",
       "created_at": 1793128852,
       "updated_at": 1793128852
+    },
+    {
+      "id": "4e84c16ec6e5",
+      "name": "CHATITAS CON CORDON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "7900350206233",
+      "price": 120000,
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "NAPA PESPONTO MENFIS-CAMEL 1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793128960,
+      "updated_at": 1793128960
     }
   ]
 }
