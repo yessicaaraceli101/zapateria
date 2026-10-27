@@ -375,6 +375,8 @@
           <label class="fld"><span>Colores</span><input id="f_colors" maxlength="120" placeholder="Negro, blanco"></label>
           <label class="fld"><span>SKU</span><input id="f_sku" maxlength="40"></label>
           <label class="fld"><span>Código de barras</span><input id="f_code" maxlength="40" placeholder="Escaneá o escribí el código"></label>
+          <label class="fld span-2"><span>Otros códigos de barras (opcional)</span><input id="f_codes" maxlength="300" placeholder="Si el mismo producto tiene más de un código, separalos con coma">
+            <small class="hint">Al escanear en Vender un código que no existe, el sistema te deja asignarlo a un producto y lo guarda acá.</small></label>
           <label class="fld"><span>Precio (Gs.) *</span><input id="f_price" inputmode="numeric" required placeholder="250000"></label>
           <label class="fld"><span>Stock *</span><input id="f_stock" inputmode="numeric" placeholder="0"><small class="hint" id="stockHint"></small></label>
           <label class="fld"><span>IVA</span>
@@ -432,6 +434,17 @@
       <div class="size-pick" id="sizePick"></div>
     </div>
     <div class="dlg-foot"><button type="button" class="btn btn-secondary" id="sizeCancel">Cancelar</button></div>
+  </dialog>
+
+  <!-- Código escaneado que no está cargado -->
+  <dialog id="codeDlg" class="dlg dlg-sm" aria-labelledby="codeTitle">
+    <div class="confirm-body code-body">
+      <h2 id="codeTitle">Código no encontrado</h2>
+      <p>El código <strong id="codeVal"></strong> no está cargado en ningún producto. Buscá a qué producto pertenece y se guarda para la próxima vez.</p>
+      <input id="codeQ" class="code-q" placeholder="Buscar producto por nombre o marca" autocomplete="off" aria-label="Buscar producto">
+      <div class="code-list" id="codeList"></div>
+    </div>
+    <div class="dlg-foot"><button type="button" class="btn btn-secondary" id="codeCancel">Cancelar</button></div>
   </dialog>
 
   <!-- Venta terminada -->

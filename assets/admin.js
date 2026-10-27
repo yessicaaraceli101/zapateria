@@ -711,6 +711,7 @@
     if (p) {
       setVal('#f_name', p.name); setVal('#f_category', p.category); setVal('#f_gender', p.gender);
       setVal('#f_brand', p.brand); setVal('#f_colors', p.colors); setVal('#f_sku', p.sku); setVal('#f_code', p.code);
+      setVal('#f_codes', (p.codes || []).join(', '));
       setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_iva', p.iva == null ? '10' : String(p.iva)); setVal('#f_desc', p.description);
       (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock); });
       (p.installments || []).forEach(function (i) { instRow(i.n, i.amount); });
@@ -726,11 +727,25 @@
   }
   $('#btnNew').addEventListener('click', function () { openProduct(null); });
 
+  ['#f_code', '#f_codes'].forEach(function (id) {
+    $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); this.value = this.value.trim(); } });
+  });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var id = $('#f_id').value;
     var name = $('#f_name').value.trim(), category = $('#f_category').value.trim(), price = num(priceIn.value);
     if (!name || !category) return showMsg('error', 'Completá el nombre y la categoría.', '#dlgMsgs');
+    // Un mismo código no puede estar en dos productos: el lector agarraría siempre el primero
+    var myCodes = [$('#f_code').value].concat($('#f_codes').value.split(/[,;\n]+/)).map(function (x) { return x.toLowerCase().replace(/[^0-9a-z]/g, ''); }).filter(Boolean);
+    var curId = $('#f_id').value, dup = null;
+    S.data.products.forEach(function (o) {
+      if (dup || o.id === curId) return;
+      [o.code].concat(o.codes || []).forEach(function (c) {
+        var n = String(c || '').toLowerCase().replace(/[^0-9a-z]/g, '');
+        if (n && myCodes.indexOf(n) !== -1) dup = { p: o, c: c };
+      });
+    });
+    if (dup) return showMsg('error', 'El código ' + dup.c + ' ya lo usa «' + dup.p.name + '». Cada código debe ser de un solo producto.', '#dlgMsgs');
     if (price <= 0) return showMsg('error', 'Ingresá un precio mayor a cero.', '#dlgMsgs');
 
     var sizes = [], seen = {};
@@ -755,7 +770,8 @@
     var file = fileIn.files[0], remove = $('#f_remove').checked;
     var fields = {
       name: name, category: category, gender: $('#f_gender').value, brand: $('#f_brand').value,
-      sku: $('#f_sku').value.trim(), code: $('#f_code').value.trim(), price: price,
+      sku: $('#f_sku').value.trim(), code: $('#f_code').value.trim().replace(/\s+/g, ''), price: price,
+      codes: $('#f_codes').value.split(/[,;\n]+/).map(function (x) { return x.trim().replace(/\s+/g, ''); }).filter(Boolean),
       stock: sizes.length ? sizes.reduce(function (t, s) { return t + s.stock; }, 0) : num(stockIn.value),
       sizes: sizes, colors: $('#f_colors').value.trim(), description: $('#f_desc').value.trim(),
       installments: inst, visible: $('#f_visible').checked, iva: Number($('#f_iva').value)

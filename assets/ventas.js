@@ -204,16 +204,36 @@
     var words = lower(q).split(/\s+/).filter(Boolean);
     if (!words.length) return [];
     return products().filter(function (p) {
-      var hay = lower([p.name, p.brand, p.code, p.sku, p.category, p.colors].join(' '));
+      var hay = lower([p.name, p.brand, p.code, p.sku, p.category, p.colors].concat(p.codes || []).join(' '));
       return words.every(function (w) { return hay.indexOf(w) !== -1; });
     }).slice(0, limit || 8);
   }
+  /* ---------- Lectura de códigos de barras ----------
+     Compara sin espacios, guiones ni puntos, y tolera las diferencias típicas de los lectores:
+     ceros adelante (UPC de 12 vs EAN de 13 dígitos) y códigos guardados sin el dígito verificador. */
+  function normCode(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^0-9a-z]/g, ''); }
+  function noZeros(s) { return s.replace(/^0+/, ''); }
+  function validCheck(d) {
+    if (!/^\d{8}$|^\d{12,14}$/.test(d)) return false;
+    var sum = 0, n = d.length;
+    for (var i = 0; i < n - 1; i++) sum += (+d.charAt(n - 2 - i)) * (i % 2 === 0 ? 3 : 1);
+    return (10 - sum % 10) % 10 === +d.charAt(n - 1);
+  }
+  function codesOf(p) { return [p.code, p.sku].concat(p.codes || []).map(normCode).filter(Boolean); }
   function exactCode(q) {
-    var k = lower(String(q).trim());
+    var k = normCode(q);
     if (!k) return null;
-    return products().filter(function (p) {
-      return (p.code && lower(p.code) === k) || (p.sku && lower(p.sku) === k);
-    })[0] || null;
+    var all = products(), digits = /^\d+$/.test(k);
+    var pass = [
+      function (c) { return c === k; },
+      function (c) { return digits && /^\d+$/.test(c) && noZeros(c) === noZeros(k); },
+      function (c) { return digits && validCheck(k) && /^\d+$/.test(c) && c.length >= 6 && noZeros(c) === noZeros(k.slice(0, -1)); }
+    ];
+    for (var i = 0; i < pass.length; i++) {
+      var hit = all.filter(function (p) { return codesOf(p).some(pass[i]); });
+      if (hit.length) return hit[0];
+    }
+    return null;
   }
   function thumb(p) {
     return p.image ? '<img class="pick-img" src="' + esc(A.imgUrl(p.image)) + '" alt="">'
@@ -298,7 +318,47 @@
 
   var posPicker = makePicker(posQ, $('#posResults'), addToCart,
     function () { charge(); },
-    function (q) { flash('error', 'No se encontró ningún producto con «' + q + '».'); });
+    function (q) {
+      // se vacía el buscador para que el próximo escaneo no se pegue al anterior
+      posQ.value = ''; $('#posResults').hidden = true;
+      if (/^[0-9a-z\-.\s]{4,}$/i.test(q) && /\d{4,}/.test(q)) assignCode(q); else flash('error', 'No se encontró ningún producto con «' + q + '».');
+    });
+
+  /* Código escaneado que no existe: se elige el producto y el código queda guardado en él */
+  function assignCode(code) {
+    code = String(code).trim().replace(/\s+/g, '');
+    var d = $('#codeDlg'), q = $('#codeQ'), list = $('#codeList');
+    $('#codeVal').textContent = code;
+    q.value = '';
+    function render() {
+      var items = q.value.trim() ? searchProducts(q.value, 8) : products().slice().sort(function (a, b) { return (b.updated_at || 0) - (a.updated_at || 0); }).slice(0, 6);
+      list.innerHTML = items.length ? items.map(function (p) {
+        return '<button type="button" class="pick" data-cp="' + esc(p.id) + '">' + thumb(p) + '<span class="pick-txt"><strong>' + esc(p.name) + '</strong><small>' +
+          esc([p.brand, p.code ? 'Código actual: ' + p.code : 'Sin código'].filter(Boolean).join(' · ')) + '</small></span></button>';
+      }).join('') : '<div class="pick-empty">Sin resultados</div>';
+    }
+    function done() { list.onclick = null; q.oninput = null; d.oncancel = null; $('#codeCancel').onclick = null; if (d.open) d.close(); focusQ(); }
+    q.oninput = render;
+    list.onclick = function (e) {
+      var b = e.target.closest('[data-cp]');
+      if (!b) return;
+      var p = findP(b.dataset.cp);
+      if (!p) return;
+      if (!p.code) p.code = code;
+      else if (codesOf(p).indexOf(normCode(code)) === -1) p.codes = (p.codes || []).concat(code);
+      p.updated_at = Math.floor(Date.now() / 1000);
+      A.renderAll();
+      save([A.DATA_PATH], 'Código ' + code + ' asignado a ' + p.name);
+      done();
+      flash('ok', 'Listo: el código ' + code + ' ahora es de «' + p.name + '».');
+      addToCart(p);
+    };
+    $('#codeCancel').onclick = done;
+    d.oncancel = function (e) { e.preventDefault(); done(); };
+    render();
+    d.showModal();
+    q.focus();
+  }
 
   function addToCart(p) {
     if (hasSizes(p)) {

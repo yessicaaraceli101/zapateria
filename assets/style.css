@@ -762,22 +762,8 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
 .cj-calc strong { color: var(--primary-text); }
 .cj-saldo { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); background: #f4f9fe; border: 1px solid #cfe3f5; font-weight: 700; }
 .cj-saldo strong { font-family: var(--font-head); font-size: 1.5rem; color: #1a6fd8; white-space: nowrap; }
-
-/* ---------- Catálogo en celular: 2 productos por fila ---------- */
-@media (max-width: 640px) {
-  .catalog #results .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .catalog .card-img img { padding: 8px; }
-  .catalog .card-body { padding: 12px 10px; gap: 4px; }
-  .catalog .card-title { font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; }
-  .catalog .card-brand { font-size: .8rem; }
-  .catalog .card-brand img { width: 44px; height: 22px; }
-  .catalog .card-meta, .catalog .stock, .catalog .colors, .catalog .desc { font-size: .8rem; }
-  .catalog .price { font-size: 1.2rem; }
-  .catalog .badge { font-size: .7rem; padding: 2px 7px; }
-  .catalog .sizes legend { font-size: .8rem; }
-  .catalog .size-list { gap: 4px; }
-  .catalog .size span { min-width: 34px; height: 34px; padding: 0 5px; font-size: .85rem; }
-  .catalog .pay { font-size: .8rem; }
-  .catalog .pay select { min-height: 38px; padding: 0 6px; font-size: .82rem; }
-  .catalog .btn-wa { font-size: .85rem; padding-left: 8px; padding-right: 8px; white-space: normal; text-align: center; line-height: 1.2; }
-}
+/* Asignar código escaneado */
+.code-body { text-align: left; justify-items: stretch; }
+.code-body h2, .code-body > p { text-align: center; }
+.code-q { min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); width: 100%; }
+.code-list { display: grid; max-height: 300px; overflow-y: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
