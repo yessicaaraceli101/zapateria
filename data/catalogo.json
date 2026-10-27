@@ -974,6 +974,55 @@
       "image": "",
       "created_at": 1793113125,
       "updated_at": 1793113125
+    },
+    {
+      "id": "7f9eefcfc62a",
+      "name": "ZAPATO TACO FINO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407301553",
+      "price": 165000,
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "NAPA TURIM-CAMEL 1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793113332,
+      "updated_at": 1793113332
     }
   ]
 }
