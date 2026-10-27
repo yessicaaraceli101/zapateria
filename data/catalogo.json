@@ -1023,6 +1023,55 @@
       "image": "",
       "created_at": 1793113332,
       "updated_at": 1793113332
+    },
+    {
+      "id": "aba86caf7627",
+      "name": "ZAPATO TACO FINO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900407422449",
+      "price": 165000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793113513,
+      "updated_at": 1793113513
     }
   ]
 }
