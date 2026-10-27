@@ -2215,6 +2215,55 @@
       "image": "",
       "created_at": 1793123703,
       "updated_at": 1793123751
+    },
+    {
+      "id": "a391fff96c50",
+      "name": "CHAMPION GIGLIO",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "GINO",
+      "sku": "",
+      "code": "",
+      "price": 260000,
+      "stock": 3,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        },
+        {
+          "size": "41",
+          "stock": 1
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "MACHIATO/MARRON",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793124472,
+      "updated_at": 1793124472
     }
   ]
 }
