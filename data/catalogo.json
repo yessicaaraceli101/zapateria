@@ -2852,7 +2852,7 @@
       "colors": "AVELA",
       "description": "NAPA SNAKE TUNISIA-AVELA 1248",
       "installments": [],
-      "visible": true,
+      "visible": false,
       "iva": 10,
       "image": "",
       "created_at": 1793128852,
