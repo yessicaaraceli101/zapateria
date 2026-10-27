@@ -1990,6 +1990,51 @@
       "image": "",
       "created_at": 1793123323,
       "updated_at": 1793123323
+    },
+    {
+      "id": "6bc6e999f911",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "GINO",
+      "sku": "",
+      "code": "",
+      "price": 240000,
+      "stock": 3,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "THELMA BLANCO/NEGRO/G LADIES",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793123415,
+      "updated_at": 1793123415
     }
   ]
 }
