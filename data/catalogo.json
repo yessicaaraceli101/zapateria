@@ -2558,6 +2558,51 @@
       "image": "",
       "created_at": 1793125490,
       "updated_at": 1793125490
+    },
+    {
+      "id": "8cd1fa83116b",
+      "name": "SANDALIA",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900407425020",
+      "price": 160000,
+      "stock": 0,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "AVELLANA",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793125583,
+      "updated_at": 1793125583
     }
   ]
 }
