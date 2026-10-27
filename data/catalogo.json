@@ -2362,6 +2362,55 @@
       "image": "",
       "created_at": 1793124607,
       "updated_at": 1793124607
+    },
+    {
+      "id": "9426255d6db0",
+      "name": "BOTA ENZO",
+      "category": "Botas",
+      "gender": "Caballero",
+      "brand": "GINO",
+      "sku": "",
+      "code": "",
+      "price": 260000,
+      "stock": 3,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        },
+        {
+          "size": "41",
+          "stock": 1
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "CALZADO TIPO BOTA P/ CABALLERO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793124667,
+      "updated_at": 1793124667
     }
   ]
 }
