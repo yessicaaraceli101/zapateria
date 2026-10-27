@@ -2080,6 +2080,51 @@
       "image": "",
       "created_at": 1793123503,
       "updated_at": 1793123503
+    },
+    {
+      "id": "8a367ad6bc7a",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "GINO",
+      "sku": "",
+      "code": "",
+      "price": 240000,
+      "stock": 3,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "VERDE",
+      "description": "GRECIA/BLANCO/VERDE/G",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793123597,
+      "updated_at": 1793123597
     }
   ]
 }
