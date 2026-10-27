@@ -2460,6 +2460,55 @@
       "image": "",
       "created_at": 1793125149,
       "updated_at": 1793125149
+    },
+    {
+      "id": "44d68c7c0a39",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900350344430",
+      "price": 120000,
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "AVELLANA",
+      "description": "NAPA FLOATHER NATURE-AVELLANA 1248",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793125286,
+      "updated_at": 1793125286
     }
   ]
 }
