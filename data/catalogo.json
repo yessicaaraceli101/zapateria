@@ -5981,6 +5981,66 @@
       "image": "",
       "created_at": 1793213820,
       "updated_at": 1793213820
+    },
+    {
+      "id": "c5ec868b0eda",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900407610297",
+      "price": 70000,
+      "codes": [
+        "7900407610341",
+        "7900407610327",
+        "7900407610303",
+        "7900407610303",
+        "7900407610327",
+        "7900407610358",
+        "7900407610280",
+        "7900407610327",
+        "7900407610303"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "TIRA PVC/NAPA S0FT STRECH BAG-CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793214219,
+      "updated_at": 1793214219
     }
   ]
 }
