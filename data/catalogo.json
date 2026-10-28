@@ -3,7 +3,7 @@
     "store_name": "Mi Zapatería",
     "tagline": "Calzados para toda la familia",
     "whatsapp": "595972707346",
-    "address": "",
+    "address": "AQUIDABAN Y GRAL. AQUINO",
     "logo": "img/tienda/logo-mvfpma6r7be54488d6a2.png"
   },
   "brands": [
@@ -214,11 +214,11 @@
         "7900407058624",
         "7900407058648"
       ],
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "35",
@@ -252,7 +252,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793108380,
-      "updated_at": 1793214686
+      "updated_at": 1793187513
     },
     {
       "id": "787ffa26f13f",
@@ -505,11 +505,11 @@
         "7900294403675",
         "7900294403682"
       ],
-      "stock": 13,
+      "stock": 12,
       "sizes": [
         {
           "size": "34",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "35",
@@ -543,7 +543,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793109830,
-      "updated_at": 1793214688
+      "updated_at": 1793189947
     },
     {
       "id": "c93dcf3b1055",
@@ -770,7 +770,7 @@
         "7890468827584",
         "7890468827799"
       ],
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
@@ -790,7 +790,7 @@
         },
         {
           "size": "38",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "39",
@@ -808,7 +808,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793111460,
-      "updated_at": 1793214674
+      "updated_at": 1793192014
     },
     {
       "id": "2d7e85c57ead",
@@ -6043,81 +6043,31 @@
       "updated_at": 1793214219
     },
     {
-      "id": "c7a00e28e24e",
-      "name": "SANDALIA",
-      "category": "Sandalias",
-      "gender": "Niños",
-      "brand": "Vizzano",
-      "sku": "",
-      "code": "7900466127811",
-      "price": 195000,
-      "codes": [],
-      "stock": 10,
-      "sizes": [
-        {
-          "size": "34",
-          "stock": 1,
-          "code": "7900466127798"
-        },
-        {
-          "size": "35",
-          "stock": 2,
-          "code": "7900466127804"
-        },
-        {
-          "size": "36",
-          "stock": 3
-        },
-        {
-          "size": "37",
-          "stock": 1,
-          "code": "7900466127835"
-        },
-        {
-          "size": "38",
-          "stock": 2,
-          "code": "7900466127859"
-        },
-        {
-          "size": "39",
-          "stock": 1,
-          "code": "7900466127866"
-        },
-        {
-          "size": "40",
-          "stock": 0
-        }
-      ],
-      "colors": "DORADO",
-      "description": "GASP PTA 2183 CAM FLEX/MET MILANO-BLANCO OFF 526/SOMBRA DORADA/DORADO",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793217881,
-      "updated_at": 1793217931
-    },
-    {
-      "id": "fa77da580384",
-      "name": "SANDALIA",
-      "category": "Sandalias",
+      "id": "0a225fb31b12",
+      "name": "ZAPATO TACO FINO",
+      "category": "Zapatos",
       "gender": "Dama",
       "brand": "Vizzano",
       "sku": "",
-      "code": "7900466144306",
-      "price": 195000,
-      "codes": [],
-      "stock": 8,
+      "code": "7909882699872",
+      "price": 190000,
+      "codes": [
+        "19098827",
+        "7909882699834",
+        "7909882699872",
+        "7909882699858",
+        "7909882699858",
+        "7909882699841"
+      ],
+      "stock": 7,
       "sizes": [
         {
           "size": "34",
-          "stock": 1,
-          "code": "7900466144283"
+          "stock": 1
         },
         {
           "size": "35",
-          "stock": 1,
-          "code": "7900466144290"
+          "stock": 1
         },
         {
           "size": "36",
@@ -6125,32 +6075,206 @@
         },
         {
           "size": "37",
-          "stock": 2,
-          "code": "7900466144320"
+          "stock": 2
         },
         {
           "size": "38",
-          "stock": 1,
-          "code": "7900466144344"
+          "stock": 0
         },
         {
           "size": "39",
-          "stock": 1,
-          "code": "7900466144351"
+          "stock": 1
         },
         {
           "size": "40",
           "stock": 0
         }
       ],
-      "colors": "NEGRO",
-      "description": "GASP PRONTAB2183 CAM FLEX/PELICA-NEGRO/NEGRO 01",
+      "colors": "ROJO",
+      "description": "PELICA -ROJO 1025",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
-      "created_at": 1793218201,
-      "updated_at": 1793218201
+      "created_at": 1793214713,
+      "updated_at": 1793214713
+    },
+    {
+      "id": "588b144b64c9",
+      "name": "SANDALIA ALTA",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067316041",
+      "price": 195000,
+      "codes": [
+        "7900067316034",
+        "7900067316089",
+        "7900067316027",
+        "7900067316065",
+        "7900067316065",
+        "7900067316089",
+        "7900067316096",
+        "7900067316065"
+      ],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "METALIZADO",
+      "description": "TELA SHINE PARIS/METAL GLAMUR-PLATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793215054,
+      "updated_at": 1793215054
+    },
+    {
+      "id": "9249473eb112",
+      "name": "SANDALIA ALTA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067633834",
+      "price": 210000,
+      "codes": [
+        "7900067633773",
+        "7900067633780",
+        "7900067633803",
+        "7900067633803",
+        "7900067633773",
+        "7900067633827900067633780",
+        "7900067633827",
+        "7900067633803"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "DORADO",
+      "description": "TELA SHINE PARIS/METAL GLAMOUR-DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793215247,
+      "updated_at": 1793215515
+    },
+    {
+      "id": "12e5daebc893",
+      "name": "SANDALIA ALTO",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067632356",
+      "price": 210000,
+      "codes": [
+        "7900067632349",
+        "7900067632363",
+        "7900067632356",
+        "7900067632387",
+        "7900067632400",
+        "7900067632387",
+        "7900067632387",
+        "7900067632400"
+      ],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "ORO ROSADO",
+      "description": "TELA SHINE PARIS/METAL GLAMOUR-ORO ROSADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793215920,
+      "updated_at": 1793215920
     }
   ]
 }
