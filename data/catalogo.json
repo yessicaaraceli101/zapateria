@@ -4831,6 +4831,72 @@
       "image": "",
       "created_at": 1793202887,
       "updated_at": 1793202887
+    },
+    {
+      "id": "6677c41f7fef",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350784267",
+      "price": 200000,
+      "codes": [
+        "7900350784274",
+        "7900350784281",
+        "7900350784335",
+        "7900350784328",
+        "7900350784311",
+        "7900350784298",
+        "7900350784267"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM/NYLON PLAT/ MAXI LITTER-NEGRO/NEGRO/PLATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793203234,
+      "updated_at": 1793203234
     }
   ]
 }
