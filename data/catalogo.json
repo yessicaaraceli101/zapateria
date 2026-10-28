@@ -6329,6 +6329,61 @@
       "image": "",
       "created_at": 1793218660,
       "updated_at": 1793219042
+    },
+    {
+      "id": "b1c4a815797c",
+      "name": "ZAPATO TACO FINO PUNTA FINA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900466411941",
+      "price": 200000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900466411880"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466411897"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466411903"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900466411927"
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466411958"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GARDA/GASPEA P PA5249-NEGRO 01/NEGRO 01/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793219374,
+      "updated_at": 1793219374
     }
   ]
 }
