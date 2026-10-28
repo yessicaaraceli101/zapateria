@@ -6503,7 +6503,7 @@
       "gender": "Dama",
       "brand": "Vizzano",
       "sku": "",
-      "code": "7900067040298",
+      "code": "",
       "price": 150000,
       "codes": [],
       "stock": 10,
@@ -6520,7 +6520,8 @@
         },
         {
           "size": "36",
-          "stock": 3
+          "stock": 3,
+          "code": "7900067040298"
         },
         {
           "size": "37",
@@ -6548,7 +6549,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793221553,
-      "updated_at": 1793221553
+      "updated_at": 1793222503
     }
   ]
 }
