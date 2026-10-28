@@ -6497,95 +6497,44 @@
       "updated_at": 1793220050
     },
     {
-      "id": "6c989a1bd25e",
-      "name": "ZAPATILLA",
-      "category": "Zapatillas",
-      "gender": "",
-      "brand": "Vizzano",
-      "sku": "",
-      "code": "7900067121973",
-      "price": 115000,
-      "codes": [],
-      "stock": 12,
-      "sizes": [
-        {
-          "size": "34",
-          "stock": 1,
-          "code": "7900067121959"
-        },
-        {
-          "size": "35",
-          "stock": 2,
-          "code": "7900067121966"
-        },
-        {
-          "size": "36",
-          "stock": 3
-        },
-        {
-          "size": "37",
-          "stock": 3,
-          "code": "7900067121997"
-        },
-        {
-          "size": "38",
-          "stock": 2,
-          "code": "7900067122017"
-        },
-        {
-          "size": "39",
-          "stock": 1,
-          "code": "7900067122024"
-        },
-        {
-          "size": "40",
-          "stock": 0
-        }
-      ],
-      "colors": "BLANCO",
-      "description": "MEIA CANA PELICA-BLANCO OFF 526",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793220728,
-      "updated_at": 1793220728
-    },
-    {
-      "id": "a3f9811dd3f8",
+      "id": "6645d675d261",
       "name": "ZAPATILLA",
       "category": "Zapatillas",
       "gender": "Dama",
       "brand": "Vizzano",
       "sku": "",
-      "code": "7900067121799",
-      "price": 115000,
+      "code": "7900067040298",
+      "price": 150000,
       "codes": [],
       "stock": 10,
       "sizes": [
         {
           "size": "34",
           "stock": 1,
-          "code": "7900067121751"
+          "code": "7900067040274"
         },
         {
           "size": "35",
-          "stock": 2,
-          "code": "7900067121768"
+          "stock": 3,
+          "code": "7900067040281"
         },
         {
           "size": "36",
-          "stock": 2,
-          "code": "7900067121775"
-        },
-        {
-          "size": "37",
           "stock": 3
         },
         {
-          "size": "38",
+          "size": "37",
           "stock": 2,
-          "code": "7900067121812"
+          "code": "7900067040311"
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900067040342"
         },
         {
           "size": "40",
@@ -6593,68 +6542,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "MEIA CANA PELICA NEGRO 01",
+      "description": "TIRA PRONTA CA23313C NEGRO-CRISTAL/NEGRO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
-      "created_at": 1793220886,
-      "updated_at": 1793220971
-    },
-    {
-      "id": "735c33a458df",
-      "name": "ZAPATO TACO FINO",
-      "category": "Zapatos",
-      "gender": "Dama",
-      "brand": "Vizzano",
-      "sku": "",
-      "code": "7890468390057",
-      "price": 190000,
-      "codes": [],
-      "stock": 12,
-      "sizes": [
-        {
-          "size": "34",
-          "stock": 1,
-          "code": "7890468389952"
-        },
-        {
-          "size": "35",
-          "stock": 2,
-          "code": "7890468390040"
-        },
-        {
-          "size": "36",
-          "stock": 3
-        },
-        {
-          "size": "37",
-          "stock": 3,
-          "code": "7890468390071"
-        },
-        {
-          "size": "38",
-          "stock": 2,
-          "code": "7890468390101"
-        },
-        {
-          "size": "39",
-          "stock": 1,
-          "code": "7890468390118"
-        },
-        {
-          "size": "40",
-          "stock": 0
-        }
-      ],
-      "colors": "NUDE",
-      "description": "PELICA NUDE 658",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793221216,
-      "updated_at": 1793221293
+      "created_at": 1793221553,
+      "updated_at": 1793221553
     }
   ]
 }
