@@ -4497,6 +4497,84 @@
       "image": "",
       "created_at": 1793200546,
       "updated_at": 1793200546
+    },
+    {
+      "id": "237deaa079a4",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900407114788",
+      "price": 150000,
+      "codes": [
+        "7900407114795",
+        "7900407115167",
+        "7900407115211",
+        "7900407114795",
+        "7900407114771",
+        "7900407114726",
+        "7900407114740",
+        "7900407114733",
+        "7900407081462",
+        "7900407114719",
+        "7900407114702"
+      ],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 3
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA TURIM NEGRO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793200891,
+      "updated_at": 1793200891
     }
   ]
 }
