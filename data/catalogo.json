@@ -6098,6 +6098,65 @@
       "image": "",
       "created_at": 1793214713,
       "updated_at": 1793214713
+    },
+    {
+      "id": "588b144b64c9",
+      "name": "SANDALIA ALTA",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067316041",
+      "price": 195000,
+      "codes": [
+        "7900067316034",
+        "7900067316089",
+        "7900067316027",
+        "7900067316065",
+        "7900067316065",
+        "7900067316089",
+        "7900067316096",
+        "7900067316065"
+      ],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "METALIZADO",
+      "description": "TELA SHINE PARIS/METAL GLAMUR-PLATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793215054,
+      "updated_at": 1793215054
     }
   ]
 }
