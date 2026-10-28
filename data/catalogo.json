@@ -6173,12 +6173,41 @@
         "7900067633803",
         "7900067633803",
         "7900067633773",
-        "7900067633780",
+        "7900067633827900067633780",
         "7900067633827",
         "7900067633803"
       ],
-      "stock": 0,
-      "sizes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
       "colors": "DORADO",
       "description": "TELA SHINE PARIS/METAL GLAMOUR-DORADO",
       "installments": [],
@@ -6186,7 +6215,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793215247,
-      "updated_at": 1793215247
+      "updated_at": 1793215515
     }
   ]
 }
