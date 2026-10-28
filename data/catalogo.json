@@ -214,11 +214,11 @@
         "7900407058624",
         "7900407058648"
       ],
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "35",
@@ -252,7 +252,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793108380,
-      "updated_at": 1793214686
+      "updated_at": 1793187513
     },
     {
       "id": "787ffa26f13f",
@@ -505,11 +505,11 @@
         "7900294403675",
         "7900294403682"
       ],
-      "stock": 13,
+      "stock": 12,
       "sizes": [
         {
           "size": "34",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "35",
@@ -543,7 +543,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793109830,
-      "updated_at": 1793214688
+      "updated_at": 1793189947
     },
     {
       "id": "c93dcf3b1055",
@@ -770,7 +770,7 @@
         "7890468827584",
         "7890468827799"
       ],
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
@@ -790,7 +790,7 @@
         },
         {
           "size": "38",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "39",
@@ -808,7 +808,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793111460,
-      "updated_at": 1793214674
+      "updated_at": 1793192014
     },
     {
       "id": "2d7e85c57ead",
@@ -6041,6 +6041,63 @@
       "image": "",
       "created_at": 1793214219,
       "updated_at": 1793214219
+    },
+    {
+      "id": "0a225fb31b12",
+      "name": "ZAPATO TACO FINO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7909882699872",
+      "price": 190000,
+      "codes": [
+        "19098827",
+        "7909882699834",
+        "7909882699872",
+        "7909882699858",
+        "7909882699858",
+        "7909882699841"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "ROJO",
+      "description": "PELICA -ROJO 1025",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793214713,
+      "updated_at": 1793214713
     }
   ]
 }
