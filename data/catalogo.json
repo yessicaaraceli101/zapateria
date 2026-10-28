@@ -5509,6 +5509,68 @@
       "image": "",
       "created_at": 1793209082,
       "updated_at": 1793209082
+    },
+    {
+      "id": "2a8c2b2dce6b",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900294108938",
+      "price": 115000,
+      "codes": [
+        "7900294108945",
+        "7900294108921",
+        "7900294108952",
+        "7900294108907",
+        "7900294108891",
+        "7900294108914",
+        "7900294108884"
+      ],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        }
+      ],
+      "colors": "NUDE",
+      "description": "VERNIZ PREMIUM-NUDE 658",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793209544,
+      "updated_at": 1793209544
     }
   ]
 }
