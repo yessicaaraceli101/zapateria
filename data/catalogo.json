@@ -6275,6 +6275,56 @@
       "image": "",
       "created_at": 1793215920,
       "updated_at": 1793215920
+    },
+    {
+      "id": "6a8e6dfac3dc",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900407262700",
+      "price": 175000,
+      "codes": [],
+      "stock": 7900407262718,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 7900407262717
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793218660,
+      "updated_at": 1793218660
     }
   ]
 }
