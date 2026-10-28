@@ -5352,6 +5352,103 @@
       "image": "",
       "created_at": 1793208385,
       "updated_at": 1793208457
+    },
+    {
+      "id": "cc94f9171bb8",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350974446",
+      "price": 115000,
+      "codes": [
+        "7900350974415",
+        "7900350974453",
+        "7900350974439",
+        "7900350974422",
+        "7900350974385",
+        "7900350974408"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 1
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 1
+        },
+        {
+          "size": "21",
+          "stock": 1
+        },
+        {
+          "size": "22",
+          "stock": 1
+        },
+        {
+          "size": "23",
+          "stock": 1
+        },
+        {
+          "size": "24",
+          "stock": 1
+        },
+        {
+          "size": "25",
+          "stock": 1
+        },
+        {
+          "size": "26",
+          "stock": 0
+        },
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "ROSE",
+      "description": "VERNIZ PREMIUM/GLITER MINI SHINE-ROSE 1434/DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793208829,
+      "updated_at": 1793208829
     }
   ]
 }
