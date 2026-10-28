@@ -3860,6 +3860,65 @@
       "image": "",
       "created_at": 1793195902,
       "updated_at": 1793195902
+    },
+    {
+      "id": "771afe1d501e",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900245828700",
+      "price": 190000,
+      "codes": [
+        "7900245828700",
+        "7900245828687",
+        "7900245828724",
+        "7900245828748",
+        "7900245828700",
+        "7900245828694",
+        "7900245828694",
+        "7900245828724"
+      ],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NP PELE STRECH/NP FLOA NAT/MET PREM-PRETO 01/PRATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793196105,
+      "updated_at": 1793196105
     }
   ]
 }
