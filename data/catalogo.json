@@ -6096,6 +6096,61 @@
       "image": "",
       "created_at": 1793217881,
       "updated_at": 1793217931
+    },
+    {
+      "id": "fa77da580384",
+      "name": "SANDALIA",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900466144306",
+      "price": 195000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900466144283"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466144290"
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900466144320"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466144344"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466144351"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "GASP PRONTAB2183 CAM FLEX/PELICA-NEGRO/NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793218201,
+      "updated_at": 1793218201
     }
   ]
 }
