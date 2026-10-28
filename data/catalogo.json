@@ -5166,6 +5166,83 @@
       "image": "",
       "created_at": 1793207454,
       "updated_at": 1793207454
+    },
+    {
+      "id": "6da4ebeeea41",
+      "name": "SANDALIAS",
+      "category": "Sandalias",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900294480089",
+      "price": 115000,
+      "codes": [
+        "7900294480119",
+        "7900294480102",
+        "7900294480096",
+        "7900294480157",
+        "7900294480171",
+        "7900294480164",
+        "7900294480157",
+        "7900294480133",
+        "7900294480140",
+        "7900294480072"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA TURIM-PRIETO 01/PRIETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793207888,
+      "updated_at": 1793207888
     }
   ]
 }
