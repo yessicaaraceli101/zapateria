@@ -6561,7 +6561,7 @@
       "code": "7900067121799",
       "price": 115000,
       "codes": [],
-      "stock": 7900067121778,
+      "stock": 10,
       "sizes": [
         {
           "size": "34",
@@ -6575,19 +6575,17 @@
         },
         {
           "size": "36",
-          "stock": 7900067121775
+          "stock": 2,
+          "code": "7900067121775"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3
         },
         {
           "size": "38",
-          "stock": 0
-        },
-        {
-          "size": "39",
-          "stock": 0
+          "stock": 2,
+          "code": "7900067121812"
         },
         {
           "size": "40",
@@ -6595,13 +6593,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "",
+      "description": "MEIA CANA PELICA NEGRO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793220886,
-      "updated_at": 1793220886
+      "updated_at": 1793220971
     }
   ]
 }
