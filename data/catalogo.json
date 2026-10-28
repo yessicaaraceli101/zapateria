@@ -4212,6 +4212,75 @@
       "image": "",
       "created_at": 1793199152,
       "updated_at": 1793199152
+    },
+    {
+      "id": "5e2833a142da",
+      "name": "BOTA",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900245215258",
+      "price": 175000,
+      "codes": [
+        "7900245215296",
+        "7900245215296",
+        "7900245215210",
+        "7900245215227",
+        "7900245215241",
+        "7900245215265",
+        "7900245215272",
+        "7900245215272",
+        "7900245215289",
+        "7900245215289"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 2
+        },
+        {
+          "size": "34",
+          "stock": 2
+        },
+        {
+          "size": "35",
+          "stock": 2
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA BERLIM-PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793199619,
+      "updated_at": 1793199619
     }
   ]
 }
