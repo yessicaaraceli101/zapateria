@@ -6395,31 +6395,41 @@
       "code": "7900350339955",
       "price": 135000,
       "codes": [],
-      "stock": 7900350339887,
+      "stock": 11,
       "sizes": [
         {
+          "size": "34",
+          "stock": 1,
+          "code": "7900350339870"
+        },
+        {
           "size": "35",
-          "stock": 7900350339887
+          "stock": 1,
+          "code": "7900350339887"
         },
         {
           "size": "36",
-          "stock": 0
+          "stock": 2,
+          "code": "7900350339894"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3,
+          "code": "7900350339917"
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 2,
+          "code": "7900350339931"
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900350339948"
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 1
         }
       ],
       "colors": "CAMEL",
@@ -6429,7 +6439,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793219670,
-      "updated_at": 1793219670
+      "updated_at": 1793219807
     }
   ]
 }
