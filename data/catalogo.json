@@ -6550,6 +6550,52 @@
       "image": "",
       "created_at": 1793221553,
       "updated_at": 1793222503
+    },
+    {
+      "id": "697edbd35ad6",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "L.D.",
+      "sku": "",
+      "code": "",
+      "price": 115000,
+      "codes": [],
+      "stock": 7900067168558,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 7900067168558
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793222633,
+      "updated_at": 1793222633
     }
   ]
 }
