@@ -4281,6 +4281,84 @@
       "image": "",
       "created_at": 1793199619,
       "updated_at": 1793199619
+    },
+    {
+      "id": "14806cb99f5d",
+      "name": "BOTITA",
+      "category": "Botas",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900245220863",
+      "price": 180000,
+      "codes": [
+        "7900245220894",
+        "7900245220900",
+        "7900245219010",
+        "7900245220900",
+        "7900245220931",
+        "7900245220955",
+        "7900245220924",
+        "7900245220917",
+        "7900245220887",
+        "7900245220948",
+        "7900245220870"
+      ],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA BERLIM/ELASTICO/MILANO-PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793199915,
+      "updated_at": 1793199915
     }
   ]
 }
