@@ -6561,27 +6561,32 @@
       "code": "",
       "price": 115000,
       "codes": [],
-      "stock": 7900067168558,
+      "stock": 10,
       "sizes": [
         {
           "size": "35",
-          "stock": 7900067168558
+          "stock": 2,
+          "code": "7900067168558"
         },
         {
           "size": "36",
-          "stock": 0
+          "stock": 2,
+          "code": "7900067168565"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3,
+          "code": "7900067168589"
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 2,
+          "code": "7900067168602"
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900067168619"
         },
         {
           "size": "40",
@@ -6589,13 +6594,13 @@
         }
       ],
       "colors": "NUDE",
-      "description": "",
+      "description": "MEIA CANA PELICA-NUDE 658",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793222633,
-      "updated_at": 1793222633
+      "updated_at": 1793222917
     }
   ]
 }
