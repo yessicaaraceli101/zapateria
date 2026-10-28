@@ -5571,6 +5571,76 @@
       "image": "",
       "created_at": 1793209544,
       "updated_at": 1793209544
+    },
+    {
+      "id": "e2b62e36877f",
+      "name": "CHAMPION BEBE",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "",
+      "sku": "",
+      "code": "7900407017119",
+      "price": 150000,
+      "codes": [
+        "7900407017096",
+        "7900407017089",
+        "7900407017119",
+        "7900407017102",
+        "7900407017126",
+        "7900407017126",
+        "7900407017133"
+      ],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "17",
+          "stock": 1
+        },
+        {
+          "size": "18",
+          "stock": 1
+        },
+        {
+          "size": "19",
+          "stock": 1
+        },
+        {
+          "size": "20",
+          "stock": 2
+        },
+        {
+          "size": "21",
+          "stock": 2
+        },
+        {
+          "size": "22",
+          "stock": 1
+        },
+        {
+          "size": "23",
+          "stock": 0
+        },
+        {
+          "size": "24",
+          "stock": 0
+        },
+        {
+          "size": "25",
+          "stock": 0
+        },
+        {
+          "size": "26",
+          "stock": 0
+        }
+      ],
+      "colors": "ROSA",
+      "description": "NAPA TURIM-ROSA 942/PRATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793210555,
+      "updated_at": 1793210555
     }
   ]
 }
