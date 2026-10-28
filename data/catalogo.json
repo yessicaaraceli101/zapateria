@@ -6600,6 +6600,60 @@
       "image": "",
       "created_at": 1793220886,
       "updated_at": 1793220971
+    },
+    {
+      "id": "735c33a458df",
+      "name": "ZAPATO TACO FINO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7890468390057",
+      "price": 190000,
+      "codes": [],
+      "stock": 7890468390128,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7890468389952"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7890468390040"
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7890468390071"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7890468390101"
+        },
+        {
+          "size": "39",
+          "stock": 7890468390118
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793221216,
+      "updated_at": 1793221216
     }
   ]
 }
