@@ -153,20 +153,24 @@
         '<button type="button" class="btn btn-close" data-cclose="' + tipo + '"' + (cj ? '' : ' disabled') + '>' + ICON_LOCK + ' Cerrar Caja</button></div>';
       if (!cj) {
         h += '<p class="cj-state">Caja <strong>CERRADA</strong></p>';
+        if (mode === 'open') {
+          h += '<form class="cj-inline" data-fopen="' + tipo + '">' +
+            (tipo === 'efectivo' ? '<label class="fld"><span>Fondo inicial (cambio)</span><input class="js-num" inputmode="numeric" data-inicial placeholder="0" autocomplete="off"></label>' : '<p class="hint">Se abre para registrar los cobros por transferencia.</p>') +
+            '<div class="btn-row"><button class="btn btn-open" type="submit">Confirmar apertura</button><button class="btn btn-secondary" type="button" data-ccancel="' + tipo + '">Cancelar</button></div></form>';
+        }
       } else {
         var s = await sessionSummary(cj);
-        var conFondo = tipo === 'efectivo' && +cj.inicial;
         h += '<p class="cj-state is-open">Caja <strong>ABIERTA</strong> desde ' + esc(fmtDate(cj.abierta, true)) + ' · ' + esc(cj.usuario || '') + '</p>' +
           '<div class="cj-mini">' +
-            (conFondo ? '<span>Fondo <strong>' + money(cj.inicial) + '</strong></span>' : '') +
+            (tipo === 'efectivo' ? '<span>Fondo <strong>' + money(cj.inicial) + '</strong></span>' : '') +
             '<span>Cobrado <strong>' + money(s.total) + '</strong> (' + s.cant + ')</span>' +
             '<span>Compras pagadas <strong>' + money(s.egresos) + '</strong></span>' +
-            '<span class="cj-exp">' + (tipo === 'efectivo' ? 'Saldo actual:' : 'Total en la cuenta') + ' <strong>' + money(s.esperado) + '</strong></span>' +
+            '<span class="cj-exp">' + (tipo === 'efectivo' ? 'Debería haber' : 'Total en la cuenta') + ' <strong>' + money(s.esperado) + '</strong></span>' +
           '</div>';
         if (mode === 'close') {
           h += '<form class="cj-inline" data-fclose="' + tipo + '" data-esperado="' + s.esperado + '">' +
             '<div class="cj-saldo"><span>Saldo actual</span><strong>' + money(s.esperado) + '</strong></div>' +
-            '<p class="hint cj-calc">' + (conFondo ? 'Fondo ' + money(cj.inicial) + ' + ' : '') + 'ventas ' + money(s.total) + ' − egresos ' + money(s.egresos) +
+            '<p class="hint cj-calc">' + (tipo === 'efectivo' ? 'Fondo ' + money(cj.inicial) + ' + ' : '') + 'ventas ' + money(s.total) + ' − egresos ' + money(s.egresos) +
               (s.ingresos ? ' + ingresos ' + money(s.ingresos) : '') + ' = <strong>' + money(s.esperado) + '</strong></p>' +
             '<label class="fld"><span>Nota (opcional)</span><input data-nota maxlength="160" autocomplete="off"></label>' +
             '<div class="btn-row"><button class="btn btn-close" type="submit">Confirmar cierre</button><button class="btn btn-secondary" type="button" data-ccancel="' + tipo + '">Cancelar</button></div></form>';
@@ -197,24 +201,10 @@
         box.innerHTML = '<div class="alert alert-error">' + esc(e.message || String(e)) + '</div>';
       } finally { renderingCaja = false; }
     }
-    /* Abre la caja directamente, sin pedir confirmación */
-    function openCaja(tipo, btn) {
-      if (!A.connected()) { A.showMsg('error', A.NEED_CONN); return; }
-      var c = norm();
-      if (!c || c.abiertas[tipo]) return;
-      if (btn) btn.disabled = true;
-      var fecha = ($('[data-cdate="' + tipo + '"]') || {}).value || todayKey();
-      c.abiertas[tipo] = { id: A.rid(), tipo: tipo, fecha: fecha, abierta: new Date().toISOString(), usuario: S.user, inicial: 0, movimientos: [] };
-      ui[tipo] = null;
-      saveCaja('Apertura de caja ' + TIPOS[tipo].toLowerCase());
-      renderCajaWarn();
-      A.showMsg('ok', 'Caja de ' + TIPOS[tipo].toLowerCase() + ' abierta.');
-      renderCaja();
-    }
     /* Botones y formularios de las cajas */
     $('#cajaBox').addEventListener('click', async function (e) {
       var b;
-      if ((b = e.target.closest('[data-copen]'))) { openCaja(b.dataset.copen, b); return; }
+      if ((b = e.target.closest('[data-copen]'))) { ui[b.dataset.copen] = 'open'; await renderCaja(); var i = $('[data-fopen="' + b.dataset.copen + '"] input'); if (i) i.focus(); return; }
       if ((b = e.target.closest('[data-cclose]'))) { ui[b.dataset.cclose] = 'close'; await renderCaja(); var j = $('[data-fclose="' + b.dataset.cclose + '"] [data-nota]'); if (j) j.focus(); return; }
       if ((b = e.target.closest('[data-ccancel]'))) { ui[b.dataset.ccancel] = null; renderCaja(); return; }
 
@@ -232,6 +222,17 @@
       e.preventDefault();
       var f = e.target, c = norm();
       if (!A.connected()) { A.showMsg('error', A.NEED_CONN); return; }
+      if (f.dataset.fopen) {
+        var tipo = f.dataset.fopen, fecha = ($('[data-cdate="' + tipo + '"]') || {}).value || todayKey();
+        var inicial = tipo === 'efectivo' ? num((f.querySelector('[data-inicial]') || {}).value) : 0;
+        c.abiertas[tipo] = { id: A.rid(), tipo: tipo, fecha: fecha, abierta: new Date().toISOString(), usuario: S.user, inicial: inicial, movimientos: [] };
+        ui[tipo] = null;
+        saveCaja('Apertura de caja ' + TIPOS[tipo].toLowerCase() + (inicial ? ' · ' + money(inicial) : ''));
+        renderCajaWarn();
+        A.showMsg('ok', 'Caja de ' + TIPOS[tipo].toLowerCase() + ' abierta' + (inicial ? ' con ' + money(inicial) : '') + '.');
+        renderCaja();
+        return;
+      }
       if (f.dataset.fclose) {
         var t2 = f.dataset.fclose, cj = c.abiertas[t2], s = await sessionSummary(cj);
         var contado = s.esperado, d = 0;
@@ -533,7 +534,7 @@
       }).join('');
       printHTML('Cierre de caja', '<h1>' + esc(st.store_name) + '</h1><div class="b">CIERRE DE CAJA · ' + (ef ? 'EFECTIVO' : 'TRANSFERENCIAS') + '</div>' +
         '<div class="muted">Apertura: ' + esc(fmtDate(c.abierta, true)) + ' (' + esc(c.usuario || '') + ')<br>Cierre: ' + esc(fmtDate(c.cerrada, true)) + ' (' + esc(c.usuarioCierre || '') + ')</div>' +
-        '<table>' + (ef && +c.inicial ? row('Fondo inicial', money(c.inicial)) : '') + row('Cobrado (' + (r.cant || 0) + ' ventas)', money(r.total || 0), 'b') +
+        '<table>' + (ef ? row('Fondo inicial', money(c.inicial)) : '') + row('Cobrado (' + (r.cant || 0) + ' ventas)', money(r.total || 0), 'b') +
         row('Ingresos', money(r.ingresos || 0)) + row('Egresos', money(r.egresos || r.retiros || 0)) + '</table>' +
         (movs ? '<h2>Movimientos</h2><table>' + movs + '</table>' : '') +
         '<table>' + row('Saldo al cerrar', money(c.esperado), 'b big') + '</table>' +
@@ -546,6 +547,14 @@
         'h1{font-size:' + (narrow ? '15px' : '20px') + ';margin:0 0 4px}h2{font-size:14px;margin:16px 0 6px}.muted{color:#555}' +
         'table{width:100%;border-collapse:collapse;margin-top:4px}td,th{padding:4px 6px;border-bottom:1px solid #ddd;text-align:left}' +
         '.r{text-align:right}.b{font-weight:bold}.big{font-size:16px}@page{margin:' + (narrow ? '0' : '10mm') + '}';
+      if (narrow && V.printThermal) {
+        // comprobantes chicos (cierre de caja): mismo formato que el ticket de la impresora térmica
+        var aj = P.ajustes || V.defaultAjustes();
+        V.printThermal('<!doctype html><html lang="es"><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' + V.ticketCSS(aj) +
+          'table{width:100%;border-collapse:collapse}td,th{padding:3px 0;border-bottom:1px dashed #000;text-align:left;vertical-align:top}.r{text-align:right}.muted{font-weight:700}h2{font-size:15px;margin:10px 0 4px}' +
+          '</style></head><body>' + inner + '<div class="feed"></div></body></html>', aj);
+        return;
+      }
       var ifr = document.createElement('iframe');
       ifr.setAttribute('aria-hidden', 'true');
       ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';

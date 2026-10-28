@@ -848,16 +848,47 @@
   });
 
   /* ---------------- Ticket ---------------- */
+  /* Ticket para impresora térmica: letra grande y oscura, centrado, y la hoja mide lo justo + 2 renglones */
+  function ticketWidth(aj) { return +aj.ticket.ancho === 58 ? 48 : 72; }   // ancho imprimible en mm
+  function ticketCSS(aj) {
+    var w = ticketWidth(aj), small = w < 60;
+    return '@page{margin:0}' +
+      'html,body{margin:0;padding:0;background:#fff}' +
+      'body{width:' + w + 'mm;margin:0 auto;padding:2mm 0 0;color:#000;font:700 ' + (small ? 12 : 14) + 'px/1.4 Arial,Helvetica,sans-serif;' +
+        '-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
+      'h1{font-size:' + (small ? 16 : 19) + 'px;text-align:center;margin:0 0 3px;font-weight:900}' +
+      '.c{text-align:center}.hr{border-top:2px dashed #000;margin:7px 0}' +
+      '.l{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}' +
+      '.l span:last-child{text-align:right;overflow-wrap:anywhere}' +
+      '.b{font-weight:900}.it{margin:4px 0}.big{font-size:' + (small ? 15 : 18) + 'px}' +
+      '.note{font-size:' + (small ? 10 : 11) + 'px;margin-top:5px;font-weight:700}' +
+      '.feed{height:9mm}';   // 2 renglones en blanco al final para que la impresora corte después del texto
+  }
+  /* Imprime en un marco oculto y ajusta el largo de la hoja al contenido (no sale una hoja larga en blanco) */
+  function printThermal(html, aj) {
+    var ifr = document.createElement('iframe');
+    ifr.setAttribute('aria-hidden', 'true');
+    ifr.style.cssText = 'position:fixed;left:-10000px;top:0;width:' + (+aj.ticket.ancho === 58 ? 58 : 80) + 'mm;height:50px;border:0';
+    document.body.appendChild(ifr);
+    var doc = ifr.contentWindow.document;
+    doc.open(); doc.write(html); doc.close();
+    setTimeout(function () {
+      var px = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+      var mm = Math.ceil(px * 25.4 / 96) + 2;
+      var st = doc.createElement('style');
+      st.textContent = '@page{size:' + (+aj.ticket.ancho === 58 ? 58 : 80) + 'mm ' + mm + 'mm;margin:0}';
+      doc.head.appendChild(st);
+      ifr.contentWindow.focus();
+      ifr.contentWindow.print();
+      setTimeout(function () { ifr.remove(); }, 3000);
+    }, 350);
+  }
+
   function ticketHTML(sale) {
     var aj = P.ajustes || defaultAjustes(), f = aj.fiscal, st = S.data.store;
-    var w = +aj.ticket.ancho === 58 ? '54mm' : '72mm';
+    var w = ticketWidth(aj);
     var L = function (a, b) { return '<div class="l"><span>' + a + '</span><span>' + b + '</span></div>'; };
-    var h = '<!doctype html><html><head><meta charset="utf-8"><title>Ticket ' + esc(sale.numero) + '</title><style>' +
-      '@page{size:' + (+aj.ticket.ancho === 58 ? '58mm' : '80mm') + ' auto;margin:3mm}' +
-      'body{font:12px/1.35 "Courier New",monospace;width:' + w + ';margin:0 auto;color:#000}' +
-      'h1{font-size:14px;text-align:center;margin:0 0 2px}.c{text-align:center}.hr{border-top:1px dashed #000;margin:6px 0}' +
-      '.l{display:flex;justify-content:space-between;gap:6px}.b{font-weight:bold}.it{margin:3px 0}.big{font-size:15px}' +
-      '</style></head><body>';
+    var h = '<!doctype html><html><head><meta charset="utf-8"><title>Ticket ' + esc(sale.numero) + '</title><style>' + ticketCSS(aj) + '</style></head><body>';
     h += '<h1>' + esc(f.fantasia || st.store_name) + '</h1>';
     if (f.razon) h += '<div class="c">' + esc(f.razon) + '</div>';
     if (f.ruc) h += '<div class="c">RUC ' + esc(f.ruc) + '</div>';
@@ -885,10 +916,10 @@
     if (sale.pago.forma === 'efectivo') { h += L('Recibido', money(sale.recibido)); h += L('Vuelto', money(sale.vuelto)); }
     if (sale.estado === 'anulada') h += '<div class="hr"></div><div class="c b">*** ANULADA ***</div>';
     h += '<div class="hr"></div><div class="c">¡Gracias por tu compra!</div>';
-    if (!isFactura(sale)) h += '<div class="c" style="font-size:10px;margin-top:4px">Comprobante interno, no válido como factura.</div>';
-    else if (!(sale.sifen && sale.sifen.cdc)) h += '<div class="c" style="font-size:10px;margin-top:4px">Pendiente de aprobación en SIFEN.</div>';
-    else h += '<div class="c" style="font-size:10px;margin-top:4px">CDC ' + esc(sale.sifen.cdc) + '</div>';
-    return h + '</body></html>';
+    if (!isFactura(sale)) h += '<div class="c note">Comprobante interno, no válido como factura.</div>';
+    else if (!(sale.sifen && sale.sifen.cdc)) h += '<div class="c note">Pendiente de aprobación en SIFEN.</div>';
+    else h += '<div class="c note">CDC ' + esc(sale.sifen.cdc) + '</div>';
+    return h + '<div class="feed"></div></body></html>';
   }
   function isFactura(sale) { return sale.tipo ? sale.tipo === 'factura' : !!sale.fiscal; }
   function docName(sale) { return (isFactura(sale) ? 'factura-' : 'ticket-') + String(sale.numero).replace(/[^A-Za-z0-9-]/g, '') + '.pdf'; }
@@ -1116,18 +1147,9 @@
   }
 
   function printTicket(sale) {
-    var ifr = document.createElement('iframe');
-    ifr.setAttribute('aria-hidden', 'true');
-    ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
-    document.body.appendChild(ifr);
-    var doc = ifr.contentWindow.document;
-    doc.open(); doc.write(ticketHTML(sale)); doc.close();
-    setTimeout(function () {
-      ifr.contentWindow.focus();
-      ifr.contentWindow.print();
-      setTimeout(function () { ifr.remove(); }, 3000);
-    }, 300);
+    printThermal(ticketHTML(sale), P.ajustes || defaultAjustes());
   }
+
 
   /* =================================================================
      HISTORIAL DE VENTAS
@@ -1832,7 +1854,7 @@
   /* Lo que usa assets/caja.js (Caja y Reportes) */
   A.V = { P: P, CAJA_PATH: CAJA_PATH, save: save, loadPrivate: loadPrivate, loadMonth: loadMonth, monthKey: monthKey,
           fmtDate: fmtDate, pad: pad, kpi: kpi, paginate: paginate, renderPager: renderPager, isFactura: isFactura,
-          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, hooks: {} };
+          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, printThermal: printThermal, ticketCSS: ticketCSS, defaultAjustes: defaultAjustes, hooks: {} };
 
   /* ---------------- conexión con el panel ---------------- */
   A.on('ready', function () {
