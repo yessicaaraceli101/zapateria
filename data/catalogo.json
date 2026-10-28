@@ -4638,6 +4638,72 @@
       "image": "",
       "created_at": 1793201084,
       "updated_at": 1793201084
+    },
+    {
+      "id": "d6884061ba88",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350235929",
+      "price": 160000,
+      "codes": [
+        "7900350235905",
+        "7900350235882",
+        "7900350235899",
+        "7900350235875",
+        "7900350235868",
+        "7900350235912",
+        "7900350235912"
+      ],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA TURIM/BRILHO ITALIA-PRETO 01/DOURADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793201886,
+      "updated_at": 1793201886
     }
   ]
 }
