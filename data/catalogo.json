@@ -6049,7 +6049,7 @@
       "gender": "Niños",
       "brand": "Vizzano",
       "sku": "",
-      "code": "",
+      "code": "7900466127811",
       "price": 195000,
       "codes": [],
       "stock": 10,
@@ -6066,8 +6066,7 @@
         },
         {
           "size": "36",
-          "stock": 3,
-          "code": "7900466127811"
+          "stock": 3
         },
         {
           "size": "37",
@@ -6096,7 +6095,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793217881,
-      "updated_at": 1793217881
+      "updated_at": 1793217931
     }
   ]
 }
