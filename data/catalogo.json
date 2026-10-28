@@ -3744,6 +3744,65 @@
       "image": "",
       "created_at": 1793195306,
       "updated_at": 1793195306
+    },
+    {
+      "id": "e6096e949575",
+      "name": "BOTA SUPREMA",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900407230662",
+      "price": 280000,
+      "codes": [
+        "7900407230730",
+        "7900407230686",
+        "7900407230686",
+        "7900407230679",
+        "7900407230747",
+        "7900407230686",
+        "7900407230709",
+        "7900407230709"
+      ],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        }
+      ],
+      "colors": "AVELA",
+      "description": "NP MICRO PERF SUPREMA/NAPA BERLIM-AVELA 1248",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793195528,
+      "updated_at": 1793195528
     }
   ]
 }
