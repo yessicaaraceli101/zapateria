@@ -6611,7 +6611,7 @@
       "code": "7890468390057",
       "price": 190000,
       "codes": [],
-      "stock": 7890468390128,
+      "stock": 12,
       "sizes": [
         {
           "size": "34",
@@ -6625,7 +6625,7 @@
         },
         {
           "size": "36",
-          "stock": 2
+          "stock": 3
         },
         {
           "size": "37",
@@ -6639,7 +6639,8 @@
         },
         {
           "size": "39",
-          "stock": 7890468390118
+          "stock": 1,
+          "code": "7890468390118"
         },
         {
           "size": "40",
@@ -6647,13 +6648,13 @@
         }
       ],
       "colors": "NUDE",
-      "description": "",
+      "description": "PELICA NUDE 658",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793221216,
-      "updated_at": 1793221216
+      "updated_at": 1793221293
     }
   ]
 }
