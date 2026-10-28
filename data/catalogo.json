@@ -6440,6 +6440,61 @@
       "image": "",
       "created_at": 1793219670,
       "updated_at": 1793219807
+    },
+    {
+      "id": "9469725823f8",
+      "name": "SUECO",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900407512690",
+      "price": 135000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900407512706"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900407512713"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900407512737"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900407512751"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900407512768"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "GASPEA PRONTA UNXT/PELICA-CHOCOLATE 1271-JET NUT/CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793220050,
+      "updated_at": 1793220050
     }
   ]
 }
