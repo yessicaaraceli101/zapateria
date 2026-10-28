@@ -3624,6 +3624,68 @@
       "image": "",
       "created_at": 1793194740,
       "updated_at": 1793194740
+    },
+    {
+      "id": "fe28410a58e6",
+      "name": "BOTA BERLIN",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7909968293154",
+      "price": 240000,
+      "codes": [
+        "7909968293185",
+        "7909968293185",
+        "7909968293161",
+        "7909968293147",
+        "7909968293154",
+        "7909968293161",
+        "7909968293154",
+        "7909968293208",
+        "7909968293208",
+        "7909968293185",
+        "7909968293161"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAFE",
+      "description": "NAPA BERLIN CAFE 987",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793195091,
+      "updated_at": 1793195091
     }
   ]
 }
