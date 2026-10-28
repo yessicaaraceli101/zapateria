@@ -6286,31 +6286,35 @@
       "code": "7900407262700",
       "price": 175000,
       "codes": [],
-      "stock": 7900407262718,
+      "stock": 11,
       "sizes": [
         {
           "size": "34",
-          "stock": 0
-        },
-        {
-          "size": "35",
           "stock": 1
         },
         {
+          "size": "35",
+          "stock": 2
+        },
+        {
           "size": "36",
-          "stock": 7900407262717
+          "stock": 3,
+          "code": "7900407262717"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3,
+          "code": "7900407262731"
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 1,
+          "code": "7900407262755"
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900407262762"
         },
         {
           "size": "40",
@@ -6318,13 +6322,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "",
+      "description": "NAPA IMPERIALE-NEGRO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793218660,
-      "updated_at": 1793218660
+      "updated_at": 1793219042
     }
   ]
 }
