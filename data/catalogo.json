@@ -4704,6 +4704,71 @@
       "image": "",
       "created_at": 1793201886,
       "updated_at": 1793201886
+    },
+    {
+      "id": "587d7e88a3bc",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900294467196",
+      "price": 150000,
+      "codes": [
+        "7900294467226",
+        "7900294467219",
+        "7900294467202",
+        "7900294467233",
+        "7900294391842",
+        "7900294467233"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA TURIM/METALIZADO PREMIUM-BRANCO-99/DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793202255,
+      "updated_at": 1793202255
     }
   ]
 }
