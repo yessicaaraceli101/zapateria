@@ -4359,6 +4359,71 @@
       "image": "",
       "created_at": 1793199915,
       "updated_at": 1793199915
+    },
+    {
+      "id": "1fbc4422ec23",
+      "name": "BOTITA",
+      "category": "Botas",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900407141500",
+      "price": 225000,
+      "codes": [
+        "7900407141494",
+        "7900407141463",
+        "7900407141548",
+        "7900407141524",
+        "7900407141531",
+        "7900407141517"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA VELUNA-PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793200144,
+      "updated_at": 1793200144
     }
   ]
 }
