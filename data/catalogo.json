@@ -3984,7 +3984,7 @@
       "id": "9c049011e7b4",
       "name": "BOTA",
       "category": "Botas",
-      "gender": "Dama",
+      "gender": "Niños",
       "brand": "Molekinha",
       "sku": "",
       "code": "7900123198789",
@@ -4010,7 +4010,7 @@
         "7900123198727",
         "7900123198741"
       ],
-      "stock": 19,
+      "stock": 20,
       "sizes": [
         {
           "size": "27",
@@ -4023,6 +4023,10 @@
         {
           "size": "29",
           "stock": 2
+        },
+        {
+          "size": "30",
+          "stock": 1
         },
         {
           "size": "31",
@@ -4066,13 +4070,13 @@
         }
       ],
       "colors": "PRETO",
-      "description": "",
+      "description": "NAPA BERLIM/MILANO-PRETO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793197091,
-      "updated_at": 1793197879
+      "updated_at": 1793198098
     }
   ]
 }
