@@ -4010,15 +4010,39 @@
         "7900123198727",
         "7900123198741"
       ],
-      "stock": 0,
+      "stock": 19,
       "sizes": [
         {
+          "size": "27",
+          "stock": 2
+        },
+        {
+          "size": "28",
+          "stock": 2
+        },
+        {
+          "size": "29",
+          "stock": 2
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 4
+        },
+        {
+          "size": "33",
+          "stock": 3
+        },
+        {
           "size": "34",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "35",
-          "stock": 0
+          "stock": 2
         },
         {
           "size": "36",
@@ -4048,7 +4072,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793197091,
-      "updated_at": 1793197091
+      "updated_at": 1793197879
     }
   ]
 }
