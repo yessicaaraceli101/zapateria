@@ -5449,6 +5449,66 @@
       "image": "",
       "created_at": 1793208829,
       "updated_at": 1793208829
+    },
+    {
+      "id": "4302d066ce5f",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900245112496",
+      "price": 110000,
+      "codes": [
+        "7900245112458"
+      ],
+      "stock": 2,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1
+        },
+        {
+          "size": "20",
+          "stock": 0
+        },
+        {
+          "size": "21",
+          "stock": 0
+        },
+        {
+          "size": "22",
+          "stock": 0
+        },
+        {
+          "size": "23",
+          "stock": 1
+        },
+        {
+          "size": "24",
+          "stock": 0
+        },
+        {
+          "size": "25",
+          "stock": 0
+        },
+        {
+          "size": "26",
+          "stock": 0
+        }
+      ],
+      "colors": "METALIZADO",
+      "description": "METALIZADO PREMIUN-PRATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793209082,
+      "updated_at": 1793209082
     }
   ]
 }
