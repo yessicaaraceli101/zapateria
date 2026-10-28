@@ -4897,6 +4897,77 @@
       "image": "",
       "created_at": 1793203234,
       "updated_at": 1793203234
+    },
+    {
+      "id": "7714baa828cf",
+      "name": "SANDALIAS",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7909339694788",
+      "price": 100000,
+      "codes": [
+        "7909339694863",
+        "7909339694849",
+        "7909339694849",
+        "7909339694863",
+        "7909339694771",
+        "7909339694764",
+        "7909339694795",
+        "7909339694801"
+      ],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "25",
+          "stock": 1
+        },
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 2
+        },
+        {
+          "size": "34",
+          "stock": 2
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA TURIM-BLANCO 99",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793206364,
+      "updated_at": 1793206364
     }
   ]
 }
