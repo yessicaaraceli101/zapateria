@@ -32,7 +32,7 @@
   }
   function defaultAjustes() {
     return {
-      fiscal: { ruc: '', razon: '', fantasia: '', direccion: '', telefono: '', actividad: '', timbrado: '', vigencia: '', est: '001', pto: '001' },
+      fiscal: { ruc: '', razon: '', fantasia: '', direccion: '', ciudad: '', telefono: '', actividad: '', timbrado: '', vigencia: '', est: '001', pto: '001' },
       next: 1,
       ticket: { auto: false, ancho: 80 },
       correo: { service: '', template: '', key: '', auto: true, tickets: false },
@@ -852,7 +852,8 @@
   function ticketWidth(aj) { return +aj.ticket.ancho === 58 ? 48 : 72; }   // ancho imprimible en mm
   function ticketCSS(aj) {
     var w = ticketWidth(aj), small = w < 60;
-    return '@page{margin:0}' +
+    // margen 0 en la hoja: así Chrome no tiene lugar para poner fecha, título ni dirección arriba y abajo
+    return '@page{size:' + (w < 60 ? 58 : 80) + 'mm auto;margin:0 !important}' +
       'html,body{margin:0;padding:0;background:#fff}' +
       'body{width:' + w + 'mm;margin:0 auto;padding:2mm 0 0;color:#000;font:700 ' + (small ? 12 : 14) + 'px/1.4 Arial,Helvetica,sans-serif;' +
         '-webkit-print-color-adjust:exact;print-color-adjust:exact}' +
@@ -876,7 +877,8 @@
       var px = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
       var mm = Math.ceil(px * 25.4 / 96) + 2;
       var st = doc.createElement('style');
-      st.textContent = '@page{size:' + (+aj.ticket.ancho === 58 ? 58 : 80) + 'mm ' + mm + 'mm;margin:0}';
+      st.textContent = '@page{size:' + (+aj.ticket.ancho === 58 ? 58 : 80) + 'mm ' + mm + 'mm;margin:0 !important}';
+      doc.title = '\u200b';   // título vacío por si la impresora igual deja margen
       doc.head.appendChild(st);
       ifr.contentWindow.focus();
       ifr.contentWindow.print();
@@ -888,12 +890,14 @@
     var aj = P.ajustes || defaultAjustes(), f = aj.fiscal, st = S.data.store;
     var w = ticketWidth(aj);
     var L = function (a, b) { return '<div class="l"><span>' + a + '</span><span>' + b + '</span></div>'; };
-    var h = '<!doctype html><html><head><meta charset="utf-8"><title>Ticket ' + esc(sale.numero) + '</title><style>' + ticketCSS(aj) + '</style></head><body>';
+    var h = '<!doctype html><html><head><meta charset="utf-8"><title>&#8203;</title><style>' + ticketCSS(aj) + '</style></head><body>';
     h += '<h1>' + esc(f.fantasia || st.store_name) + '</h1>';
-    if (f.razon) h += '<div class="c">' + esc(f.razon) + '</div>';
+    // orden del encabezado: nombre, RUC, razón social, dirección, ciudad y teléfono
     if (f.ruc) h += '<div class="c">RUC ' + esc(f.ruc) + '</div>';
+    if (f.razon) h += '<div class="c">' + esc(f.razon) + '</div>';
     if (f.direccion || st.address) h += '<div class="c">' + esc(f.direccion || st.address) + '</div>';
-    if (f.telefono) h += '<div class="c">Tel. ' + esc(f.telefono) + '</div>';
+    if (f.ciudad) h += '<div class="c">' + esc(f.ciudad) + '</div>';
+    if (f.telefono) h += '<div class="c">' + esc(f.telefono) + '</div>';
     if (sale.fiscal) h += '<div class="c">Timbrado N° ' + esc(sale.fiscal.timbrado) + (f.vigencia ? ' · desde ' + esc(fmtDate(f.vigencia + 'T12:00:00')) : '') + '</div>';
     h += '<div class="hr"></div>';
     h += '<div class="c b">' + (isFactura(sale) ? 'FACTURA ELECTRÓNICA' : 'TICKET') + '</div>';
@@ -938,8 +942,9 @@
     });
     return pdfLib;
   }
-  async function makePdf(sale) {
+  async function makePdf(sale, forPrint) {
     var lib = await loadPdfLib();
+    var K = forPrint ? 1.2 : 1;   // para la impresora térmica: letra más grande y todo en negrita
     var aj = P.ajustes || defaultAjustes(), f = aj.fiscal, st = S.data.store;
     var W = +aj.ticket.ancho === 58 ? 58 : 80, M = 4, CW = W - M * 2;
     var rows = [];   // { t, r, align, bold, size, hr }
@@ -949,10 +954,11 @@
     var hr = function () { add({ hr: true }); };
     var plain = function (m) { return String(m).replace('Gs. ', ''); };
     c(f.fantasia || st.store_name, { bold: true, size: 11 });
-    if (f.razon) c(f.razon);
     if (f.ruc) c('RUC ' + f.ruc);
+    if (f.razon) c(f.razon);
     if (f.direccion || st.address) c(f.direccion || st.address);
-    if (f.telefono) c('Tel. ' + f.telefono);
+    if (f.ciudad) c(f.ciudad);
+    if (f.telefono) c(f.telefono);
     if (sale.fiscal) c('Timbrado N° ' + sale.fiscal.timbrado + (f.vigencia ? ' · desde ' + fmtDate(f.vigencia + 'T12:00:00') : ''));
     hr();
     c(isFactura(sale) ? 'FACTURA ELECTRÓNICA' : 'TICKET', { bold: true });
@@ -985,22 +991,24 @@
     var probe = new lib.jsPDF({ unit: 'mm', format: [W, 100], compress: true });
     var lines = rows.map(function (o) {
       if (o.hr) return { o: o, h: 3 };
-      probe.setFontSize(o.size || 9);
+      probe.setFont('helvetica', forPrint || o.bold ? 'bold' : 'normal');
+      probe.setFontSize((o.size || 9) * K);
       var avail = o.r != null ? CW * 0.55 : CW;
       var parts = probe.splitTextToSize(String(o.t), avail);
-      return { o: o, parts: parts, h: parts.length * (o.size || 9) * 0.42 + 0.8 };
+      return { o: o, parts: parts, h: parts.length * (o.size || 9) * K * 0.42 + 0.8 };
     });
-    var H = M * 2 + lines.reduce(function (t, x) { return t + x.h; }, 0);
+    // al imprimir se suman 2 renglones en blanco al final para que la impresora corte después del texto
+    var H = M * 2 + lines.reduce(function (t, x) { return t + x.h; }, 0) + (forPrint ? 9 : 0);
     var doc = new lib.jsPDF({ unit: 'mm', format: [W, Math.max(H, 40)], compress: true });
     var y = M;
     lines.forEach(function (x) {
       var o = x.o;
       if (o.hr) {
-        doc.setLineDashPattern([0.8, 0.8], 0); doc.setLineWidth(0.2);
+        doc.setLineDashPattern([0.8, 0.8], 0); doc.setLineWidth(forPrint ? 0.35 : 0.2);
         doc.line(M, y + 1.5, W - M, y + 1.5); y += 3; return;
       }
-      var size = o.size || 9;
-      doc.setFont('helvetica', o.bold ? 'bold' : 'normal');
+      var size = (o.size || 9) * K;
+      doc.setFont('helvetica', forPrint || o.bold ? 'bold' : 'normal');
       doc.setFontSize(size);
       var lh = size * 0.42, yy = y + lh;
       x.parts.forEach(function (part, i) {
@@ -1146,9 +1154,30 @@
     notify('ok', 'Se descargó el PDF: adjuntalo en el correo que se abrió (clip o arrastrar).' + (to ? '' : ' El cliente no tiene correo cargado: escribilo en "Para".'));
   }
 
+  /* Se imprime como PDF de 80 mm: así Chrome no agrega fecha, hora ni dirección arriba y abajo,
+     sin importar cómo esté configurada la ventana de impresión. Si no hay internet para preparar
+     el PDF, se imprime igual en el formato anterior. */
   function printTicket(sale) {
-    printThermal(ticketHTML(sale), P.ajustes || defaultAjustes());
+    makePdf(sale, true).then(printPdfBlob).catch(function () {
+      printThermal(ticketHTML(sale), P.ajustes || defaultAjustes());
+    });
   }
+  function printPdfBlob(blob) {
+    var url = URL.createObjectURL(blob);
+    var ifr = document.createElement('iframe');
+    ifr.setAttribute('aria-hidden', 'true');
+    ifr.style.cssText = 'position:fixed;left:-10000px;top:0;width:80mm;height:200px;border:0';
+    ifr.onload = function () {
+      setTimeout(function () {
+        try { ifr.contentWindow.focus(); ifr.contentWindow.print(); }
+        catch (e) { window.open(url, '_blank'); }   // si el navegador no deja, se abre el PDF para imprimirlo
+        setTimeout(function () { ifr.remove(); URL.revokeObjectURL(url); }, 60000);
+      }, 400);
+    };
+    ifr.src = url;
+    document.body.appendChild(ifr);
+  }
+
 
 
   /* =================================================================
@@ -1492,7 +1521,7 @@
     if (!P.ajustes) return;
     var f = P.ajustes.fiscal;
     $('#fRuc').value = f.ruc; $('#fTel').value = f.telefono; $('#fRazon').value = f.razon; $('#fFant').value = f.fantasia;
-    $('#fDir').value = f.direccion; $('#fAct').value = f.actividad; $('#fTimb').value = f.timbrado; $('#fVig').value = f.vigencia;
+    $('#fDir').value = f.direccion; $('#fCiudad').value = f.ciudad || ''; $('#fAct').value = f.actividad; $('#fTimb').value = f.timbrado; $('#fVig').value = f.vigencia;
     $('#fEst').value = f.est; $('#fPto').value = f.pto; $('#fNext').value = A.fmtNum(P.ajustes.next || 1);
     $('#fAncho').value = String(P.ajustes.ticket.ancho || 80); $('#fAuto').checked = !!P.ajustes.ticket.auto;
   }
@@ -1507,7 +1536,7 @@
       await loadPrivate();
       Object.assign(P.ajustes.fiscal, {
         ruc: ruc, telefono: $('#fTel').value.trim(), razon: $('#fRazon').value.trim(), fantasia: $('#fFant').value.trim(),
-        direccion: $('#fDir').value.trim(), actividad: $('#fAct').value.trim(), timbrado: $('#fTimb').value.replace(/\D/g, ''),
+        direccion: $('#fDir').value.trim(), ciudad: $('#fCiudad').value.trim(), actividad: $('#fAct').value.trim(), timbrado: $('#fTimb').value.replace(/\D/g, ''),
         vigencia: $('#fVig').value, est: pad($('#fEst').value.replace(/\D/g, '') || '1', 3), pto: pad($('#fPto').value.replace(/\D/g, '') || '1', 3)
       });
       P.ajustes.next = Math.max(1, num($('#fNext').value) || 1);
@@ -1854,7 +1883,7 @@
   /* Lo que usa assets/caja.js (Caja y Reportes) */
   A.V = { P: P, CAJA_PATH: CAJA_PATH, save: save, loadPrivate: loadPrivate, loadMonth: loadMonth, monthKey: monthKey,
           fmtDate: fmtDate, pad: pad, kpi: kpi, paginate: paginate, renderPager: renderPager, isFactura: isFactura,
-          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, printThermal: printThermal, ticketCSS: ticketCSS, defaultAjustes: defaultAjustes, hooks: {} };
+          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, printThermal: printThermal, printPdfBlob: printPdfBlob, ticketCSS: ticketCSS, defaultAjustes: defaultAjustes, hooks: {} };
 
   /* ---------------- conexión con el panel ---------------- */
   A.on('ready', function () {
