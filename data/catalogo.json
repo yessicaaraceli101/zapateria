@@ -214,11 +214,11 @@
         "7900407058624",
         "7900407058648"
       ],
-      "stock": 8,
+      "stock": 7,
       "sizes": [
         {
           "size": "34",
-          "stock": 1
+          "stock": 0
         },
         {
           "size": "35",
@@ -252,7 +252,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793108380,
-      "updated_at": 1793187513
+      "updated_at": 1793213671
     },
     {
       "id": "787ffa26f13f",
@@ -5861,65 +5861,6 @@
       "image": "",
       "created_at": 1793212722,
       "updated_at": 1793212722
-    },
-    {
-      "id": "dc513e90efd2",
-      "name": "CHATITA",
-      "category": "Zapatos",
-      "gender": "Dama",
-      "brand": "Vizzano",
-      "sku": "",
-      "code": "7909766244396",
-      "price": 135000,
-      "codes": [
-        "7909766244419",
-        "7909766244433",
-        "7909766244419",
-        "7909766244402",
-        "7909766244457",
-        "7909766244402",
-        "7909766244419",
-        "7909766244433"
-      ],
-      "stock": 10,
-      "sizes": [
-        {
-          "size": "34",
-          "stock": 1
-        },
-        {
-          "size": "35",
-          "stock": 2
-        },
-        {
-          "size": "36",
-          "stock": 3
-        },
-        {
-          "size": "37",
-          "stock": 2
-        },
-        {
-          "size": "38",
-          "stock": 2
-        },
-        {
-          "size": "39",
-          "stock": 0
-        },
-        {
-          "size": "40",
-          "stock": 0
-        }
-      ],
-      "colors": "",
-      "description": "CAMURCA FLEX-NEGRO 01",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793213452,
-      "updated_at": 1793213452
     }
   ]
 }
