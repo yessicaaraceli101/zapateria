@@ -3921,6 +3921,64 @@
       "image": "",
       "created_at": 1793196105,
       "updated_at": 1793196105
+    },
+    {
+      "id": "07083682c986",
+      "name": "BOTA DIAMANTE",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900245174654",
+      "price": 220000,
+      "codes": [
+        "7900245174647",
+        "7900245174654",
+        "7900245174678",
+        "7900245174708",
+        "7900245174692",
+        "7900245174654",
+        "7900245174630"
+      ],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA BERLIM DIAMANTE/NAPA BERLIM-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793196708,
+      "updated_at": 1793196708
     }
   ]
 }
