@@ -157,11 +157,11 @@
         "7900350917191",
         "7900350917207"
       ],
-      "stock": 13,
+      "stock": 12,
       "sizes": [
         {
           "size": "34",
-          "stock": 2
+          "stock": 1
         },
         {
           "size": "35",
@@ -195,7 +195,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793108157,
-      "updated_at": 1793219647
+      "updated_at": 1793187696
     },
     {
       "id": "bd221a70cc5a",
@@ -6384,6 +6384,52 @@
       "image": "",
       "created_at": 1793219374,
       "updated_at": 1793219374
+    },
+    {
+      "id": "f0e84f03fc52",
+      "name": "SUECO",
+      "category": "Sandalias",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900350339955",
+      "price": 135000,
+      "codes": [],
+      "stock": 7900350339887,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 7900350339887
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "GASPEA PRONTABUNXT/PELICA-BEIGE 435-GOLDEN SHADOW/CAMEL1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793219670,
+      "updated_at": 1793219670
     }
   ]
 }
