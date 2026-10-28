@@ -4769,6 +4769,68 @@
       "image": "",
       "created_at": 1793202255,
       "updated_at": 1793202255
+    },
+    {
+      "id": "025839351082",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900407036080",
+      "price": 140000,
+      "codes": [
+        "7900407036141",
+        "7900407036134",
+        "7900407036103"
+      ],
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA TURIM-BLANCO OFF/NUDE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793202887,
+      "updated_at": 1793202887
     }
   ]
 }
