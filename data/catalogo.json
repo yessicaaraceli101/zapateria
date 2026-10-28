@@ -3803,6 +3803,63 @@
       "image": "",
       "created_at": 1793195528,
       "updated_at": 1793195528
+    },
+    {
+      "id": "bf12a8572ef4",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900245735008",
+      "price": 190000,
+      "codes": [
+        "7900245734995",
+        "7900245735022",
+        "7900245735008",
+        "7900245734988",
+        "7900245735053",
+        "7900245735046"
+      ],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE-DORADO",
+      "description": "NP PELE STRECH/NP FLOA NAT/MET PREM-NUDE/DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793195902,
+      "updated_at": 1793195902
     }
   ]
 }
