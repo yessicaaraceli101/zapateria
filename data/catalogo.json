@@ -4902,7 +4902,7 @@
       "id": "7714baa828cf",
       "name": "SANDALIAS",
       "category": "Sandalias",
-      "gender": "Dama",
+      "gender": "Niños",
       "brand": "Molekinha",
       "sku": "",
       "code": "7909339694788",
@@ -4967,7 +4967,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793206364,
-      "updated_at": 1793206696
+      "updated_at": 1793206992
     },
     {
       "id": "bf4c5a14eb0e",
