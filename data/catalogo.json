@@ -5089,6 +5089,83 @@
       "image": "",
       "created_at": 1793206970,
       "updated_at": 1793207110
+    },
+    {
+      "id": "6c70bd436551",
+      "name": "SANDALIAS",
+      "category": "Sandalias",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350995281",
+      "price": 110000,
+      "codes": [
+        "7900350995250",
+        "7900350995298",
+        "7900350995267",
+        "7900350995243",
+        "7900350995236",
+        "7900350995311",
+        "7900350995229",
+        "7900350995274",
+        "7900350995267",
+        "7900350995304"
+      ],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 2
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        }
+      ],
+      "colors": "DORADO",
+      "description": "BRILHO ITALIA-DOURADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793207454,
+      "updated_at": 1793207454
     }
   ]
 }
