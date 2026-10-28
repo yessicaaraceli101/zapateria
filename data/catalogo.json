@@ -3507,6 +3507,62 @@
       "image": "",
       "created_at": 1793194212,
       "updated_at": 1793194212
+    },
+    {
+      "id": "a44986e38555",
+      "name": "BOTA BERLIN MICRO PERF",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900067769076",
+      "price": 190000,
+      "codes": [
+        "7900067769090",
+        "7900067769083",
+        "7900067769137",
+        "7900067769113",
+        "7900067769113"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 2
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "GALY",
+      "description": "NP BERLIM/NP MICRO PERF GALY/PELO TAN 1080",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793194473,
+      "updated_at": 1793194473
     }
   ]
 }
