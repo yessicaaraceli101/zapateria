@@ -592,14 +592,20 @@
     },
     {
       "id": "9a36f337d018",
-      "name": "RASTRERA7900294347115",
+      "name": "RASTRERA",
       "category": "Zapatos",
       "gender": "Dama",
       "brand": "Beira Rio",
       "sku": "",
       "code": "7900015536866",
       "price": 115000,
-      "codes": [],
+      "codes": [
+        "7900015536828",
+        "7900015536804",
+        "7900015536828",
+        "7900015536804",
+        "7900015536859"
+      ],
       "stock": 7,
       "sizes": [
         {
@@ -634,7 +640,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793110372,
-      "updated_at": 1793190292
+      "updated_at": 1793190789
     },
     {
       "id": "b087e39a9157",
