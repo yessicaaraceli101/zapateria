@@ -3450,6 +3450,63 @@
       "image": "",
       "created_at": 1793130347,
       "updated_at": 1793132982
+    },
+    {
+      "id": "6904ec143d3a",
+      "name": "BOTA GENEBRA STRECH",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7909968194710",
+      "price": 190000,
+      "codes": [
+        "7909968194697",
+        "7909968194727",
+        "7909968194666",
+        "7909968194697",
+        "7909968194697",
+        "7909968194666"
+      ],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 1
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GENEBRA/NAPA PELE STRECH-NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793194212,
+      "updated_at": 1793194212
     }
   ]
 }
