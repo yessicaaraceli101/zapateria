@@ -4968,6 +4968,66 @@
       "image": "",
       "created_at": 1793206364,
       "updated_at": 1793206364
+    },
+    {
+      "id": "bf4c5a14eb0e",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350549880",
+      "price": 100000,
+      "codes": [
+        "7900350529431",
+        "7900350549910",
+        "7900350549934",
+        "7900350549897",
+        "7900350549927"
+      ],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 1
+        }
+      ],
+      "colors": "PLATA",
+      "description": "BRILHO PLATA/TIRA PR BRILHO ITALIA-PLATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793206657,
+      "updated_at": 1793206657
     }
   ]
 }
