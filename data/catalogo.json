@@ -4137,6 +4137,81 @@
       "image": "",
       "created_at": 1793198809,
       "updated_at": 1793198809
+    },
+    {
+      "id": "29e7f2f76dcb",
+      "name": "BOTA",
+      "category": "Botas",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900407207794",
+      "price": 195000,
+      "codes": [
+        "7900407207817",
+        "7900407207824",
+        "7900407207848",
+        "7900407207800",
+        "7900407207893",
+        "7900407207886",
+        "7900407207862",
+        "7900407207848"
+      ],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 1
+        },
+        {
+          "size": "32",
+          "stock": 1
+        },
+        {
+          "size": "33",
+          "stock": 1
+        },
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 1
+        }
+      ],
+      "colors": "PRETO",
+      "description": "NAPA FLOATHER ZURIQUE/MILANO-PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793199152,
+      "updated_at": 1793199152
     }
   ]
 }
