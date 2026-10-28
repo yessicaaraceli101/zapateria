@@ -6495,6 +6495,61 @@
       "image": "",
       "created_at": 1793220050,
       "updated_at": 1793220050
+    },
+    {
+      "id": "6c989a1bd25e",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067121973",
+      "price": 115000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900067121959"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900067121966"
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900067121997"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900067122017"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900067122024"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "MEIA CANA PELICA-BLANCO OFF 526",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793220728,
+      "updated_at": 1793220728
     }
   ]
 }
