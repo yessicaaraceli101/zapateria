@@ -3563,6 +3563,67 @@
       "image": "",
       "created_at": 1793194473,
       "updated_at": 1793194473
+    },
+    {
+      "id": "90c4339e5983",
+      "name": "BOTA GENEBRA FLEX MATELASSE",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "7900123099963",
+      "price": 150000,
+      "codes": [
+        "7900123099970",
+        "7900123099970",
+        "7900123099994",
+        "7900123099956",
+        "7900123100010",
+        "7900123099994",
+        "7900123099970",
+        "7900123100010",
+        "7900123099994",
+        "7900123099963"
+      ],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3
+        },
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GENEBRA/NAPA FLEX MATELASSE-NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793194740,
+      "updated_at": 1793194740
     }
   ]
 }
