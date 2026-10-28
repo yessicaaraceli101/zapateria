@@ -5295,6 +5295,58 @@
       "image": "",
       "created_at": 1793208187,
       "updated_at": 1793208187
+    },
+    {
+      "id": "2352347bf356",
+      "name": "CHATITAS",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "7900350916088",
+      "price": 115000,
+      "codes": [
+        "7900350916040",
+        "7900350916057",
+        "7900350903408",
+        "7900350916064",
+        "7900350916033"
+      ],
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 1
+        },
+        {
+          "size": "19",
+          "stock": 1
+        },
+        {
+          "size": "20",
+          "stock": 1
+        },
+        {
+          "size": "21",
+          "stock": 1
+        },
+        {
+          "size": "22",
+          "stock": 1
+        },
+        {
+          "size": "24",
+          "stock": 1
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "VERNIZ PREMIUM/GLITER MINI SHINE-BLANCO/DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793208385,
+      "updated_at": 1793208385
     }
   ]
 }
