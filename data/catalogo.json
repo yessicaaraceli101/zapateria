@@ -6550,6 +6550,58 @@
       "image": "",
       "created_at": 1793220728,
       "updated_at": 1793220728
+    },
+    {
+      "id": "a3f9811dd3f8",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "7900067121799",
+      "price": 115000,
+      "codes": [],
+      "stock": 7900067121778,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900067121751"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900067121768"
+        },
+        {
+          "size": "36",
+          "stock": 7900067121775
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793220886,
+      "updated_at": 1793220886
     }
   ]
 }
