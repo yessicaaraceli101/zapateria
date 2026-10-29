@@ -1,11 +1,17 @@
 {
-  "version": 2,
+  "version": 3,
   "owner": "yessicaaraceli101",
   "repo": "zapateria",
   "branch": "main",
   "is_default": false,
-  "salt": "G2Bbpt8ilFk/6Jr/C5oQ/A==",
-  "iv": "95vd315BacchKwfv",
-  "ct": "LB3BOvTUwK5yIXlxBTnH0+13exsR1sv0f0TpbWE13CH/+pFU10AR55jDonPhwRrDRm6aGBKeBNFfra9EfgmofdDj/zXBkMDosgsahw6Uc/jxkdd3Z7xq8L86JGf1C8J2NY5WjY0/YDpgl+yZUgETswbWxhsEn8jm3oZmJCkqVEaT9kUneE0x+wIGAvIG0n4vslEZMr7O9HTIAJP4PGBTWhMdpIClQ9YmSI3B0dREnO+vhA==",
-  "iterations": 310000
+  "users": [
+    {
+      "user": "Usuario",
+      "role": "admin",
+      "salt": "8rqYPTPMFQ29RoqGbCmzug==",
+      "iv": "jIZGK5I9PRl4p7Dj",
+      "ct": "DMR9SszSg3A9dWbdi/Km16l1fFYYSazK6vQbLA2l51C8ERymAfC2F4rXS0Pz9VokwQvGpkOp/BuO1u1FKj2cjmYsYL+D/e370DlyPByfYVwFlOVwkGNRpZKp7iSFSqB3aJyR4xQBOB+qlfqXxZQ0mkRaMqGNU6ByRGWcAjIp4FSh16F5kLGWAd5wtlBP3A6JPCjrqxz6pCZgAIqxsF8vMiFuzgFAvBwK+yPMTpZSWD2Pcg==",
+      "iterations": 310000
+    }
+  ]
 }
