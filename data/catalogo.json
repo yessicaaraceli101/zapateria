@@ -6705,6 +6705,62 @@
       "image": "",
       "created_at": 1793272628,
       "updated_at": 1793272691
+    },
+    {
+      "id": "3227bafe4ce8",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "",
+      "price": 55000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900350001111"
+        },
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900350001128"
+        },
+        {
+          "size": "35",
+          "stock": 2
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900350001142"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900350001166"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900350001180"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900350001197"
+        }
+      ],
+      "colors": "NUDE/BLANCO",
+      "description": "TIRA PRONTA PVC-NUDE658/BLANCO99",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793273091,
+      "updated_at": 1793273091
     }
   ]
 }
