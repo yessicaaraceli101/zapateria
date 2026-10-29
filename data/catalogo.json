@@ -9753,7 +9753,7 @@
       "code": "",
       "price": 180000,
       "codes": [],
-      "stock": 6,
+      "stock": 7,
       "sizes": [
         {
           "size": "34",
@@ -9781,7 +9781,7 @@
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "40",
@@ -9795,7 +9795,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793305954,
-      "updated_at": 1793305954
+      "updated_at": 1793306107
     }
   ]
 }
