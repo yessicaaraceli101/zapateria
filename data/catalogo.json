@@ -6925,11 +6925,12 @@
       "code": "",
       "price": 300000,
       "codes": [],
-      "stock": 27900350951492,
+      "stock": 8,
       "sizes": [
         {
           "size": "38",
-          "stock": 27900350951492
+          "stock": 2,
+          "code": "7900350951492"
         },
         {
           "size": "39",
@@ -6937,19 +6938,23 @@
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 2,
+          "code": "7900350951515"
         },
         {
           "size": "41",
-          "stock": 0
+          "stock": 2,
+          "code": "7900350951522"
         },
         {
           "size": "42",
-          "stock": 0
+          "stock": 1,
+          "code": "7900350951539"
         },
         {
           "size": "43",
-          "stock": 0
+          "stock": 1,
+          "code": "7900350951546"
         },
         {
           "size": "44",
@@ -6957,13 +6962,13 @@
         }
       ],
       "colors": "AZUL GASPEA",
-      "description": "",
+      "description": "GASPEA LOC DUO/TEC CAIRO/AUSTRALIA IRON 1452/PRETO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793280080,
-      "updated_at": 1793280080
+      "updated_at": 1793280297
     }
   ]
 }
