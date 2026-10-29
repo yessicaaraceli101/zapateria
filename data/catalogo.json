@@ -8193,6 +8193,74 @@
       "image": "",
       "created_at": 1793294879,
       "updated_at": 1793294879
+    },
+    {
+      "id": "24ff1a4a14ea",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 125000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 2,
+          "code": "7900123201090"
+        },
+        {
+          "size": "32",
+          "stock": 2,
+          "code": "7900123201106"
+        },
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900123201113"
+        },
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900123201120"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900123201137"
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900123201144"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA FLOTER RUSTICO NEO/CAMURCAO\nNEGRO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793295215,
+      "updated_at": 1793295215
     }
   ]
 }
