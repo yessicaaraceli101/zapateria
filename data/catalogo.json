@@ -10231,6 +10231,62 @@
       "image": "",
       "created_at": 1793308768,
       "updated_at": 1793309005
+    },
+    {
+      "id": "63437a94708f",
+      "name": "BOTA TACO FIN",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 315000,
+      "codes": [],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900350887692"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900350887708"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900350887715"
+        },
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900350887739"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900350887753"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900350887760"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "napa negro taco alto fino",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793309223,
+      "updated_at": 1793309223
     }
   ]
 }
