@@ -7666,6 +7666,60 @@
       "image": "",
       "created_at": 1793287550,
       "updated_at": 1793287550
+    },
+    {
+      "id": "8baeaed81f21",
+      "name": "CHAMPION SIN CORDON",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 180000,
+      "codes": [],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900015401874"
+        },
+        {
+          "size": "39",
+          "stock": 3,
+          "code": "7900015401881"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "7900015401898"
+        },
+        {
+          "size": "41",
+          "stock": 2,
+          "code": "7900015401904"
+        },
+        {
+          "size": "42",
+          "stock": 1
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA VERMONT NEO NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793287845,
+      "updated_at": 1793287845
     }
   ]
 }
