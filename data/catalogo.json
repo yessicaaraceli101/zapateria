@@ -9113,6 +9113,72 @@
       "image": "",
       "created_at": 1793301998,
       "updated_at": 1793301998
+    },
+    {
+      "id": "ef5ee56150ce",
+      "name": "ZANDALIA",
+      "category": "SANDALIAS",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 110000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1,
+          "code": "7900294658358"
+        },
+        {
+          "size": "20",
+          "stock": 1,
+          "code": "7900294658365"
+        },
+        {
+          "size": "21",
+          "stock": 1,
+          "code": "7900294658372"
+        },
+        {
+          "size": "22",
+          "stock": 1,
+          "code": "7900294658389"
+        },
+        {
+          "size": "23",
+          "stock": 2,
+          "code": "7900294658396"
+        },
+        {
+          "size": "24",
+          "stock": 2,
+          "code": "7900294658402"
+        },
+        {
+          "size": "25",
+          "stock": 2,
+          "code": "7900294658419"
+        },
+        {
+          "size": "26",
+          "stock": 2,
+          "code": "7900294658426"
+        }
+      ],
+      "colors": "MARINO/CARAMELO",
+      "description": "NAPA FLOUTER RUSTICO NEO MARINO 488/CARAMELO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793302236,
+      "updated_at": 1793302236
     }
   ]
 }
