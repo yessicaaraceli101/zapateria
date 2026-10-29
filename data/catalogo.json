@@ -6812,6 +6812,57 @@
       "image": "",
       "created_at": 1793273342,
       "updated_at": 1793273518
+    },
+    {
+      "id": "aae75a2a6ea5",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "",
+      "price": 55000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900294364273"
+        },
+        {
+          "size": "35",
+          "stock": 1
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900294364297"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900294364310"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900294364334"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900294364341"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "TIRA PRONTA PVC-PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793273860,
+      "updated_at": 1793273860
     }
   ]
 }
