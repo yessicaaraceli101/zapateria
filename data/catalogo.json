@@ -7456,31 +7456,36 @@
       "code": "",
       "price": 300000,
       "codes": [],
-      "stock": 0,
+      "stock": 8,
       "sizes": [
         {
           "size": "38",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900407039319"
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 2,
+          "code": "7900407039326"
         },
         {
           "size": "41",
-          "stock": 0
+          "stock": 2,
+          "code": "7900407039333"
         },
         {
           "size": "42",
-          "stock": 0
+          "stock": 1,
+          "code": "7900407039340"
         },
         {
           "size": "43",
-          "stock": 0
+          "stock": 1,
+          "code": "7900407039357"
         },
         {
           "size": "44",
@@ -7494,7 +7499,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793284372,
-      "updated_at": 1793284372
+      "updated_at": 1793285814
     }
   ]
 }
