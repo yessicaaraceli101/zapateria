@@ -10554,6 +10554,62 @@
       "image": "",
       "created_at": 1793312862,
       "updated_at": 1793312927
+    },
+    {
+      "id": "ecbac74c7a8d",
+      "name": "ZAPATOS",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 220000,
+      "codes": [],
+      "stock": 24,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 3,
+          "code": "7900407017591"
+        },
+        {
+          "size": "39",
+          "stock": 3,
+          "code": "7900407017607"
+        },
+        {
+          "size": "40",
+          "stock": 6,
+          "code": "7900407017614"
+        },
+        {
+          "size": "41",
+          "stock": 6,
+          "code": "7900407017621"
+        },
+        {
+          "size": "42",
+          "stock": 3,
+          "code": "7900407017638"
+        },
+        {
+          "size": "43",
+          "stock": 3,
+          "code": "7900407017645"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "CAFE",
+      "description": "NAPA FLOATHER MADRI-CAFE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793314001,
+      "updated_at": 1793314001
     }
   ]
 }
