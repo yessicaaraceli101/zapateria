@@ -9527,6 +9527,58 @@
       "image": "",
       "created_at": 1793303661,
       "updated_at": 1793303661
+    },
+    {
+      "id": "d1fe06e40c42",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7909800162525"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7909800162532"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7909800162556"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7909800162570"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7909800162587"
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7909800162594"
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "PELICA BLANCO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793303871,
+      "updated_at": 1793303871
     }
   ]
 }
