@@ -7720,6 +7720,65 @@
       "image": "",
       "created_at": 1793287845,
       "updated_at": 1793287845
+    },
+    {
+      "id": "8a62cadbed1f",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900123551041"
+        },
+        {
+          "size": "39",
+          "stock": 3,
+          "code": "7900123551058"
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "7900123551065"
+        },
+        {
+          "size": "41",
+          "stock": 1,
+          "code": "7900123551072"
+        },
+        {
+          "size": "42",
+          "stock": 1,
+          "code": "7900123551089"
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA MONACO NEO BLANCO 99",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793289053,
+      "updated_at": 1793289053
     }
   ]
 }
