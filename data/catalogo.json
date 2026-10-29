@@ -9630,6 +9630,62 @@
       "image": "",
       "created_at": 1793304719,
       "updated_at": 1793304719
+    },
+    {
+      "id": "230cc04a98bb",
+      "name": "ESTILETO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 190000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7890468388740"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7890468388757"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7890468388764"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7890468388788"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7890468388917"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7890468389624"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BEIGE",
+      "description": "ESTILETO PELICA BEIGE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793305041,
+      "updated_at": 1793305041
     }
   ]
 }
