@@ -11,7 +11,15 @@
       "salt": "dTzRATGcieTJ48nrfGqjCg==",
       "iv": "bTqhI24br9M+Tn4s",
       "ct": "E56Yxp7evC8QlfN4dPDpNqgq0lrqdd+vMVcOI2rdkRlh3PCDrmtYFy1FAo7xTwWZMrq5T3uweYBgE6eeqCjBx7npLOMzeZfsgIF9BX55K734O1kGI2K5VsAE9rt/XNlw7wwQqKarLN/XHcm7xWh7LEY2hR7yI7rlTUNxUMwejzTXLsk1c6D8vB+vHIWWtu3VrVFm1Gzu70a6uPUE8tDQoNfZtcIU9QbRvPExL1vn5kA2SQ==",
-      "iterations": 310000
+      "iterations": 310000,
+      "perms": [
+        "caja",
+        "vender",
+        "productos",
+        "ventas",
+        "clientes",
+        "compras"
+      ]
     },
     {
       "user": "Eliza",
