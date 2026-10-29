@@ -10122,6 +10122,60 @@
       "image": "",
       "created_at": 1793307837,
       "updated_at": 1793307837
+    },
+    {
+      "id": "ef4cf07fb30b",
+      "name": "BOTA CAÑO MEDIO",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900350888392"
+        },
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900350888415"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900350888439"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900350888453"
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA NEGRO TACO FINO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793308449,
+      "updated_at": 1793308449
     }
   ]
 }
