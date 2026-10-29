@@ -8055,6 +8055,74 @@
       "image": "",
       "created_at": 1793293072,
       "updated_at": 1793293490
+    },
+    {
+      "id": "5fb78024bf23",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900067565791"
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 1,
+          "code": "7900067565814"
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900067565838"
+        },
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900067565845"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900067565852"
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900067565869"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA MONACO-VERMONT-NEGRO01-CAMEL810",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793294387,
+      "updated_at": 1793294387
     }
   ]
 }
