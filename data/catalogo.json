@@ -9686,6 +9686,59 @@
       "image": "",
       "created_at": 1793305041,
       "updated_at": 1793305041
+    },
+    {
+      "id": "7da7ed8f406f",
+      "name": "ESTILETO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 180000,
+      "codes": [],
+      "stock": 7890468646227,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7890468644938"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7890468644969"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7890468645706"
+        },
+        {
+          "size": "37",
+          "stock": 7890468646222
+        },
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "ESTILETO PELICA NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793305389,
+      "updated_at": 1793305389
     }
   ]
 }
