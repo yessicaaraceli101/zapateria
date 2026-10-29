@@ -10663,6 +10663,58 @@
       "image": "",
       "created_at": 1793314429,
       "updated_at": 1793314535
+    },
+    {
+      "id": "e27942d47955",
+      "name": "ZAPATOS",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "321756108102"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "321756108103"
+        },
+        {
+          "size": "41",
+          "stock": 1
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "LATEGO-CARAMELO-EST DIAMANTES",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793314819,
+      "updated_at": 1793314819
     }
   ]
 }
