@@ -9796,6 +9796,62 @@
       "image": "",
       "created_at": 1793305954,
       "updated_at": 1793306107
+    },
+    {
+      "id": "edade0d68744",
+      "name": "ESTILETO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 180000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7909641030274"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7909641030281"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7909641030298"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7909641030311"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7909641030335"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7909641030342"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NUDE",
+      "description": "ESTILETO PELICA NUDE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793306390,
+      "updated_at": 1793306390
     }
   ]
 }
