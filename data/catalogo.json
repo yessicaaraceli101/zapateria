@@ -9957,6 +9957,62 @@
       "image": "",
       "created_at": 1793306974,
       "updated_at": 1793306974
+    },
+    {
+      "id": "38bae1a91085",
+      "name": "STILETTO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 185000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7890468432849"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7890468432856"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7890468432863"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7890468432887"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7890468433006"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7890468433013"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BEIGE",
+      "description": "STILETTO BEIGE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793307270,
+      "updated_at": 1793307270
     }
   ]
 }
