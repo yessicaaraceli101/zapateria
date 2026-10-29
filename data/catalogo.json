@@ -6609,11 +6609,16 @@
       "gender": "Dama",
       "brand": "Beira Rio",
       "sku": "",
-      "code": "7900190476193",
+      "code": "",
       "price": 55000,
       "codes": [],
-      "stock": 37900190476157,
+      "stock": 12,
       "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900190476148"
+        },
         {
           "size": "35",
           "stock": 2,
@@ -6621,33 +6626,33 @@
         },
         {
           "size": "36",
-          "stock": 37900190476155
+          "stock": 3,
+          "code": "7900190476155"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 3,
+          "code": "7900190476179"
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 2,
+          "code": "7900190476193"
         },
         {
           "size": "39",
-          "stock": 0
-        },
-        {
-          "size": "40",
-          "stock": 0
+          "stock": 1,
+          "code": "7900190476209"
         }
       ],
       "colors": "DORADO",
-      "description": "",
+      "description": "TIRA PRONTA PVC-GLITER-D0RADO 1190",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793271736,
-      "updated_at": 1793271736
+      "updated_at": 1793271931
     }
   ]
 }
