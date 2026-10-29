@@ -7282,6 +7282,57 @@
       "image": "",
       "created_at": 1793282525,
       "updated_at": 1793282525
+    },
+    {
+      "id": "d06459b92e0c",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 185000,
+      "codes": [],
+      "stock": 2,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7900294146992"
+        },
+        {
+          "size": "41",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO/LILA",
+      "description": "NILON KANSAS/AUSTRALIA-PRETO01 01/VIOLETA 1221/PRETO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793282784,
+      "updated_at": 1793282784
     }
   ]
 }
