@@ -10768,6 +10768,57 @@
       "image": "",
       "created_at": 1793315575,
       "updated_at": 1793315868
+    },
+    {
+      "id": "9ed671d59d7b",
+      "name": "CHATA FREEWAY",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 4,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 4,
+          "code": "7892758836672"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "CAFE",
+      "description": "CAFE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793316133,
+      "updated_at": 1793316133
     }
   ]
 }
