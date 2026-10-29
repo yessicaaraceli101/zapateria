@@ -7500,6 +7500,61 @@
       "image": "",
       "created_at": 1793284372,
       "updated_at": 1793285814
+    },
+    {
+      "id": "6bf0c0218cfe",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 220000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900123136057"
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "7900123136064"
+        },
+        {
+          "size": "41",
+          "stock": 3,
+          "code": "7900123136071"
+        },
+        {
+          "size": "42",
+          "stock": 2,
+          "code": "7900123136088"
+        },
+        {
+          "size": "43",
+          "stock": 1,
+          "code": "7900123136095"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA VERMONT NEO/CAMURCAO NEGRO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793286171,
+      "updated_at": 1793286171
     }
   ]
 }
