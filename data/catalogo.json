@@ -7555,6 +7555,57 @@
       "image": "",
       "created_at": 1793286171,
       "updated_at": 1793286171
+    },
+    {
+      "id": "a2b558e5115a",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 190000,
+      "codes": [],
+      "stock": 27900015152234,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900015152226"
+        },
+        {
+          "size": "40",
+          "stock": 27900015152233
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793286524,
+      "updated_at": 1793286524
     }
   ]
 }
