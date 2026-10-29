@@ -9309,6 +9309,61 @@
       "image": "",
       "created_at": 1793302702,
       "updated_at": 1793302727
+    },
+    {
+      "id": "a3a3fee304b1",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 120000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900407413614"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "7900407413621"
+        },
+        {
+          "size": "41",
+          "stock": 2,
+          "code": "7900407413638"
+        },
+        {
+          "size": "42",
+          "stock": 1,
+          "code": "7900407413645"
+        },
+        {
+          "size": "43",
+          "stock": 1,
+          "code": "7900407413652"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "CAFE",
+      "description": "NAAPA VERMONT NEO- CAFE",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793302940,
+      "updated_at": 1793302940
     }
   ]
 }
