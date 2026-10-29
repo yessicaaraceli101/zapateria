@@ -7333,6 +7333,62 @@
       "image": "",
       "created_at": 1793282784,
       "updated_at": 1793282784
+    },
+    {
+      "id": "9e30df53bdb5",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 185000,
+      "codes": [],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900245797006"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900245797013"
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900245797020"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900245797044"
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900245797075"
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7900245797082"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "GASPEA LOC ONIX/ELEVAN/AUSTRALIA-NEGRO01/NEGRO/GRIS/VIOLETT",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793283039,
+      "updated_at": 1793283039
     }
   ]
 }
