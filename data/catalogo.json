@@ -7986,6 +7986,70 @@
       "image": "",
       "created_at": 1793292685,
       "updated_at": 1793292685
+    },
+    {
+      "id": "197de821a40c",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 17900245462682,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900245462614"
+        },
+        {
+          "size": "30",
+          "stock": 1,
+          "code": "7900245462621"
+        },
+        {
+          "size": "31",
+          "stock": 1,
+          "code": "7900245462638"
+        },
+        {
+          "size": "32",
+          "stock": 1,
+          "code": "7900245462645"
+        },
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900245462652"
+        },
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900245462669"
+        },
+        {
+          "size": "35",
+          "stock": 17900245462676
+        }
+      ],
+      "colors": "BLANCO-GRIS",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793293072,
+      "updated_at": 1793293072
     }
   ]
 }
