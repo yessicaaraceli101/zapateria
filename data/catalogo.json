@@ -6863,6 +6863,56 @@
       "image": "",
       "created_at": 1793273860,
       "updated_at": 1793273860
+    },
+    {
+      "id": "628f41ac913f",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 165000,
+      "codes": [],
+      "stock": 7900407610341,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 7900407610341
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793274132,
+      "updated_at": 1793274132
     }
   ]
 }
