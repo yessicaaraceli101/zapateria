@@ -10504,56 +10504,6 @@
       "image": "",
       "created_at": 1793311293,
       "updated_at": 1793311293
-    },
-    {
-      "id": "53a463e27a37",
-      "name": "ZAPATO",
-      "category": "Zapatos",
-      "gender": "Caballero",
-      "brand": "BR Sport",
-      "sku": "",
-      "code": "",
-      "price": 200000,
-      "codes": [],
-      "stock": 8,
-      "sizes": [
-        {
-          "size": "38",
-          "stock": 1
-        },
-        {
-          "size": "39",
-          "stock": 1
-        },
-        {
-          "size": "40",
-          "stock": 2
-        },
-        {
-          "size": "41",
-          "stock": 2
-        },
-        {
-          "size": "42",
-          "stock": 1
-        },
-        {
-          "size": "43",
-          "stock": 1
-        },
-        {
-          "size": "44",
-          "stock": 0
-        }
-      ],
-      "colors": "CAFE",
-      "description": "MAPA MONACO CAFE",
-      "installments": [],
-      "visible": true,
-      "iva": 10,
-      "image": "",
-      "created_at": 1793312474,
-      "updated_at": 1793312566
     }
   ]
 }
