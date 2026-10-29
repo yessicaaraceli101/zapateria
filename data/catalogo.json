@@ -10342,6 +10342,57 @@
       "image": "",
       "created_at": 1793309771,
       "updated_at": 1793309771
+    },
+    {
+      "id": "597d829b91f4",
+      "name": "STILETTO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 190000,
+      "codes": [],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7890468388658"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7890468388665"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7890468388689"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7890468388702"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7890468388719"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "STILETTO NEGFRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793310013,
+      "updated_at": 1793310013
     }
   ]
 }
