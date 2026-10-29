@@ -7443,6 +7443,56 @@
       "image": "",
       "created_at": 1793283564,
       "updated_at": 1793283710
+    },
+    {
+      "id": "7f18140f51b1",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 0,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "GASPEA LOC DUO/TEC CAIRO/AUSTRALIA NEGRO-GRIS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793284372,
+      "updated_at": 1793284372
     }
   ]
 }
