@@ -10819,6 +10819,59 @@
       "image": "",
       "created_at": 1793316133,
       "updated_at": 1793316133
+    },
+    {
+      "id": "13a41d3b0c60",
+      "name": "ZAPATON DE CAÑON",
+      "category": "Botas",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 145000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "850237286803"
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 2,
+          "code": "824805786804"
+        },
+        {
+          "size": "43",
+          "stock": 3,
+          "code": "818616776802"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "BOTAS DE TRABAJOS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793316796,
+      "updated_at": 1793316796
     }
   ]
 }
