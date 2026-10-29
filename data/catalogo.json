@@ -8353,6 +8353,63 @@
       "image": "",
       "created_at": 1793295939,
       "updated_at": 1793295939
+    },
+    {
+      "id": "2c2c159f1cee",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 170000,
+      "codes": [],
+      "stock": 4,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 1,
+          "code": "7900350909486"
+        },
+        {
+          "size": "28",
+          "stock": 1,
+          "code": "7900350909493"
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900350909509"
+        },
+        {
+          "size": "30",
+          "stock": 1
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO-NEGRO",
+      "description": "NAPA FLOTER RUSTICO NEO-BLANCO 99/NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793296232,
+      "updated_at": 1793296232
     }
   ]
 }
