@@ -8853,6 +8853,27 @@
       "image": "",
       "created_at": 1793300860,
       "updated_at": 1793300860
+    },
+    {
+      "id": "792441457bec",
+      "name": "ZAPATO S/CORDON BEBE",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 0,
+      "sizes": [],
+      "colors": "PINON",
+      "description": "PIÑON NAPA MONACO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793301050,
+      "updated_at": 1793301050
     }
   ]
 }
