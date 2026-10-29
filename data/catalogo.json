@@ -7230,6 +7230,58 @@
       "image": "",
       "created_at": 1793282291,
       "updated_at": 1793282291
+    },
+    {
+      "id": "e52e2908769a",
+      "name": "ZAPATITO S/CORDON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900123288336"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900123288343"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900123288350"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900123288374"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900123288398"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900123288404"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA FLOATHER CLASSIC NEO NEGRO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793282525,
+      "updated_at": 1793282525
     }
   ]
 }
