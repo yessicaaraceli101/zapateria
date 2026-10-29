@@ -8421,7 +8421,7 @@
       "code": "",
       "price": 140000,
       "codes": [],
-      "stock": 7900350974883,
+      "stock": 6,
       "sizes": [
         {
           "size": "27",
@@ -8437,7 +8437,8 @@
         },
         {
           "size": "30",
-          "stock": 7900350974880
+          "stock": 1,
+          "code": "7900350974880"
         },
         {
           "size": "31",
@@ -8445,7 +8446,8 @@
         },
         {
           "size": "32",
-          "stock": 0
+          "stock": 1,
+          "code": "7900350974903"
         },
         {
           "size": "33",
@@ -8453,7 +8455,8 @@
         },
         {
           "size": "34",
-          "stock": 0
+          "stock": 1,
+          "code": "7900350974927"
         },
         {
           "size": "36",
@@ -8461,13 +8464,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "",
+      "description": "TECIDO BOSTON/NAPA FLOTER RUSTI NEO-NEGRO 01",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793296601,
-      "updated_at": 1793296601
+      "updated_at": 1793296835
     }
   ]
 }
