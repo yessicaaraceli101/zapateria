@@ -6914,6 +6914,56 @@
       "image": "",
       "created_at": 1793274132,
       "updated_at": 1793279865
+    },
+    {
+      "id": "c31e997d38e1",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 27900350951492,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 27900350951492
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "AZUL GASPEA",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793280080,
+      "updated_at": 1793280080
     }
   ]
 }
