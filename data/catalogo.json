@@ -9418,6 +9418,61 @@
       "image": "",
       "created_at": 1793303205,
       "updated_at": 1793303205
+    },
+    {
+      "id": "2e08a39ec37b",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7909800392342"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7909800392359"
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "7909800392366"
+        },
+        {
+          "size": "41",
+          "stock": 3,
+          "code": "7909800392373"
+        },
+        {
+          "size": "42",
+          "stock": 2,
+          "code": "7909800392380"
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA FLOTER RUSTICO NEO BLANCO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793303428,
+      "updated_at": 1793303428
     }
   ]
 }
