@@ -6601,6 +6601,53 @@
       "image": "",
       "created_at": 1793222633,
       "updated_at": 1793222917
+    },
+    {
+      "id": "fa42c6eecf4e",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "7900190476193",
+      "price": 55000,
+      "codes": [],
+      "stock": 37900190476157,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900190445304"
+        },
+        {
+          "size": "36",
+          "stock": 37900190476155
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "DORADO",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793271736,
+      "updated_at": 1793271736
     }
   ]
 }
