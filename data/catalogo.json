@@ -7179,6 +7179,57 @@
       "image": "",
       "created_at": 1793281899,
       "updated_at": 1793281899
+    },
+    {
+      "id": "ef0672abe11a",
+      "name": "ZAPAITO S/ CORDON",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900294700965"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900294700972"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900294700996"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900294701016"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900294701023"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA SUPREMA NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793282291,
+      "updated_at": 1793282291
     }
   ]
 }
