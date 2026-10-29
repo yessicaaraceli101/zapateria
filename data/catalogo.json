@@ -8125,6 +8125,74 @@
       "image": "",
       "created_at": 1793294387,
       "updated_at": 1793294482
+    },
+    {
+      "id": "7677e31ac168",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900123056034"
+        },
+        {
+          "size": "30",
+          "stock": 1,
+          "code": "7900123056041"
+        },
+        {
+          "size": "31",
+          "stock": 2,
+          "code": "7900123056058"
+        },
+        {
+          "size": "32",
+          "stock": 2,
+          "code": "7900123056065"
+        },
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900123056072"
+        },
+        {
+          "size": "34",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900123056102"
+        },
+        {
+          "size": "45",
+          "stock": 1
+        }
+      ],
+      "colors": "CAFE",
+      "description": "NAPA MONACO NEO/NAPA VERMON NEO PINON 1203/CAFE 569",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793294879,
+      "updated_at": 1793294879
     }
   ]
 }
