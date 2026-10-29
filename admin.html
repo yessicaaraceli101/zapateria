@@ -11,6 +11,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css?v=20261029">
+<style>
+.pass-wrap { position: relative; display: block; }
+.pass-wrap input { width: 100%; padding-right: 46px; box-sizing: border-box; }
+.pass-eye {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px; border: 0; background: none; color: #64748b; cursor: pointer; border-radius: 8px;
+}
+.pass-eye:hover { color: #0f172a; }
+.pass-eye:focus-visible { outline: 2px solid #1b8fdc; outline-offset: 1px; }
+</style>
 <link rel="icon" type="image/svg+xml" href="assets/icono.svg">
 </head>
 <body class="admin">
@@ -27,7 +38,14 @@
 
     <form id="loginForm" class="stack login-form">
       <label class="fld"><span>Usuario</span><input id="lUser" autocomplete="username" required></label>
-      <label class="fld"><span>Contraseña</span><input id="lPass" type="password" autocomplete="current-password" required></label>
+      <label class="fld"><span>Contraseña</span>
+        <div class="pass-wrap">
+          <input id="lPass" type="password" autocomplete="current-password" required>
+          <button type="button" class="pass-eye" id="lEye" aria-label="Mostrar contraseña" aria-pressed="false" title="Mostrar contraseña">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+          </button>
+        </div>
+      </label>
       <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
     </form>
 
@@ -585,9 +603,29 @@
 </div>
 
 <script src="assets/comun.js?v=20261029"></script>
-<script src="assets/admin.js?v=20261029"></script>
+<script src="assets/admin.js?v=20261030"></script>
 <script src="assets/ventas.js?v=20261029"></script>
 <script src="assets/caja.js?v=20261029"></script>
 <script src="assets/contactos.js?v=20261029"></script>
+<script>
+/* Ojito para ver u ocultar la contraseña del ingreso */
+(function () {
+  var eye = document.getElementById('lEye'), input = document.getElementById('lPass');
+  if (!eye || !input) return;
+  function svg(p) { return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+  var CLOSED = svg('<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/>');
+  var OPEN = svg('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>');
+  eye.innerHTML = CLOSED;
+  eye.addEventListener('click', function () {
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    eye.innerHTML = show ? OPEN : CLOSED;
+    eye.setAttribute('aria-pressed', show ? 'true' : 'false');
+    eye.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    eye.title = show ? 'Ocultar contraseña' : 'Mostrar contraseña';
+    input.focus();
+  });
+})();
+</script>
 </body>
 </html>
