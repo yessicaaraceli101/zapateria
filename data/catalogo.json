@@ -9048,6 +9048,71 @@
       "image": "",
       "created_at": 1793301738,
       "updated_at": 1793301738
+    },
+    {
+      "id": "d1e1e4ab3098",
+      "name": "SANDALIA",
+      "category": "SANDALIAS",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 110000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1
+        },
+        {
+          "size": "20",
+          "stock": 1,
+          "code": "7900294145971"
+        },
+        {
+          "size": "21",
+          "stock": 2,
+          "code": "7900294145988"
+        },
+        {
+          "size": "22",
+          "stock": 2,
+          "code": "7900294145995"
+        },
+        {
+          "size": "23",
+          "stock": 2,
+          "code": "7900294146008"
+        },
+        {
+          "size": "24",
+          "stock": 2,
+          "code": "7900294146015"
+        },
+        {
+          "size": "25",
+          "stock": 1,
+          "code": "7900294146022"
+        },
+        {
+          "size": "26",
+          "stock": 1,
+          "code": "7900294146039"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA FLOUTER RUSTICO NEO NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793301998,
+      "updated_at": 1793301998
     }
   ]
 }
