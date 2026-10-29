@@ -7610,6 +7610,62 @@
       "image": "",
       "created_at": 1793286524,
       "updated_at": 1793286646
+    },
+    {
+      "id": "fa6a73e4f1a9",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 190000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900294660313"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900294660320"
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "7900294660337"
+        },
+        {
+          "size": "41",
+          "stock": 3,
+          "code": "7900294660344"
+        },
+        {
+          "size": "42",
+          "stock": 2,
+          "code": "7900294660351"
+        },
+        {
+          "size": "43",
+          "stock": 1,
+          "code": "7900294660368"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "NAPA VERMONT NEO CAFE 569",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793287550,
+      "updated_at": 1793287550
     }
   ]
 }
