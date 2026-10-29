@@ -2012,7 +2012,7 @@
       "sku": "",
       "code": "",
       "price": 70000,
-      "stock": 6,
+      "stock": 3,
       "sizes": [
         {
           "size": "35",
@@ -2020,11 +2020,11 @@
         },
         {
           "size": "36",
-          "stock": 3
+          "stock": 2
         },
         {
           "size": "37",
-          "stock": 1
+          "stock": 0
         },
         {
           "size": "38",
@@ -2032,7 +2032,7 @@
         },
         {
           "size": "39",
-          "stock": 1
+          "stock": 0
         },
         {
           "size": "40",
@@ -2046,7 +2046,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793121982,
-      "updated_at": 1793121982
+      "updated_at": 1793284932
     },
     {
       "id": "d1bd0ec7c229",
