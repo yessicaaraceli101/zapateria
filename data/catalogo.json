@@ -9902,6 +9902,61 @@
       "image": "",
       "created_at": 1793306675,
       "updated_at": 1793306675
+    },
+    {
+      "id": "fca681818b43",
+      "name": "ESTILETO TACO GRUESO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 190000,
+      "codes": [],
+      "stock": 9,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7909671153387"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7909671153394"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7909671153400"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7909671153424"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7909671153448"
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BEIGE",
+      "description": "PELICA BEIGE ESTILETO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793306974,
+      "updated_at": 1793306974
     }
   ]
 }
