@@ -9244,6 +9244,70 @@
       "image": "",
       "created_at": 1793302485,
       "updated_at": 1793302485
+    },
+    {
+      "id": "d5b701558db0",
+      "name": "ZAPATO S/ CORDON",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 10,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 1
+        },
+        {
+          "size": "28",
+          "stock": 1
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900245992913"
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 2,
+          "code": "7900245992937"
+        },
+        {
+          "size": "32",
+          "stock": 2,
+          "code": "7900245992944"
+        },
+        {
+          "size": "33",
+          "stock": 1,
+          "code": "7900245992951"
+        },
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900245992968"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900245992975"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NP MON NEO MIC/MON NEGRO /NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793302702,
+      "updated_at": 1793302702
     }
   ]
 }
