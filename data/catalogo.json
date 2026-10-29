@@ -6653,6 +6653,58 @@
       "image": "",
       "created_at": 1793271736,
       "updated_at": 1793271931
+    },
+    {
+      "id": "39381194ff28",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "",
+      "price": 55000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900190637112"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900190637129"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900190637136"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900190637150"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900190637174"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900190637181"
+        }
+      ],
+      "colors": "NUDE",
+      "description": "TIRA PRONTA 6MM GLAM-AURORA 568",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793272628,
+      "updated_at": 1793272628
     }
   ]
 }
