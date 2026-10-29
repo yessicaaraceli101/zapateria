@@ -7997,7 +7997,7 @@
       "code": "",
       "price": 135000,
       "codes": [],
-      "stock": 17900245462682,
+      "stock": 8,
       "sizes": [
         {
           "size": "27",
@@ -8039,17 +8039,22 @@
         },
         {
           "size": "35",
-          "stock": 17900245462676
+          "stock": 1,
+          "code": "7900245462676"
+        },
+        {
+          "size": "36",
+          "stock": 1
         }
       ],
       "colors": "BLANCO-GRIS",
-      "description": "",
+      "description": "NAPAFLOTRUST-CAMURC-BLANCO 99GRIS",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793293072,
-      "updated_at": 1793293072
+      "updated_at": 1793293490
     }
   ]
 }
