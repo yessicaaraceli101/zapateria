@@ -772,3 +772,37 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
 .rows-sizes .row input.sz { flex: 0 0 64px; }
 .rows-sizes .row input.st { flex: 0 0 70px; }
 .rows-sizes .row input.sc { flex: 1 1 140px; min-width: 120px; font-size: .9rem; }
+
+/* ---------- Usuarios ---------- */
+.whoami { font-weight: 700; font-size: .92rem; }
+.whoami small { display: block; font-weight: 600; opacity: .8; font-size: .75rem; }
+.user-list { display: grid; gap: 8px; margin-bottom: 6px; }
+.user-row { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.user-main { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.user-me { font-size: .75rem; color: var(--muted); font-weight: 700; }
+.role-tag { font-size: .74rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; }
+.role-tag.is-admin { background: #1a91da; color: #fff; }
+.role-tag.is-cajero { background: #fff1d6; color: #7a4b00; }
+.user-acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.user-acts select { min-height: 34px; border: 1px solid var(--line); border-radius: 8px; padding: 0 8px; }
+.user-pass { display: flex; gap: 8px; flex-wrap: wrap; }
+.user-pass input { flex: 1 1 180px; min-height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; }
+.user-new-title { font-size: 1rem; margin: 14px 0 8px; }
+/* El cajero no ve lo que es solo para administradores */
+.role-cajero .admin-only { display: none !important; }
+
+/* ---------- Clientes y Proveedores ---------- */
+.ct-grid { grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); }
+.ct-list-box { min-width: 0; }
+.tbl-ct { min-width: 620px; }
+.client-find { margin-bottom: 8px; }
+.client-find input { width: 100%; min-height: 42px; padding: 0 12px; border: 1.5px solid var(--primary); border-radius: var(--radius-sm); }
+.client-find .pick-list, .prov-find .pick-list { top: calc(100% + 4px); max-height: 260px; }
+.prov-find .pos-search input { width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+@media (max-width: 900px) { .ct-grid { grid-template-columns: minmax(0, 1fr); } }
+/* casilla chica en el campo de proveedor */
+.prov-find .check { margin-top: 6px; }
+.prov-find .check input { width: 18px; height: 18px; min-height: 0; flex: none; }
+.user-perms { display: grid; gap: 8px; padding: 10px; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--surface-2); }
+.perm-grid { display: grid; gap: 6px 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.perm-grid .perm-extra { grid-column: 1 / -1; color: #b45309; }

@@ -20,7 +20,7 @@
   var USER_RE = /^[A-Za-z0-9._@-]{3,40}$/;
   var enc = new TextEncoder(), dec = new TextDecoder();
 
-  var S = { repo: null, token: '', dataKey: '', user: '', auth: null, authSha: null, data: null, busy: false };
+  var S = { repo: null, token: '', dataKey: '', user: '', role: 'admin', auth: null, authSha: null, data: null, busy: false };
 
   /* ---------------- base64 ---------------- */
   function b64(buf) {
@@ -63,6 +63,60 @@
     return { token: pt, dataKey: '' };
   }
   function newDataKey() { return b64(crypto.getRandomValues(new Uint8Array(32))); }
+
+  /* ---------------- usuarios: administrador y cajero ----------------
+     Cada usuario tiene su propia copia cifrada (con su usuario y contraseña) del permiso de guardado. */
+  var ROLES = { admin: 'Administrador', cajero: 'Cajero' };
+  var CAJERO_TABS = ['caja', 'vender', 'productos', 'ventas', 'clientes'];   // lo que ve un cajero si el administrador no eligió otra cosa
+  /* Permisos que el administrador puede dar o quitar a cada cajero */
+  var PERMS = [
+    { k: 'caja', t: 'Caja' }, { k: 'vender', t: 'Vender' }, { k: 'productos', t: 'Productos' }, { k: 'ventas', t: 'Ventas' },
+    { k: 'clientes', t: 'Clientes' }, { k: 'compras', t: 'Compras' }, { k: 'proveedores', t: 'Proveedores' },
+    { k: 'reportes', t: 'Reportes' }, { k: 'marcas', t: 'Marcas' },
+    { k: 'anular', t: 'Anular ventas y compras', extra: true }, { k: 'borrarClientes', t: 'Eliminar clientes y proveedores', extra: true },
+    { k: 'costos', t: 'Ver y cambiar el costo de los productos', extra: true }
+  ];
+  function permsOf(entry) { return entry && Array.isArray(entry.perms) ? entry.perms : CAJERO_TABS; }
+  function userList(auth) {
+    auth = auth || S.auth || {};
+    if (Array.isArray(auth.users)) return auth.users;
+    return auth.ct ? [{ user: '', role: 'admin', salt: auth.salt, iv: auth.iv, ct: auth.ct, iterations: auth.iterations, legacy: true }] : [];
+  }
+  function stripLegacy(auth) {
+    var a = Object.assign({}, auth);
+    delete a.salt; delete a.iv; delete a.ct; delete a.iterations;
+    return a;
+  }
+  function myEntry() {
+    var list = userList();
+    return list.filter(function (u) { return u.user && lower(u.user) === lower(S.user); })[0] || list.filter(function (u) { return u.legacy; })[0];
+  }
+  function isAdmin() { return S.role !== 'cajero'; }
+  function canSee(tab) { return isAdmin() || (tab !== 'config' && permsOf(myEntry()).indexOf(tab) !== -1); }
+  function can(action) { return isAdmin() || permsOf(myEntry()).indexOf(action) !== -1; }
+  /* Devuelve una copia del acceso con ese usuario (nuevo o actualizado) cifrado con su contraseña */
+  async function withUser(auth, name, pass, role, replaceName) {
+    var a = stripLegacy(auth || {});
+    a.version = 3;
+    var old = lower(replaceName || name);
+    var prev = userList(auth).filter(function (u) { return !u.legacy && lower(u.user) === old; })[0];
+    var list = userList(auth).filter(function (u) { return !u.legacy && lower(u.user) !== old; });
+    var sealed = await sealPayload(name, pass, { token: S.token, dataKey: S.dataKey });
+    var entry = Object.assign({ user: name, role: role === 'cajero' ? 'cajero' : 'admin' }, sealed);
+    if (prev && prev.perms) entry.perms = prev.perms;
+    list.push(entry);
+    a.users = list;
+    return a;
+  }
+  async function tryLogin(user, pass, auth) {
+    var list = userList(auth);
+    var cand = list.filter(function (u) { return u.user && lower(u.user) === lower(user); });
+    if (!cand.length) cand = list.filter(function (u) { return u.legacy; });
+    for (var i = 0; i < cand.length; i++) {
+      try { return { entry: cand[i], payload: await openPayload(user, pass, cand[i]) }; } catch (e) { /* sigue */ }
+    }
+    throw new Error('Usuario o contraseña incorrectos.');
+  }
 
   /* Cifrado de archivos privados (ventas, compras, datos de facturación) */
   var dataCryptoKey = null, dataCryptoFor = '';
@@ -324,7 +378,7 @@
     S.auth = auth;
   }
   function remember() {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: S.token, dataKey: S.dataKey, user: S.user, repo: S.repo }));
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: S.token, dataKey: S.dataKey, user: S.user, role: S.role, repo: S.repo }));
   }
 
   /* =================================================================
@@ -351,22 +405,42 @@
   }
   /* Lee el acceso recién guardado (la página publicada tarda 1-2 minutos en actualizarse) */
   async function fetchAuthFresh() {
-    var g = guessRepo();
+    var g = guessRepo(), pub = null;
+    if (!g.owner) {
+      // otro dominio (por ejemplo un hosting propio): el repositorio se toma del acceso publicado
+      try { pub = await fetchPublic(AUTH_PATH); } catch (e) { pub = null; }
+      if (pub && pub.owner && pub.repo) g = { owner: pub.owner, repo: pub.repo };
+    }
     if (g.owner) {
       try {
+        // se lee directo de GitHub: así los usuarios nuevos y las contraseñas cambiadas valen al instante
         var r = await fetch(API + '/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) +
           '/contents/' + AUTH_PATH + '?nocache=' + Date.now(), { headers: { 'Accept': 'application/vnd.github+json' }, cache: 'no-store' });
         if (r.ok) return decodeJsonFile(await r.json());
       } catch (e) { /* se usa la copia publicada */ }
     }
-    return fetchPublic(AUTH_PATH);
+    return pub || fetchPublic(AUTH_PATH);
   }
   async function loadLocal() {
     S.data = normalize(await fetchPublic(DATA_PATH));
   }
   async function brandGate() {
     try {
-      var d = normalize(await fetchPublic(DATA_PATH)), st = d.store;
+      // el nombre y el logo se leen de GitHub (donde guarda el panel), así el ingreso siempre está al día
+      var d = null, base = '';
+      try {
+        var g = guessRepo();
+        if (!g.owner) { var pub = await fetchPublic(AUTH_PATH); if (pub.owner && pub.repo) g = { owner: pub.owner, repo: pub.repo, branch: pub.branch }; }
+        if (g.owner) {
+          var br = g.branch || 'main';
+          var r = await fetch(API + '/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) + '/contents/' + DATA_PATH +
+            '?ref=' + encodeURIComponent(br) + '&t=' + Date.now(), { headers: { 'Accept': 'application/vnd.github.raw+json' }, cache: 'no-store' });
+          if (r.ok) { d = normalize(await r.json()); base = 'https://raw.githubusercontent.com/' + g.owner + '/' + g.repo + '/' + br + '/'; }
+        }
+      } catch (e) { d = null; }
+      if (!d) d = normalize(await fetchPublic(DATA_PATH));
+      var st = d.store;
+      if (st.logo && base && !/^(https?:|data:)/.test(st.logo)) st = Object.assign({}, st, { logo: base + st.logo });
       var parts = String(st.store_name).trim().split(/\s+/);
       $('#gateName').innerHTML = esc(parts[0]) + (parts.length > 1 ? ' <span class="name-2">' + esc(parts.slice(1).join(' ')) + '</span>' : '');
       document.title = st.store_name + ' · Panel de administración';
@@ -384,7 +458,7 @@
     var saved = null;
     try { saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch (e) { saved = null; }
     if (saved && saved.user && saved.repo) {
-      S.token = saved.token || ''; S.dataKey = saved.dataKey || ''; S.user = saved.user; S.repo = saved.repo;
+      S.token = saved.token || ''; S.dataKey = saved.dataKey || ''; S.user = saved.user; S.role = saved.role || 'admin'; S.repo = saved.repo;
       try { await enterPanel(); return; } catch (e) {
         sessionStorage.removeItem(SESSION_KEY);
         S.token = '';
@@ -407,21 +481,21 @@
     e.preventDefault();
     var user = $('#lUser').value.trim(), pass = $('#lPass').value;
     run($('#loginForm button'), 'Verificando…', async function () {
-      var payload;
-      try { payload = await openPayload(user, pass, S.auth); } catch (err) {
+      var payload, found;
+      try { found = await tryLogin(user, pass, S.auth); payload = found.payload; } catch (err) {
         showMsg('error', 'Usuario o contraseña incorrectos.', '#gateMsgs');
         $('#lPass').value = ''; $('#lPass').focus();
         return;
       }
-      S.token = payload.token; S.dataKey = payload.dataKey; S.user = user;
+      S.token = payload.token; S.dataKey = payload.dataKey; S.user = user; S.role = found.entry.role || 'admin';
       S.repo = S.auth.owner ? { owner: S.auth.owner, repo: S.auth.repo, branch: S.auth.branch || 'main' }
                             : Object.assign(guessRepo(), { branch: 'main' });
       try {
-        if (connected() && !S.dataKey) {
-          // Primera vez con ventas: se crea la llave de los datos privados
-          S.dataKey = newDataKey();
-          var sealed = await sealPayload(user, pass, { token: S.token, dataKey: S.dataKey });
-          await saveAuth(Object.assign({}, S.auth, sealed), null, 'Preparar datos privados');
+        if (connected() && (!S.dataKey || found.entry.legacy)) {
+          // Primera vez con ventas, o acceso del formato anterior: se pasa al formato con varios usuarios
+          if (!S.dataKey) S.dataKey = newDataKey();
+          await loadAll();
+          await saveAuth(await withUser(S.auth, user, pass, S.role), null, 'Preparar usuarios del panel');
         }
         await enterPanel();
       } catch (err) {
@@ -445,6 +519,8 @@
     remember();
     $('#gate').hidden = true;
     $('#panel').hidden = false;
+    applyRole();
+    renderUsers();
     renderAll();
     emit('ready');
     showTab((location.hash || '#vender').slice(1));
@@ -460,8 +536,14 @@
   /* =================================================================
      Panel
      ================================================================= */
+  function applyRole() {
+    document.body.classList.toggle('role-cajero', !isAdmin());
+    $$('[data-tab]').forEach(function (a) { a.hidden = !canSee(a.dataset.tab); });
+    var who = $('#whoami');
+    if (who) who.innerHTML = esc(S.user) + ' <small>' + ROLES[isAdmin() ? 'admin' : 'cajero'] + '</small>';
+  }
   function showTab(name) {
-    if (!$('[data-pane="' + name + '"]')) name = 'vender';
+    if (!$('[data-pane="' + name + '"]') || !canSee(name)) name = 'vender';
     $$('[data-tab]').forEach(function (a) { a.classList.toggle('active', a.dataset.tab === name); });
     $$('[data-pane]').forEach(function (p) { p.hidden = p.dataset.pane !== name; });
     emit('tab', name);
@@ -495,7 +577,7 @@
     var ban = '';
     if (!connected()) {
       ban += '<div class="alert alert-error"><strong>Panel sin activar:</strong> los cambios no se guardan. Quien instaló el sistema tiene que activarlo desde <a href="conectar.html">conectar.html</a>.</div>';
-    } else if (S.auth && S.auth.is_default) {
+    } else if (S.auth && S.auth.is_default && isAdmin()) {
       ban += '<div class="alert alert-warn">Estás usando el usuario y la contraseña de fábrica (admin / admin123). <a href="#config" data-goto="config">Cambialos</a> para que nadie más pueda entrar.</div>';
     }
     $('#banners').innerHTML = ban;
@@ -649,7 +731,7 @@
     var d = String(v == null ? '' : v).replace(/\D/g, '').replace(/^0+(?=\d)/, '');
     return d.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
-  var NUM_FIELDS = '#f_price, #f_stock, .st, .in, .ia';
+  var NUM_FIELDS = '#f_price, #f_cost, #f_stock, .st, .in, .ia';
   dlg.addEventListener('input', function (e) {
     var el = e.target;
     if (!el.matches || !el.matches(NUM_FIELDS)) return;
@@ -665,6 +747,18 @@
   sizeRows.addEventListener('input', recalc);
   instRows.addEventListener('input', instInfo);
   priceIn.addEventListener('input', instInfo);
+  /* Costo: se guarda aparte y cifrado (el catálogo es público y no debe mostrarlo) */
+  function costos() { return A2() && A2().P ? (A2().P.costos || (A2().P.costos = {})) : null; }
+  function A2() { return window.ZA && window.ZA.V; }
+  function marginInfo() {
+    var c = num($('#f_cost').value), pr = num(priceIn.value), el = $('#f_margin');
+    if (!c || !pr) { el.textContent = ''; el.className = 'hint'; return; }
+    var g = pr - c;
+    el.textContent = (g >= 0 ? 'Ganancia ' : 'Pérdida ') + money(Math.abs(g)) + ' por unidad (' + Math.round(g / c * 100) + '% sobre el costo)';
+    el.className = 'hint ' + (g >= 0 ? 'is-in' : 'is-out');
+  }
+  $('#f_cost').addEventListener('input', marginInfo);
+  priceIn.addEventListener('input', marginInfo);
 
   dlg.addEventListener('click', function (e) {
     var x = e.target.closest('.row-x');
@@ -715,7 +809,8 @@
       setVal('#f_name', p.name); setVal('#f_category', p.category); setVal('#f_gender', p.gender);
       setVal('#f_brand', p.brand); setVal('#f_colors', p.colors); setVal('#f_sku', p.sku); setVal('#f_code', p.code);
       setVal('#f_codes', (p.codes || []).join(', '));
-      setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock)); setVal('#f_iva', p.iva == null ? '10' : String(p.iva)); setVal('#f_desc', p.description);
+      setVal('#f_price', fmtNum(p.price)); setVal('#f_stock', fmtNum(p.stock));
+      var cs = costos(); setVal('#f_cost', cs && cs[p.id] ? fmtNum(cs[p.id]) : ''); setVal('#f_iva', p.iva == null ? '10' : String(p.iva)); setVal('#f_desc', p.description);
       (p.sizes || []).forEach(function (s) { sizeRow(s.size, s.stock, [s.code].concat(s.codes || []).filter(Boolean).join(', ')); });
       (p.installments || []).forEach(function (i) { instRow(i.n, i.amount); });
       $('#f_visible').checked = !!p.visible;
@@ -724,7 +819,11 @@
     }
     if (p && p.image) { preview.src = imgUrl(p.image); preview.hidden = false; $('#removeWrap').hidden = false; }
     else { preview.removeAttribute('src'); preview.hidden = true; $('#removeWrap').hidden = true; }
-    recalc(); instInfo();
+    $('#f_costW').hidden = !can('costos');
+    if (!p) setVal('#f_cost', '');
+    // si los datos privados todavía no se abrieron, se cargan y se completa el costo
+    if (p && A2() && !costos() && A2().loadPrivate) A2().loadPrivate().then(function () { var c2 = costos(); if (c2 && c2[p.id] && !$('#f_cost').value) { $('#f_cost').value = fmtNum(c2[p.id]); marginInfo(); } }).catch(function () {});
+    recalc(); instInfo(); marginInfo();
     dlg.showModal();
     $('#f_name').focus();
   }
@@ -787,6 +886,7 @@
       installments: inst, visible: $('#f_visible').checked, iva: Number($('#f_iva').value)
     };
 
+    var d0 = null, costVal = $('#f_cost').value;
     run($('#saveBtn'), 'Guardando…', async function () {
       var newImg = file ? await uploadImage(file, 'img/productos', 'prod', 1000, false) : null;
       await commit((id ? 'Editar' : 'Agregar') + ' producto: ' + name, function (d) {
@@ -803,9 +903,16 @@
           updated_at: Math.floor(Date.now() / 1000)
         });
         if (idx < 0) d.products.push(p); else d.products[idx] = p;
+        d0 = p;
         return oldImg ? function () { return deleteFile(oldImg, 'Borrar foto anterior de ' + name); } : null;
       });
       dlg.close();
+      // guardar el costo (archivo privado)
+      var cs = costos(), savedId = id || (d0 && d0.id);
+      if (cs && can('costos') && savedId) {
+        var nc = num(costVal);
+        if ((cs[savedId] || 0) !== nc) { if (nc) cs[savedId] = nc; else delete cs[savedId]; A2().save([A2().COST_PATH], 'Costo de ' + name); }
+      }
       showMsg('ok', (id ? 'Producto actualizado. ' : 'Producto agregado. ') + NOTE);
     });
   });
@@ -885,7 +992,7 @@
   /* ---------------- Configuración ---------------- */
   function renderConfig() {
     var st = S.data.store;
-    $('#cName').value = st.store_name; $('#cTag').value = st.tagline;
+    $('#sName').value = st.store_name; $('#cTag').value = st.tagline;
     $('#cAddr').value = st.address; $('#cWa').value = st.whatsapp;
     $('#logoInput').value = ''; $('#logoRemove').checked = false;
     if (st.logo) { $('#logoPreview').src = imgUrl(st.logo); $('#logoPreview').hidden = false; $('#logoRemoveWrap').hidden = false; }
@@ -899,7 +1006,7 @@
 
   $('#storeForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var name = $('#cName').value.trim(), wa = $('#cWa').value.replace(/\D/g, '');
+    var name = $('#sName').value.trim(), wa = $('#cWa').value.replace(/\D/g, '');
     if (!name) return showMsg('error', 'El nombre de la tienda no puede quedar vacío.');
     if (wa && (wa.length < 8 || wa.length > 15)) return showMsg('error', 'El número de WhatsApp no parece válido. Escribilo con código de país, ej: 595981234567.');
     var file = $('#logoInput').files[0], remove = $('#logoRemove').checked;
@@ -917,7 +1024,7 @@
   });
 
   async function checkCurrent(pass) {
-    try { await openPayload(S.user, pass, S.auth); return true; } catch (e) { return false; }
+    try { await openPayload(S.user, pass, myEntry()); return true; } catch (e) { return false; }
   }
 
   $('#credForm').addEventListener('submit', function (e) {
@@ -930,7 +1037,10 @@
     if (!connected()) return showMsg('error', NEED_CONN);
     run($('#credForm button'), 'Guardando…', async function () {
       if (!(await checkCurrent(cur))) throw new Error('La contraseña actual no es correcta.');
-      var auth = Object.assign({}, S.auth, await sealPayload(user, pass || cur, { token: S.token, dataKey: S.dataKey }), { is_default: false });
+      if (lower(user) !== lower(S.user) && userList().some(function (u) { return u.user && lower(u.user) === lower(user); }))
+        throw new Error('Ya existe un usuario «' + user + '».');
+      var auth = await withUser(S.auth, user, pass || cur, S.role, S.user);
+      auth.is_default = false;
       await saveAuth(auth, null, 'Cambiar usuario o contraseña del panel');
       S.user = user;
       remember();
@@ -941,13 +1051,123 @@
     });
   });
 
+  /* ---------------- administrar usuarios ---------------- */
+  var USER_ICON_DEL = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+  function renderUsers() {
+    var box = $('#userList');
+    if (!box) return;
+    var list = userList().filter(function (u) { return !u.legacy; });
+    if (!list.length) { box.innerHTML = '<p class="hint">Todavía estás con el acceso anterior. Cerrá sesión y volvé a entrar para administrar usuarios.</p>'; return; }
+    box.innerHTML = list.slice().sort(function (a, b) { return (a.role === b.role ? 0 : a.role === 'admin' ? -1 : 1) || Z.natCmp(a.user, b.user); }).map(function (u) {
+      var me = lower(u.user) === lower(S.user);
+      return '<div class="user-row" data-u="' + esc(u.user) + '">' +
+        '<div class="user-main"><strong>' + esc(u.user) + '</strong>' + (me ? ' <span class="user-me">vos</span>' : '') +
+          '<span class="role-tag is-' + (u.role === 'cajero' ? 'cajero' : 'admin') + '">' + ROLES[u.role === 'cajero' ? 'cajero' : 'admin'] + '</span></div>' +
+        '<div class="user-acts">' +
+          (me ? '' : '<select data-urole aria-label="Rol de ' + esc(u.user) + '"><option value="admin"' + (u.role !== 'cajero' ? ' selected' : '') + '>Administrador</option><option value="cajero"' + (u.role === 'cajero' ? ' selected' : '') + '>Cajero</option></select>') +
+          (u.role === 'cajero' ? '<button type="button" class="btn btn-primary btn-sm" data-uperm>Permisos</button>' : '') +
+          '<button type="button" class="btn btn-secondary btn-sm" data-upass>Nueva contraseña</button>' +
+          (me ? '' : '<button type="button" class="icon-btn icon-danger icon-void" data-udel title="Eliminar usuario" aria-label="Eliminar ' + esc(u.user) + '">' + USER_ICON_DEL + '</button>') +
+        '</div>' +
+        (u.role === 'cajero' ? '<form class="user-perms" hidden><p class="hint">Marcá lo que puede usar <strong>' + esc(u.user) + '</strong>:</p><div class="perm-grid">' +
+          PERMS.map(function (p) {
+            return '<label class="check check-sm' + (p.extra ? ' perm-extra' : '') + '"><input type="checkbox" value="' + p.k + '"' + (permsOf(u).indexOf(p.k) !== -1 ? ' checked' : '') + '> ' + p.t + '</label>';
+          }).join('') + '</div><p class="hint">Configuración y usuarios son siempre solo del administrador.</p>' +
+          '<div class="btn-row"><button class="btn btn-accent btn-sm" type="submit">Guardar permisos</button></div></form>' : '') +
+        '<form class="user-pass" hidden><input type="password" minlength="8" placeholder="Nueva contraseña (mínimo 8)" autocomplete="new-password" required>' +
+          '<button class="btn btn-accent btn-sm" type="submit">Guardar</button></form>' +
+      '</div>';
+    }).join('');
+  }
+  function findUser(name) { return userList().filter(function (u) { return u.user && lower(u.user) === lower(name); })[0]; }
+  function admins() { return userList().filter(function (u) { return !u.legacy && u.role !== 'cajero'; }); }
+  var userBox = $('#userList');
+  if (userBox) {
+    userBox.addEventListener('click', async function (e) {
+      var row = e.target.closest('[data-u]');
+      if (!row) return;
+      var name = row.dataset.u;
+      if (e.target.closest('[data-upass]')) { var f = row.querySelector('.user-pass'); f.hidden = !f.hidden; if (!f.hidden) f.querySelector('input').focus(); return; }
+      if (e.target.closest('[data-uperm]')) { var fp = row.querySelector('.user-perms'); fp.hidden = !fp.hidden; return; }
+      if (e.target.closest('[data-udel]')) {
+        var u = findUser(name);
+        if (u.role !== 'cajero' && admins().length <= 1) return showMsg('error', 'Tiene que quedar al menos un administrador.');
+        var ok = await ask({ title: '¿Eliminar a ' + name + '?', text: 'Ya no va a poder entrar al panel. Las ventas que hizo quedan guardadas.', ok: 'Sí, eliminar', danger: true });
+        if (!ok) return;
+        run(null, '', async function () {
+          var a = stripLegacy(S.auth);
+          a.users = userList().filter(function (x) { return lower(x.user) !== lower(name); });
+          await saveAuth(a, null, 'Eliminar usuario ' + name);
+          renderUsers();
+          showMsg('ok', 'Usuario ' + name + ' eliminado.');
+        });
+      }
+    });
+    userBox.addEventListener('change', function (e) {
+      var sel = e.target.closest('[data-urole]');
+      if (!sel) return;
+      var name = sel.closest('[data-u]').dataset.u, u = findUser(name);
+      if (sel.value === 'cajero' && u.role !== 'cajero' && admins().length <= 1) { sel.value = 'admin'; return showMsg('error', 'Tiene que quedar al menos un administrador.'); }
+      run(null, '', async function () {
+        var a = stripLegacy(S.auth);
+        a.users = userList().map(function (x) { return lower(x.user) === lower(name) ? Object.assign({}, x, { role: sel.value }) : x; });
+        await saveAuth(a, null, 'Cambiar rol de ' + name);
+        renderUsers();
+        showMsg('ok', name + ' ahora es ' + ROLES[sel.value] + '.');
+      });
+    });
+    userBox.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (e.target.classList.contains('user-perms')) {
+        var prow = e.target.closest('[data-u]'), pname = prow.dataset.u;
+        var chosen = $$('input[type=checkbox]', e.target).filter(function (i) { return i.checked; }).map(function (i) { return i.value; });
+        if (!chosen.some(function (k) { return ['caja', 'vender', 'productos', 'ventas', 'clientes', 'compras', 'proveedores', 'reportes', 'marcas'].indexOf(k) !== -1; }))
+          return showMsg('error', 'Marcá al menos una sección para ' + pname + '.');
+        run(e.target.querySelector('button'), 'Guardando…', async function () {
+          var a = stripLegacy(S.auth);
+          a.users = userList().map(function (x) { return lower(x.user) === lower(pname) ? Object.assign({}, x, { perms: chosen }) : x; });
+          await saveAuth(a, null, 'Permisos de ' + pname);
+          renderUsers();
+          showMsg('ok', 'Permisos de ' + pname + ' guardados. Se aplican la próxima vez que entre al sistema.');
+        });
+        return;
+      }
+      var row = e.target.closest('[data-u]'), name = row.dataset.u, pass = e.target.querySelector('input').value;
+      if (pass.length < 8) return showMsg('error', 'La contraseña debe tener al menos 8 caracteres.');
+      if (!connected()) return showMsg('error', NEED_CONN);
+      run(e.target.querySelector('button'), 'Guardando…', async function () {
+        var u = findUser(name);
+        await saveAuth(await withUser(S.auth, u.user, pass, u.role), null, 'Nueva contraseña para ' + name);
+        renderUsers();
+        showMsg('ok', 'Contraseña de ' + name + ' cambiada. Empieza a valer en 1 o 2 minutos.');
+      });
+    });
+  }
+  var userForm = $('#userForm');
+  if (userForm) userForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('#nuUser').value.trim(), role = $('#nuRole').value, pass = $('#nuPass').value, pass2 = $('#nuPass2').value;
+    if (!USER_RE.test(name)) return showMsg('error', 'El usuario debe tener entre 3 y 40 caracteres: letras, números, punto, guion, guion bajo o @ (sin espacios).');
+    if (findUser(name)) return showMsg('error', 'Ya existe un usuario «' + name + '».');
+    if (pass.length < 8) return showMsg('error', 'La contraseña debe tener al menos 8 caracteres.');
+    if (pass !== pass2) return showMsg('error', 'Las contraseñas no coinciden.');
+    if (!connected()) return showMsg('error', NEED_CONN);
+    if (userList().some(function (u) { return u.legacy; })) return showMsg('error', 'Cerrá sesión y volvé a entrar una vez antes de crear usuarios.');
+    run($('#userForm button[type=submit]'), 'Creando…', async function () {
+      await saveAuth(await withUser(S.auth, name, pass, role), null, 'Nuevo usuario ' + name + ' (' + ROLES[role] + ')');
+      userForm.reset();
+      renderUsers();
+      showMsg('ok', 'Usuario ' + name + ' creado como ' + ROLES[role] + '. Ya puede entrar con su usuario y contraseña.');
+    });
+  });
+
   /* Lo que usan los módulos de ventas y compras */
   window.ZA = {
     S: S, $: $, $$: $$, esc: esc, money: money, num: num, lower: lower, fmtNum: fmtNum, rid: rid,
     getFile: getFile, decodeJsonFile: decodeJsonFile, connected: connected, NEED_CONN: NEED_CONN,
     writeFiles: writeFiles, fileSources: fileSources, encryptJSON: encryptJSON, decryptJSON: decryptJSON,
     showMsg: showMsg, ask: ask, renderAll: renderAll, imgUrl: imgUrl, on: on,
-    pending: function () { return pendingWrites; }, DATA_PATH: DATA_PATH, NOTE: NOTE
+    pending: function () { return pendingWrites; }, DATA_PATH: DATA_PATH, NOTE: NOTE, isAdmin: isAdmin, can: can
   };
 
   init();

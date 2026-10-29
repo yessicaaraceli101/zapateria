@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=20261029">
 <link rel="icon" type="image/svg+xml" href="assets/icono.svg">
 </head>
 <body class="admin">
@@ -47,6 +47,7 @@
       </a>
       <nav class="adm-nav">
         <a href="./" target="_blank" rel="noopener">Ver catálogo</a>
+        <span class="whoami" id="whoami"></span>
         <button class="btn btn-ghost" type="button" id="logoutBtn">Cerrar sesión</button>
       </nav>
     </div>
@@ -60,7 +61,9 @@
       <a href="#vender" data-tab="vender">Vender</a>
       <a href="#productos" data-tab="productos">Productos</a>
       <a href="#ventas" data-tab="ventas">Ventas</a>
+      <a href="#clientes" data-tab="clientes">Clientes</a>
       <a href="#compras" data-tab="compras">Compras</a>
+      <a href="#proveedores" data-tab="proveedores">Proveedores</a>
       <a href="#reportes" data-tab="reportes">Reportes</a>
       <a href="#marcas" data-tab="marcas">Marcas</a>
       <a href="#config" data-tab="config">Configuración</a>
@@ -121,6 +124,10 @@
             <span class="pos-label">Cliente</span>
             <button type="button" class="client-btn" id="clientBtn">Consumidor final</button>
             <div class="client-form" id="clientForm" hidden>
+              <div class="pos-search client-find">
+                <input id="cFind" placeholder="Buscar cliente guardado (nombre, RUC o CI)" autocomplete="off" aria-label="Buscar cliente guardado">
+                <div class="pick-list" id="cFindList" hidden></div>
+              </div>
               <div class="seg" role="radiogroup" aria-label="Tipo de cliente">
                 <button type="button" data-ctype="innominado" class="on">Sin nombre</button>
                 <button type="button" data-ctype="ruc">RUC</button>
@@ -131,6 +138,7 @@
                 <input id="cName" placeholder="Nombre o razón social" autocomplete="off">
                 <input id="cMail" type="email" placeholder="Correo (opcional, para la factura)" autocomplete="off">
                 <input id="cTel" inputmode="tel" placeholder="Celular para WhatsApp (opcional)" autocomplete="off">
+                <label class="check check-sm"><input type="checkbox" id="cSave" checked> Guardar en Clientes</label>
               </div>
               <button type="button" class="btn btn-secondary btn-sm" id="clientOk">Listo</button>
             </div>
@@ -195,9 +203,12 @@
         <h2>Nueva compra</h2>
         <p class="hint">Al registrar la compra se suma el stock de cada producto y talle.</p>
         <div class="grid-form grid-buy">
-          <label class="fld"><span>Proveedor *</span><input id="bProv" maxlength="80" autocomplete="off"></label>
+          <div class="fld prov-find"><span>Proveedor *</span>
+            <div class="pos-search"><input id="bProv" maxlength="80" autocomplete="off" placeholder="Escribí el nombre o RUC"><div class="pick-list" id="bProvList" hidden></div></div>
+            <label class="check check-sm"><input type="checkbox" id="bProvSave" checked> Guardar en Proveedores</label>
+          </div>
           <label class="fld"><span>RUC del proveedor</span><input id="bRuc" maxlength="20" autocomplete="off"></label>
-          <label class="fld"><span>N° de factura</span><input id="bFac" maxlength="20" placeholder="001-001-0000123" autocomplete="off"></label>
+          <label class="fld"><span>N° de factura</span><input id="bFac" maxlength="20" placeholder="001-001-0000123" autocomplete="off"><small class="hint" id="bFacHint"></small></label>
           <label class="fld"><span>Fecha</span><input id="bDate" type="date"></label>
           <label class="fld"><span>Condición</span><select id="bCond"><option value="contado">Contado</option><option value="credito">Crédito</option></select></label>
           <label class="fld" id="bPagoW"><span>Pagado con</span><select id="bPago"><option value="efectivo">Efectivo (sale de la caja)</option><option value="transferencia">Transferencia</option></select></label>
@@ -239,6 +250,69 @@
       </section>
     </section>
 
+    <!-- Clientes -->
+    <section data-pane="clientes" hidden>
+      <div class="cfg-grid ct-grid">
+        <section class="panel ct-form-box">
+          <h2 id="clFormTitle">Nuevo cliente</h2>
+          <form id="clForm" class="stack" autocomplete="off">
+            <input type="hidden" id="clId">
+            <div class="seg seg-2" role="radiogroup" aria-label="Tipo de documento">
+              <button type="button" data-cltipo="ruc" class="on">RUC</button>
+              <button type="button" data-cltipo="ci">Cédula</button>
+            </div>
+            <label class="fld"><span id="clDocLbl">RUC con DV *</span><input id="clDoc" maxlength="20" placeholder="80012345-6"></label>
+            <label class="fld"><span>Nombre o razón social *</span><input id="clName" maxlength="120"></label>
+            <div class="grid-form">
+              <label class="fld"><span>Celular</span><input id="clTel" inputmode="tel" maxlength="30"></label>
+              <label class="fld"><span>Correo</span><input id="clMail" type="email" maxlength="120"></label>
+            </div>
+            <label class="fld"><span>Dirección</span><input id="clDir" maxlength="160"></label>
+            <div class="btn-row"><button class="btn btn-accent" type="submit" id="clSaveBtn">Guardar cliente</button><button class="btn btn-secondary" type="button" id="clCancel" hidden>Cancelar</button></div>
+          </form>
+        </section>
+        <section class="panel ct-list-box">
+          <div class="toolbar">
+            <label class="search search-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="clSearch" placeholder="Buscar por nombre, RUC o cédula" aria-label="Buscar cliente"></label>
+            <span class="hint" id="clCount"></span>
+          </div>
+          <div class="table-wrap"><table class="tbl tbl-ct"><thead><tr><th>Nombre</th><th>Documento</th><th>Celular</th><th>Correo</th><th class="ta-r">Acciones</th></tr></thead><tbody id="clRows"></tbody></table></div>
+          <div class="list-foot"><span></span><div class="pager" id="clPager"></div></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Proveedores -->
+    <section data-pane="proveedores" hidden>
+      <div class="cfg-grid ct-grid">
+        <section class="panel ct-form-box">
+          <h2 id="pvFormTitle">Nuevo proveedor</h2>
+          <form id="pvForm" class="stack" autocomplete="off">
+            <input type="hidden" id="pvId">
+            <label class="fld"><span>Nombre o razón social *</span><input id="pvName" maxlength="120"></label>
+            <label class="fld"><span>RUC con DV</span><input id="pvRuc" maxlength="20" placeholder="80012345-6"></label>
+            <div class="grid-form">
+              <label class="fld"><span>Teléfono</span><input id="pvTel" inputmode="tel" maxlength="30"></label>
+              <label class="fld"><span>Correo</span><input id="pvMail" type="email" maxlength="120"></label>
+            </div>
+            <label class="fld"><span>Persona de contacto</span><input id="pvContacto" maxlength="80"></label>
+            <label class="fld"><span>Dirección</span><input id="pvDir" maxlength="160"></label>
+            <div class="btn-row"><button class="btn btn-accent" type="submit" id="pvSaveBtn">Guardar proveedor</button><button class="btn btn-secondary" type="button" id="pvCancel" hidden>Cancelar</button></div>
+          </form>
+        </section>
+        <section class="panel ct-list-box">
+          <div class="toolbar">
+            <label class="search search-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input type="search" id="pvSearch" placeholder="Buscar por nombre o RUC" aria-label="Buscar proveedor"></label>
+            <span class="hint" id="pvCount"></span>
+          </div>
+          <div class="table-wrap"><table class="tbl tbl-ct"><thead><tr><th>Nombre</th><th>RUC</th><th>Teléfono</th><th>Contacto</th><th class="ta-r">Acciones</th></tr></thead><tbody id="pvRows"></tbody></table></div>
+          <div class="list-foot"><span></span><div class="pager" id="pvPager"></div></div>
+        </section>
+      </div>
+    </section>
+
     <!-- Marcas -->
     <section data-pane="marcas" hidden>
       <p class="hint tab-intro">Las marcas aparecen arriba del catálogo y sirven de filtro. Al cargar un producto elegís su marca de la lista.</p>
@@ -259,7 +333,7 @@
               </div>
               <label class="check" id="logoRemoveWrap" hidden><input type="checkbox" id="logoRemove"> Quitar el logo</label>
             </div>
-            <label class="fld"><span>Nombre de la tienda</span><input id="cName" required maxlength="80"></label>
+            <label class="fld"><span>Nombre de la tienda</span><input id="sName" required maxlength="80" autocomplete="off"></label>
             <label class="fld"><span>Bajada / descripción corta</span><input id="cTag" maxlength="140"></label>
             <label class="fld"><span>Dirección u horario (aparece al pie del catálogo)</span><input id="cAddr" maxlength="160" placeholder="Ej: Av. Principal 123 · Lun a Sáb 8 a 18 h"></label>
             <label class="fld"><span>Número de WhatsApp (con código de país, sin +, ej: 595981234567)</span><input id="cWa" inputmode="numeric" maxlength="20"></label>
@@ -335,8 +409,24 @@
           </div>
         </section>
 
+        <section class="panel" id="usuarios">
+          <h2>Usuarios</h2>
+          <p class="hint"><strong>Administrador:</strong> puede todo. <strong>Cajero:</strong> usa solo lo que vos le permitas. Tocá <strong>Permisos</strong> en cada cajero para elegir qué secciones ve y si puede anular o eliminar.</p>
+          <div id="userList" class="user-list"></div>
+          <h3 class="user-new-title">Agregar usuario</h3>
+          <form id="userForm" class="stack" autocomplete="off">
+            <div class="grid-form">
+              <label class="fld"><span>Usuario</span><input id="nuUser" required pattern="[A-Za-z0-9._@\-]{3,40}" placeholder="Ej: maria" autocomplete="off"></label>
+              <label class="fld"><span>Tipo</span><select id="nuRole"><option value="cajero">Cajero</option><option value="admin">Administrador</option></select></label>
+              <label class="fld"><span>Contraseña</span><input id="nuPass" type="password" required minlength="8" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></label>
+              <label class="fld"><span>Repetir contraseña</span><input id="nuPass2" type="password" required minlength="8" autocomplete="new-password"></label>
+            </div>
+            <div><button class="btn btn-accent" type="submit">Crear usuario</button></div>
+          </form>
+        </section>
+
         <section class="panel" id="credenciales">
-          <h2>Usuario y contraseña de administrador</h2>
+          <h2>Mi usuario y contraseña</h2>
           <p class="hint">Para confirmar cualquier cambio necesitás tu contraseña actual. Si solo querés cambiar el usuario, dejá la contraseña nueva en blanco.</p>
           <form id="credForm" class="stack" autocomplete="off">
             <label class="fld"><span>Usuario</span><input id="kUser" required pattern="[A-Za-z0-9._@\-]{3,40}" autocomplete="username"></label>
@@ -378,6 +468,7 @@
           <label class="fld"><span>Código de barras</span><input id="f_code" maxlength="40" placeholder="Escaneá o escribí el código"></label>
           <label class="fld span-2"><span>Otros códigos de barras (opcional)</span><input id="f_codes" maxlength="300" placeholder="Si el mismo producto tiene más de un código, separalos con coma">
             <small class="hint">Al escanear en Vender un código que no existe, el sistema te deja asignarlo a un producto y lo guarda acá.</small></label>
+          <label class="fld" id="f_costW"><span>Costo (Gs.)</span><input id="f_cost" inputmode="numeric" placeholder="Lo que te cuesta a vos" autocomplete="off"><small class="hint" id="f_margin"></small></label>
           <label class="fld"><span>Precio (Gs.) *</span><input id="f_price" inputmode="numeric" required placeholder="250000"></label>
           <label class="fld"><span>Stock *</span><input id="f_stock" inputmode="numeric" placeholder="0"><small class="hint" id="stockHint"></small></label>
           <label class="fld"><span>IVA</span>
@@ -493,9 +584,10 @@
   </dialog>
 </div>
 
-<script src="assets/comun.js"></script>
-<script src="assets/admin.js"></script>
-<script src="assets/ventas.js"></script>
-<script src="assets/caja.js"></script>
+<script src="assets/comun.js?v=20261029"></script>
+<script src="assets/admin.js?v=20261029"></script>
+<script src="assets/ventas.js?v=20261029"></script>
+<script src="assets/caja.js?v=20261029"></script>
+<script src="assets/contactos.js?v=20261029"></script>
 </body>
 </html>

@@ -550,7 +550,7 @@
       if (narrow && V.printThermal) {
         // comprobantes chicos (cierre de caja): mismo formato que el ticket de la impresora térmica
         var aj = P.ajustes || V.defaultAjustes();
-        V.printThermal('<!doctype html><html lang="es"><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' + V.ticketCSS(aj) +
+        V.printThermal('<!doctype html><html lang="es"><head><meta charset="utf-8"><title>&#8203;</title><style>' + V.ticketCSS(aj) +
           'table{width:100%;border-collapse:collapse}td,th{padding:3px 0;border-bottom:1px dashed #000;text-align:left;vertical-align:top}.r{text-align:right}.muted{font-weight:700}h2{font-size:15px;margin:10px 0 4px}' +
           '</style></head><body>' + inner + '<div class="feed"></div></body></html>', aj);
         return;
@@ -611,7 +611,9 @@
             if (v.estado !== 'anulada' && f >= rg.from && f <= rg.to) ventas.push(v);
           });
         }
-        lastRep = buildRep(ventas, compras, costo, rg);
+        // si un producto no tiene compras en el período, se usa el costo cargado en el producto
+      Object.keys(P.costos || {}).forEach(function (pid) { if (!costo[pid]) costo[pid] = P.costos[pid]; });
+      lastRep = buildRep(ventas, compras, costo, rg);
         body.innerHTML = repHTML(lastRep);
       } catch (e) {
         body.innerHTML = '<div class="alert alert-error">' + esc(e.message || String(e)) + '</div>';

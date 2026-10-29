@@ -14,6 +14,8 @@
   var TRASH_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
   var AJ_PATH = 'data/privado/ajustes.json';
   var CAJA_PATH = 'data/privado/cajas.json';
+  var CONT_PATH = 'data/privado/contactos.json';
+  var COST_PATH = 'data/privado/costos.json';
   var PAY = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia', qr: 'QR / billetera' };
   var P = { ajustes: null, months: {}, loading: null };
   var cart = [], payMethod = 'efectivo', docType = 'ticket';
@@ -78,6 +80,8 @@
   /* ---------------- datos privados (cifrados) ---------------- */
   A.fileSources[AJ_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.ajustes)) + '\n'; };
   A.fileSources[CAJA_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.caja)) + '\n'; };
+  A.fileSources[COST_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.costos || {})) + '\n'; };
+  A.fileSources[CONT_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.contactos)) + '\n'; };
   function ensureMonthSource(m) {
     var path = monthPath(m);
     if (!A.fileSources[path]) {
@@ -109,7 +113,7 @@
     if (P.loading) return P.loading;
     var m = monthKey();
     P.loading = (async function () {
-      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m)), readPrivate(CAJA_PATH)]);
+      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m)), readPrivate(CAJA_PATH), readPrivate(CONT_PATH), readPrivate(COST_PATH)]);
       var d = defaultAjustes(), aj = res[0] || {};
       P.ajustes = Object.assign(d, aj, {
         fiscal: Object.assign(d.fiscal, aj.fiscal || {}),
@@ -119,6 +123,9 @@
       });
       P.months[m] = res[1] || { ventas: [], compras: [] };
       P.caja = Object.assign({ abierta: null, cierres: [] }, res[2] || {});
+      P.contactos = Object.assign({ clientes: [], proveedores: [] }, res[3] || {});
+      P.costos = res[4] || {};
+      if (A.V && A.V.hooks.contactos) A.V.hooks.contactos();
       ensureMonthSource(m);
       if (A.V && A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
       fillFiscalForm();
@@ -610,6 +617,110 @@
     });
   });
 
+  /* ---------------- clientes y proveedores guardados ---------------- */
+  function docNorm(x) { return String(x || '').replace(/[^0-9a-z]/gi, '').toLowerCase(); }
+  function contactos() { return P.contactos || (P.contactos = { clientes: [], proveedores: [] }); }
+  function upsertCliente(c) {
+    var list = contactos().clientes, key = docNorm(c.doc), ex = list.filter(function (x) { return docNorm(x.doc) === key; })[0];
+    if (ex) {
+      var changed = false;
+      ['nombre', 'email', 'tel'].forEach(function (k) { if (c[k] && c[k] !== ex[k]) { ex[k] = c[k]; changed = true; } });
+      if (c.dv && ex.dv !== c.dv) { ex.dv = c.dv; changed = true; }
+      if (changed) ex.actualizado = new Date().toISOString();
+      return changed;
+    }
+    list.push({ id: A.rid(), tipo: c.tipo, doc: c.doc, dv: c.dv || '', nombre: c.nombre || '', email: c.email || '', tel: c.tel || '', dir: '', creado: new Date().toISOString() });
+    return true;
+  }
+  function upsertProveedor(pv, factura) {
+    var list = contactos().proveedores, nameKey = lower(pv.nombre).trim(), rucKey = docNorm(pv.ruc);
+    var ex = list.filter(function (x) { return (rucKey && docNorm(x.ruc) === rucKey) || lower(x.nombre).trim() === nameKey; })[0];
+    if (ex) {
+      var ch = false;
+      if (pv.ruc && !ex.ruc) { ex.ruc = pv.ruc; ch = true; }
+      if (factura && ex.ultimaFactura !== factura) { ex.ultimaFactura = factura; ch = true; }   // se recuerda para la próxima compra
+      return ch;
+    }
+    list.push({ id: A.rid(), nombre: pv.nombre, ruc: pv.ruc || '', tel: '', email: '', contacto: '', dir: '', ultimaFactura: factura || '', creado: new Date().toISOString() });
+    return true;
+  }
+  /* Próximo número de factura del proveedor a partir de la última (001-001-0000123 → 001-001-0000124) */
+  function nextFactura(f) {
+    var m = String(f || '').match(/^(\d{3})-(\d{3})-(\d{1,7})$/);
+    return m ? m[1] + '-' + m[2] + '-' + pad(+m[3] + 1, 7) : '';
+  }
+  function matchList(list, q, fields) {
+    var w = lower(q).split(/\s+/).filter(Boolean), d = docNorm(q);
+    if (!w.length) return [];
+    return list.filter(function (x) {
+      var hay = lower(fields.map(function (f) { return x[f] || ''; }).join(' ')), docs = docNorm((x.doc || '') + (x.dv || '') + ' ' + (x.ruc || ''));
+      return w.every(function (t) { return hay.indexOf(t) !== -1; }) || (d.length >= 3 && docs.indexOf(d) !== -1);
+    }).slice(0, 6);
+  }
+  /* Vender: buscar cliente guardado */
+  (function () {
+    var q = $('#cFind'), box = $('#cFindList'), items = [];
+    function render() {
+      items = matchList(contactos().clientes, q.value, ['nombre', 'doc', 'tel', 'email']);
+      box.hidden = !q.value.trim();
+      box.innerHTML = items.length ? items.map(function (c, i) {
+        return '<button type="button" class="pick" data-ci="' + i + '"><span class="pick-txt"><strong>' + esc(c.nombre || 'Sin nombre') + '</strong><small>' +
+          esc((c.tipo === 'ci' ? 'CI ' : 'RUC ') + c.doc + (c.dv ? '-' + c.dv : '') + (c.tel ? ' · ' + c.tel : '')) + '</small></span></button>';
+      }).join('') : '<div class="pick-empty">No hay clientes con «' + esc(q.value) + '». Cargalo abajo y se guarda al cobrar.</div>';
+    }
+    function pick(c) {
+      client.tipo = c.tipo === 'ci' ? 'ci' : 'ruc';
+      renderClient();
+      $('#cDoc').value = c.doc + (c.dv ? '-' + c.dv : ''); $('#cName').value = c.nombre || ''; $('#cMail').value = c.email || ''; $('#cTel').value = c.tel || '';
+      q.value = ''; box.hidden = true;
+      readClient(); renderClient();
+      $('#clientForm').hidden = true;
+      flash('ok', 'Cliente: ' + (c.nombre || c.doc));
+      focusQ();
+    }
+    q.addEventListener('input', render);
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); if (items[0]) pick(items[0]); } if (e.key === 'Escape') { q.value = ''; box.hidden = true; } });
+    box.addEventListener('mousedown', function (e) { var b = e.target.closest('[data-ci]'); if (b) { e.preventDefault(); pick(items[+b.dataset.ci]); } });
+    q.addEventListener('blur', function () { setTimeout(function () { box.hidden = true; }, 150); });
+    // al escribir un RUC o CI ya guardado, completa el nombre solo
+    $('#cDoc').addEventListener('change', function () {
+      var key = docNorm(this.value.split('-')[0]);
+      var c = contactos().clientes.filter(function (x) { return docNorm(x.doc) === key; })[0];
+      if (!c) return;
+      if (!$('#cName').value) $('#cName').value = c.nombre || '';
+      if (!$('#cMail').value) $('#cMail').value = c.email || '';
+      if (!$('#cTel').value) $('#cTel').value = c.tel || '';
+      if (c.dv && this.value.indexOf('-') === -1 && client.tipo === 'ruc') this.value = c.doc + '-' + c.dv;
+    });
+  })();
+  /* Compras: buscar proveedor guardado */
+  (function () {
+    var q = $('#bProv'), box = $('#bProvList'), items = [];
+    q.addEventListener('input', function () {
+      items = matchList(contactos().proveedores, q.value, ['nombre', 'ruc', 'contacto']);
+      box.hidden = !items.length;
+      box.innerHTML = items.map(function (pv, i) {
+        return '<button type="button" class="pick" data-pi="' + i + '"><span class="pick-txt"><strong>' + esc(pv.nombre) + '</strong><small>' + esc(pv.ruc ? 'RUC ' + pv.ruc : 'Sin RUC') + '</small></span></button>';
+      }).join('');
+    });
+    function pick(pv) {
+      q.value = pv.nombre; $('#bRuc').value = pv.ruc || ''; box.hidden = true;
+      var fac = $('#bFac'), next = nextFactura(pv.ultimaFactura);
+      $('#bFacHint').textContent = pv.ultimaFactura ? 'Última de este proveedor: ' + pv.ultimaFactura : '';
+      if (next) {
+        fac.value = next;
+        fac.focus();
+        fac.setSelectionRange(8, next.length);   // queda marcado el número: si es otro, se escribe encima
+      } else {
+        if (pv.ultimaFactura) fac.value = pv.ultimaFactura;
+        fac.focus();
+      }
+    }
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter' && items[0] && !box.hidden) { e.preventDefault(); pick(items[0]); } if (e.key === 'Escape') box.hidden = true; });
+    box.addEventListener('mousedown', function (e) { var b = e.target.closest('[data-pi]'); if (b) { e.preventDefault(); pick(items[+b.dataset.pi]); } });
+    q.addEventListener('blur', function () { setTimeout(function () { box.hidden = true; }, 150); });
+  })();
+
   /* Cliente */
   function renderClient() {
     var label = 'Consumidor final';
@@ -623,7 +734,7 @@
   }
   $('#clientBtn').addEventListener('click', function () {
     $('#clientForm').hidden = !$('#clientForm').hidden;
-    if (!$('#clientForm').hidden) renderClient();
+    if (!$('#clientForm').hidden) { renderClient(); setTimeout(function () { $('#cFind').focus(); }, 0); }
   });
   $$('[data-ctype]').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -657,6 +768,7 @@
     paidIn.value = '';
     client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '', tel: '' };
     $('#cDoc').value = ''; $('#cName').value = ''; $('#cMail').value = ''; $('#cTel').value = '';
+    $('#cFind').value = ''; $('#cSave').checked = true;
     setDoc('ticket');
     $('#tBank').value = ''; $('#tRef').value = ''; $('#tFrom').value = '';
     $('#clientForm').hidden = true;
@@ -743,7 +855,9 @@
       A.renderAll();
       resetSale();
       showDone(sale);
-      save([A.DATA_PATH, AJ_PATH, monthPath(m)], 'Venta ' + numero + ' · ' + money(t.total));
+      var paths = [A.DATA_PATH, AJ_PATH, monthPath(m)];
+      if (sale.cliente.tipo !== 'innominado' && sale.cliente.doc && $('#cSave').checked && upsertCliente(sale.cliente)) paths.push(CONT_PATH);
+      save(paths, 'Venta ' + numero + ' · ' + money(t.total));
       if (fiscal && ffReady()) sifenAfterSale(sale); else autoEmail(sale);
     } catch (e) {
       flash('error', e.message || String(e));
@@ -1253,7 +1367,7 @@
         '<button type="button" class="btn btn-mail btn-sm" data-mail="' + esc(v.id) + '">Correo</button>' +
         (isFactura(v) && ffReady() && v.estado !== 'anulada' && !(v.sifen && v.sifen.cdc) ? '<button type="button" class="btn btn-accent btn-sm" data-sifen="' + esc(v.id) + '">Enviar al SIFEN</button>' : '') +
         (isFactura(v) && ffReady() && v.sifen && v.sifen.cdc ? '<button type="button" class="btn btn-secondary btn-sm" data-sstate="' + esc(v.id) + '">Estado</button>' : '') +
-        (v.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-void="' + esc(v.id) + '" title="Anular venta" aria-label="Anular venta ' + esc(v.numero) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
+        (v.estado !== 'anulada' && A.can('anular') ? '<button type="button" class="icon-btn icon-danger icon-void" data-void="' + esc(v.id) + '" title="Anular venta" aria-label="Anular venta ' + esc(v.numero) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
   function fmtISODate(iso) { var d = new Date(iso); return d.getFullYear() + '-' + pad(d.getMonth() + 1, 2) + '-' + pad(d.getDate(), 2); }
@@ -1287,6 +1401,7 @@
       return;
     }
     if ((b = e.target.closest('[data-void]'))) {
+      if (!A.can('anular')) { A.showMsg('error', 'No tenés permiso para anular ventas.'); return; }
       var v = find(b.dataset.void);
       var cancelSifen = isFactura(v) && v.sifen && v.sifen.cdc && ffReady();
       A.ask({ title: '¿Anular la venta ' + v.numero + '?', text: 'Se devuelve el stock de los productos y la venta queda marcada como anulada. Total: ' + money(v.totales.total) + '.' +
@@ -1465,7 +1580,14 @@
       buyMonthIn.value = m;
       renderCompras();
       A.showMsg('ok', 'Compra registrada y stock actualizado. ' + A.NOTE);
-      await save([A.DATA_PATH, monthPath(m)], 'Compra a ' + prov + ' · ' + money(compra.total));
+      var bpaths = [A.DATA_PATH, monthPath(m)];
+      if ($('#bProvSave').checked && upsertProveedor(compra.proveedor, compra.factura)) bpaths.push(CONT_PATH);
+      P.costos = P.costos || {};
+      var costCh = false;
+      compra.items.forEach(function (it) { if (it.costo && P.costos[it.product_id] !== it.costo) { P.costos[it.product_id] = it.costo; costCh = true; } });
+      if (costCh) bpaths.push(COST_PATH);
+      $('#bFacHint').textContent = '';
+      await save(bpaths, 'Compra a ' + prov + ' · ' + money(compra.total));
     } catch (e) {
       A.showMsg('error', e.message || String(e));
     } finally {
@@ -1492,7 +1614,7 @@
         '<td>' + units + (units === 1 ? ' unidad' : ' unidades') + '<span class="t-sub">' + esc(c.items.map(function (x) { return x.descripcion; }).join(', ')) + '</span></td>' +
         '<td class="ta-r nowrap"><strong>' + money(c.total) + '</strong></td>' +
         '<td>' + (c.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Registrada</span>') + '</td>' +
-        '<td class="actions">' + (c.estado !== 'anulada' ? '<button type="button" class="icon-btn icon-danger icon-void" data-bvoid="' + esc(c.id) + '" title="Anular compra" aria-label="Anular compra a ' + esc(c.proveedor.nombre) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
+        '<td class="actions">' + (c.estado !== 'anulada' && A.can('anular') ? '<button type="button" class="icon-btn icon-danger icon-void" data-bvoid="' + esc(c.id) + '" title="Anular compra" aria-label="Anular compra a ' + esc(c.proveedor.nombre) + '">' + TRASH_ICON + '</button>' : '') + '</td></tr>';
     }).join('');
   }
   buyMonthIn.addEventListener('change', function () { pages.compras = 1; renderCompras(); });
@@ -1500,6 +1622,7 @@
   $('#buyHist').addEventListener('click', function (e) {
     var b = e.target.closest('[data-bvoid]');
     if (!b) return;
+    if (!A.can('anular')) { A.showMsg('error', 'No tenés permiso para anular compras.'); return; }
     var m = buyMonthIn.value || monthKey();
     var c = P.months[m].compras.filter(function (x) { return x.id === b.dataset.bvoid; })[0];
     A.ask({ title: '¿Anular esta compra?', text: 'Se descuenta del stock lo que se había sumado con la compra a ' + c.proveedor.nombre + ' (' + money(c.total) + ').', ok: 'Sí, anular', danger: true })
@@ -1883,7 +2006,7 @@
   /* Lo que usa assets/caja.js (Caja y Reportes) */
   A.V = { P: P, CAJA_PATH: CAJA_PATH, save: save, loadPrivate: loadPrivate, loadMonth: loadMonth, monthKey: monthKey,
           fmtDate: fmtDate, pad: pad, kpi: kpi, paginate: paginate, renderPager: renderPager, isFactura: isFactura,
-          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, loadPdfLib: loadPdfLib, printThermal: printThermal, printPdfBlob: printPdfBlob, ticketCSS: ticketCSS, defaultAjustes: defaultAjustes, hooks: {} };
+          findP: findP, products: products, hasSizes: hasSizes, download: download, pages: pages, CONT_PATH: CONT_PATH, COST_PATH: COST_PATH, rucDv: rucDv, loadPdfLib: loadPdfLib, printThermal: printThermal, printPdfBlob: printPdfBlob, ticketCSS: ticketCSS, defaultAjustes: defaultAjustes, hooks: {} };
 
   /* ---------------- conexión con el panel ---------------- */
   A.on('ready', function () {

@@ -32,6 +32,11 @@
   }
   /* Devuelve el contenido descifrado o null si el usuario/contraseña no coinciden */
   async function check(user, pass, auth) {
+    if (auth && Array.isArray(auth.users)) {
+      // formato con varios usuarios: solo un administrador puede reactivar
+      var ent = auth.users.filter(function (u) { return Z.lower(u.user) === Z.lower(user.trim()) && u.role !== 'cajero'; })[0];
+      return ent ? check(user, pass, ent) : null;
+    }
     try {
       var k = await key(user, pass, unb64(auth.salt), auth.iterations || 310000);
       var pt = dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(auth.iv) }, k, unb64(auth.ct)));
@@ -91,14 +96,17 @@
       if (!ok) throw new Error('Usuario o contraseña del panel incorrectos.');
       // Se conserva la llave de las ventas y compras ya guardadas
       var dataKey = (opened && opened.dataKey) || b64(crypto.getRandomValues(new Uint8Array(32)));
-      var auth = Object.assign({ version: 2, owner: owner, repo: repo, branch: branch, is_default: false }, await seal(nu, np, token, dataKey));
+      // queda un solo usuario administrador; los cajeros se vuelven a crear desde Configuración → Usuarios
+      var hadOthers = current && Array.isArray(current.users) && current.users.length > 1;
+      var auth = { version: 3, owner: owner, repo: repo, branch: branch, is_default: false,
+                   users: [Object.assign({ user: nu, role: 'admin' }, await seal(nu, np, token, dataKey))] };
       var body = { message: 'Activar el panel', branch: branch, content: b64(enc.encode(JSON.stringify(auth, null, 2) + '\n')) };
       if (remote) body.sha = remote.sha;
       await gh(path, token, { method: 'PUT', body: JSON.stringify(body) });
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: token, dataKey: dataKey, user: nu, repo: { owner: owner, repo: repo, branch: branch } }));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: token, dataKey: dataKey, user: nu, role: 'admin', repo: { owner: owner, repo: repo, branch: branch } }));
       $('#f').reset();
       $('#f').hidden = true;
-      msg('ok', 'Panel activado. Desde ahora se ingresa con «' + nu + '» y la contraseña nueva.');
+      msg('ok', 'Panel activado. Desde ahora se ingresa con «' + nu + '» y la contraseña nueva.' + (hadOthers ? ' Volvé a crear los otros usuarios en Configuración → Usuarios.' : ''));
       $('.login-back').textContent = 'Ir al panel';
     } catch (err) {
       msg('error', err.message || String(err));

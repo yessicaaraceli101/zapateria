@@ -3,17 +3,39 @@
   var esc = Z.esc, money = Z.money, lower = Z.lower;
   var $ = function (id) { return document.getElementById(id); };
 
-  var data;
-  try {
-    var r = await fetch('data/catalogo.json?t=' + Date.now(), { cache: 'no-store' });
+  /* Los datos se leen directo de GitHub (donde guarda el panel), así el catálogo está al día
+     en cualquier dirección: GitHub Pages, un hosting propio o la PC. Si no se puede, se usa la copia local. */
+  var data, imgBase = '';
+  async function getJSON(url, opts) {
+    var r = await fetch(url, Object.assign({ cache: 'no-store' }, opts || {}));
     if (!r.ok) throw new Error(r.status);
-    data = await r.json();
+    return r.json();
+  }
+  async function loadFromGitHub() {
+    var acc = await getJSON('data/acceso.json?t=' + Date.now());
+    if (!acc.owner || !acc.repo) throw new Error('sin repositorio');
+    var base = 'https://raw.githubusercontent.com/' + encodeURIComponent(acc.owner) + '/' + encodeURIComponent(acc.repo) + '/' + encodeURIComponent(acc.branch || 'main') + '/';
+    var d;
+    try {
+      var j = await getJSON('https://api.github.com/repos/' + encodeURIComponent(acc.owner) + '/' + encodeURIComponent(acc.repo) +
+        '/contents/data/catalogo.json?ref=' + encodeURIComponent(acc.branch || 'main') + '&t=' + Date.now(), { headers: { 'Accept': 'application/vnd.github.raw+json' } });
+      d = j;
+    } catch (e) {
+      d = await getJSON(base + 'data/catalogo.json?t=' + Date.now());
+    }
+    imgBase = base;
+    return d;
+  }
+  try {
+    try { data = await loadFromGitHub(); }
+    catch (e) { data = await getJSON('data/catalogo.json?t=' + Date.now()); imgBase = ''; }
   } catch (e) {
     $('storeName').textContent = 'Catálogo';
     $('results').innerHTML = '<div class="empty"><p>No se pudo cargar el catálogo. Revisá tu conexión y recargá la página.</p></div>';
     return;
   }
 
+  function src(path) { return !path || /^(https?:|data:)/.test(path) || !imgBase ? path : imgBase + path; }
   var store = Object.assign({ store_name: 'Mi Zapatería', tagline: '', whatsapp: '', address: '', logo: '' }, data.store || {});
   var brands = data.brands || [];
   var visible = (data.products || []).filter(function (p) { return p.visible; });
@@ -26,7 +48,7 @@
   var logoBox = $('storeLogo');
   if (store.logo) {
     var img = document.createElement('img');
-    img.className = 'logo'; img.src = store.logo; img.alt = '';
+    img.className = 'logo'; img.src = src(store.logo); img.alt = '';
     logoBox.replaceWith(img);
   } else {
     logoBox.textContent = String(store.store_name).charAt(0).toUpperCase();
@@ -61,12 +83,6 @@
 
   $('fQ').value = st.q; $('fCat').value = st.cat; $('fGen').value = st.gen;
   $('fTalle').value = st.talle; $('fOrden').value = st.orden;
-  /* Si el enlace trae un filtro que ya no existe (por ejemplo un talle agotado), se quita
-     para que la lista coincida con lo que muestran los menús */
-  if ($('fCat').value !== st.cat) st.cat = '';
-  if ($('fGen').value !== st.gen) st.gen = '';
-  if ($('fTalle').value !== st.talle) st.talle = '';
-  if (!$('fOrden').value) { st.orden = 'recientes'; $('fOrden').value = 'recientes'; }
 
   /* ----- Franja de marcas ----- */
   function renderBrands() {
@@ -77,7 +93,7 @@
       var on = lower(b.name) === lower(st.marca);
       return '<button type="button" class="brand-tile' + (on ? ' is-on' : '') + '" data-brand="' + esc(b.name) + '"' +
         ' aria-pressed="' + on + '" title="' + (on ? 'Ver todas las marcas' : 'Ver solo ' + esc(b.name)) + '">' +
-        (b.logo ? '<img src="' + esc(b.logo) + '" alt="' + esc(b.name) + '" loading="lazy">'
+        (b.logo ? '<img src="' + esc(src(b.logo)) + '" alt="' + esc(b.name) + '" loading="lazy">'
                 : '<span class="brand-tile-txt">' + esc(b.name) + '</span>') +
         '</button>';
     }).join('');
@@ -87,14 +103,14 @@
   function card(p) {
     var stock = Z.stockOf(p), price = +p.price || 0, b = p.brand ? Z.brandByName(brands, p.brand) : null;
     var h = '<article class="card"><div class="card-img">';
-    h += p.image ? '<img src="' + esc(p.image) + '" alt="' + esc(p.name) + '" loading="lazy">' : '<span class="noimg">' + Z.shoe(72) + '</span>';
+    h += p.image ? '<img src="' + esc(src(p.image)) + '" alt="' + esc(p.name) + '" loading="lazy">' : '<span class="noimg">' + Z.shoe(72) + '</span>';
     if (stock <= 0) h += '<span class="ribbon">Agotado</span>';
     h += '</div><div class="card-body"><div class="badges">';
     if (p.category) h += '<span class="badge">' + esc(p.category) + '</span>';
     if (p.gender) h += '<span class="badge badge-soft">' + esc(p.gender) + '</span>';
     h += '</div>';
     if (p.brand) {
-      h += '<p class="card-brand">' + (b && b.logo ? '<img src="' + esc(b.logo) + '" alt="" loading="lazy">' : '') + esc(p.brand) + '</p>';
+      h += '<p class="card-brand">' + (b && b.logo ? '<img src="' + esc(src(b.logo)) + '" alt="" loading="lazy">' : '') + esc(p.brand) + '</p>';
     }
     h += '<h2 class="card-title">' + esc(p.name) + '</h2>';
     var meta = [];
