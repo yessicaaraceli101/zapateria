@@ -8694,6 +8694,101 @@
       "image": "",
       "created_at": 1793299993,
       "updated_at": 1793299993
+    },
+    {
+      "id": "eb519f40cb9d",
+      "name": "CHAMPION BEBE",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 0
+        },
+        {
+          "size": "21",
+          "stock": 0
+        },
+        {
+          "size": "22",
+          "stock": 2,
+          "code": "7900245272145"
+        },
+        {
+          "size": "23",
+          "stock": 2,
+          "code": "7900245272152"
+        },
+        {
+          "size": "24",
+          "stock": 1,
+          "code": "7900245272169"
+        },
+        {
+          "size": "25",
+          "stock": 3,
+          "code": "7900245272176"
+        },
+        {
+          "size": "26",
+          "stock": 3,
+          "code": "7900245272183"
+        },
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA MOSCOU NEGRO NEO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793300328,
+      "updated_at": 1793300328
     }
   ]
 }
