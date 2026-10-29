@@ -8983,6 +8983,71 @@
       "image": "",
       "created_at": 1793301400,
       "updated_at": 1793301400
+    },
+    {
+      "id": "597612f0465a",
+      "name": "SANDALIA BEBE",
+      "category": "SANDALIAS",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 100000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1,
+          "code": "7900294834592"
+        },
+        {
+          "size": "20",
+          "stock": 1
+        },
+        {
+          "size": "21",
+          "stock": 2,
+          "code": "7900294834615"
+        },
+        {
+          "size": "22",
+          "stock": 2,
+          "code": "7900294834622"
+        },
+        {
+          "size": "23",
+          "stock": 2,
+          "code": "7900294834639"
+        },
+        {
+          "size": "24",
+          "stock": 2,
+          "code": "7900294834646"
+        },
+        {
+          "size": "25",
+          "stock": 1,
+          "code": "7900294834653"
+        },
+        {
+          "size": "26",
+          "stock": 1,
+          "code": "7900294834660"
+        }
+      ],
+      "colors": "GRIS-MARINO",
+      "description": "NAPA FLOTER RUSTICO NEO GRIS851/MARINO 488",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793301738,
+      "updated_at": 1793301738
     }
   ]
 }
