@@ -10610,6 +10610,58 @@
       "image": "",
       "created_at": 1793314001,
       "updated_at": 1793314001
+    },
+    {
+      "id": "22247baaca16",
+      "name": "ZAPATOS",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 4,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "321756108110"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "321756108111"
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "LOTEGO -CARAMELO-EST DIAMANTES",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793314429,
+      "updated_at": 1793314429
     }
   ]
 }
