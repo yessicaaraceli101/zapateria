@@ -9579,6 +9579,57 @@
       "image": "",
       "created_at": 1793303871,
       "updated_at": 1793303871
+    },
+    {
+      "id": "397f53e15ce9",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900015542621"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900015542638"
+        },
+        {
+          "size": "36",
+          "stock": 3
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900015542669"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900015542683"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900015542690"
+        }
+      ],
+      "colors": "BEIGE",
+      "description": "BEIGE PELICA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793304719,
+      "updated_at": 1793304719
     }
   ]
 }
