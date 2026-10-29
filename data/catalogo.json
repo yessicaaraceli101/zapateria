@@ -7342,7 +7342,7 @@
       "brand": "Actvitta",
       "sku": "",
       "code": "",
-      "price": 185000,
+      "price": 230000,
       "codes": [],
       "stock": 7,
       "sizes": [
@@ -7388,7 +7388,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793283039,
-      "updated_at": 1793283039
+      "updated_at": 1793283152
     }
   ]
 }
