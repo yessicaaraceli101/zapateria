@@ -6772,7 +6772,7 @@
       "code": "",
       "price": 55000,
       "codes": [],
-      "stock": 37900294273966,
+      "stock": 10,
       "sizes": [
         {
           "size": "35",
@@ -6781,19 +6781,23 @@
         },
         {
           "size": "36",
-          "stock": 37900294273964
+          "stock": 3,
+          "code": "7900294273964"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 2,
+          "code": "7900294273988"
         },
         {
           "size": "38",
-          "stock": 0
+          "stock": 2,
+          "code": "7900294274008"
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900294274015"
         },
         {
           "size": "40",
@@ -6801,13 +6805,13 @@
         }
       ],
       "colors": "ROSA",
-      "description": "",
+      "description": "TIRA PRONTA PVC-ROSA1153/PINK 1126",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793273342,
-      "updated_at": 1793273342
+      "updated_at": 1793273518
     }
   ]
 }
