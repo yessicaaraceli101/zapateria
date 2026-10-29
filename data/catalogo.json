@@ -6761,6 +6761,53 @@
       "image": "",
       "created_at": 1793273091,
       "updated_at": 1793273091
+    },
+    {
+      "id": "ca2e8e08366b",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "MOLECA",
+      "sku": "",
+      "code": "",
+      "price": 55000,
+      "codes": [],
+      "stock": 37900294273966,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900294273957"
+        },
+        {
+          "size": "36",
+          "stock": 37900294273964
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "ROSA",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793273342,
+      "updated_at": 1793273342
     }
   ]
 }
