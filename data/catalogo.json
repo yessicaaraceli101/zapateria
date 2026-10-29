@@ -10449,6 +10449,61 @@
       "image": "",
       "created_at": 1793310902,
       "updated_at": 1793310902
+    },
+    {
+      "id": "0c71edeb4cf1",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 210000,
+      "codes": [],
+      "stock": 22,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 2
+        },
+        {
+          "size": "39",
+          "stock": 3,
+          "code": "7900350944647"
+        },
+        {
+          "size": "40",
+          "stock": 6,
+          "code": "7900350944654"
+        },
+        {
+          "size": "41",
+          "stock": 5,
+          "code": "7900350944661"
+        },
+        {
+          "size": "42",
+          "stock": 4,
+          "code": "7900350944678"
+        },
+        {
+          "size": "43",
+          "stock": 2,
+          "code": "7900350944685"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "cafe",
+      "description": "napa monaco neo-cafe",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793311293,
+      "updated_at": 1793311293
     }
   ]
 }
