@@ -7027,13 +7027,13 @@
       "id": "0830181b10bf",
       "name": "CHAMPION",
       "category": "Zapatos",
-      "gender": "",
+      "gender": "Caballero",
       "brand": "Actvitta",
       "sku": "",
       "code": "",
       "price": 170000,
       "codes": [],
-      "stock": 17900294373691,
+      "stock": 4,
       "sizes": [
         {
           "size": "38",
@@ -7047,7 +7047,7 @@
         },
         {
           "size": "40",
-          "stock": 17900294373688
+          "stock": 1
         },
         {
           "size": "41",
@@ -7055,7 +7055,8 @@
         },
         {
           "size": "42",
-          "stock": 1
+          "stock": 1,
+          "code": "7900294373688"
         },
         {
           "size": "43",
@@ -7073,7 +7074,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793280825,
-      "updated_at": 1793280825
+      "updated_at": 1793280901
     }
   ]
 }
