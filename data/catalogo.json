@@ -6864,37 +6864,42 @@
       "id": "628f41ac913f",
       "name": "CHAMPION",
       "category": "Zapatos",
-      "gender": "Dama",
+      "gender": "Caballero",
       "brand": "Actvitta",
       "sku": "",
       "code": "",
       "price": 165000,
       "codes": [],
-      "stock": 7900407610341,
+      "stock": 10,
       "sizes": [
         {
+          "size": "37",
+          "stock": 1
+        },
+        {
           "size": "38",
-          "stock": 7900407610341
+          "stock": 1,
+          "code": "7900067749580"
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 3,
+          "code": "7900067749597"
         },
         {
           "size": "40",
-          "stock": 0
+          "stock": 3,
+          "code": "7900067749603"
         },
         {
           "size": "41",
-          "stock": 0
+          "stock": 1,
+          "code": "7900067749610"
         },
         {
           "size": "42",
-          "stock": 0
-        },
-        {
-          "size": "43",
-          "stock": 0
+          "stock": 1,
+          "code": "7900067749627"
         },
         {
           "size": "44",
@@ -6902,13 +6907,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "",
+      "description": "TECIDO SUICA NEGRO/NEGRO",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793274132,
-      "updated_at": 1793274132
+      "updated_at": 1793279865
     }
   ]
 }
