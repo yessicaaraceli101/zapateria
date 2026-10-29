@@ -9473,6 +9473,60 @@
       "image": "",
       "created_at": 1793303428,
       "updated_at": 1793303428
+    },
+    {
+      "id": "752df0bc2dec",
+      "name": "CHATITA",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900123600756"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900123600763"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900123600770"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900123600794"
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "CAMURCA FLEX-CAMEL 1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793303661,
+      "updated_at": 1793303661
     }
   ]
 }
