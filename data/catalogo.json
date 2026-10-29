@@ -6969,6 +6969,59 @@
       "image": "",
       "created_at": 1793280080,
       "updated_at": 1793280297
+    },
+    {
+      "id": "7d3b770c31c8",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 230000,
+      "codes": [],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 3,
+          "code": "7900245102381"
+        },
+        {
+          "size": "41",
+          "stock": 3,
+          "code": "7900245102688"
+        },
+        {
+          "size": "42",
+          "stock": 1,
+          "code": "7900245102695"
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "GAS LOC BELGA/TEC CAIRO/NP FLORN NEGRO/NEGRO GRAFITO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793280604,
+      "updated_at": 1793280604
     }
   ]
 }
