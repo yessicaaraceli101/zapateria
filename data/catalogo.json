@@ -10176,6 +10176,58 @@
       "image": "",
       "created_at": 1793308449,
       "updated_at": 1793308449
+    },
+    {
+      "id": "1bb9f511d46b",
+      "name": "BOTA ALTO TACO FINO",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 315000,
+      "codes": [],
+      "stock": 7900407010908,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900407010875"
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900407010882"
+        },
+        {
+          "size": "37",
+          "stock": 7900407010905
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GENEBRA -NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793308768,
+      "updated_at": 1793308768
     }
   ]
 }
