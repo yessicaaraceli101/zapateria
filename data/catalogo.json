@@ -8918,6 +8918,71 @@
       "image": "",
       "created_at": 1793301050,
       "updated_at": 1793301171
+    },
+    {
+      "id": "616e13aefcca",
+      "name": "ZAPATO S/CORDON BEBE",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1,
+          "code": "7900407340453"
+        },
+        {
+          "size": "20",
+          "stock": 1,
+          "code": "7900407340460"
+        },
+        {
+          "size": "21",
+          "stock": 2,
+          "code": "7900407340477"
+        },
+        {
+          "size": "22",
+          "stock": 2,
+          "code": "7900407340484"
+        },
+        {
+          "size": "23",
+          "stock": 2,
+          "code": "7900407340491"
+        },
+        {
+          "size": "24",
+          "stock": 2,
+          "code": "7900407340507"
+        },
+        {
+          "size": "25",
+          "stock": 0
+        },
+        {
+          "size": "26",
+          "stock": 1,
+          "code": "7900407340521"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA MONACO NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793301400,
+      "updated_at": 1793301400
     }
   ]
 }
