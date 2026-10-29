@@ -12,6 +12,14 @@
       "iv": "jIZGK5I9PRl4p7Dj",
       "ct": "DMR9SszSg3A9dWbdi/Km16l1fFYYSazK6vQbLA2l51C8ERymAfC2F4rXS0Pz9VokwQvGpkOp/BuO1u1FKj2cjmYsYL+D/e370DlyPByfYVwFlOVwkGNRpZKp7iSFSqB3aJyR4xQBOB+qlfqXxZQ0mkRaMqGNU6ByRGWcAjIp4FSh16F5kLGWAd5wtlBP3A6JPCjrqxz6pCZgAIqxsF8vMiFuzgFAvBwK+yPMTpZSWD2Pcg==",
       "iterations": 310000
+    },
+    {
+      "user": "Alicia",
+      "role": "cajero",
+      "salt": "dTzRATGcieTJ48nrfGqjCg==",
+      "iv": "bTqhI24br9M+Tn4s",
+      "ct": "E56Yxp7evC8QlfN4dPDpNqgq0lrqdd+vMVcOI2rdkRlh3PCDrmtYFy1FAo7xTwWZMrq5T3uweYBgE6eeqCjBx7npLOMzeZfsgIF9BX55K734O1kGI2K5VsAE9rt/XNlw7wwQqKarLN/XHcm7xWh7LEY2hR7yI7rlTUNxUMwejzTXLsk1c6D8vB+vHIWWtu3VrVFm1Gzu70a6uPUE8tDQoNfZtcIU9QbRvPExL1vn5kA2SQ==",
+      "iterations": 310000
     }
   ]
 }
