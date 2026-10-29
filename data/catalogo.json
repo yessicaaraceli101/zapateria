@@ -7394,13 +7394,13 @@
       "id": "46c897b6e843",
       "name": "CHAMPION",
       "category": "Zapatos",
-      "gender": "",
+      "gender": "Dama",
       "brand": "Actvitta",
       "sku": "",
       "code": "",
       "price": 185000,
       "codes": [],
-      "stock": 17900190360257,
+      "stock": 6,
       "sizes": [
         {
           "size": "34",
@@ -7409,15 +7409,17 @@
         },
         {
           "size": "35",
-          "stock": 17900190360256
+          "stock": 1,
+          "code": "7900190360256"
         },
         {
           "size": "36",
-          "stock": 0
+          "stock": 2,
+          "code": "7900190360263"
         },
         {
           "size": "37",
-          "stock": 0
+          "stock": 1
         },
         {
           "size": "38",
@@ -7425,7 +7427,8 @@
         },
         {
           "size": "39",
-          "stock": 0
+          "stock": 1,
+          "code": "7900190360317"
         },
         {
           "size": "40",
@@ -7433,13 +7436,13 @@
         }
       ],
       "colors": "NEGRO",
-      "description": "",
+      "description": "GP LOC MIRA/NYLON SLEEK/AUSTRALIA MEGRO-GRAF 989-NEGRO",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793283564,
-      "updated_at": 1793283564
+      "updated_at": 1793283710
     }
   ]
 }
