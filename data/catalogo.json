@@ -8535,6 +8535,101 @@
       "image": "",
       "created_at": 1793297308,
       "updated_at": 1793297308
+    },
+    {
+      "id": "b8892a5d81af",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 135000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 0
+        },
+        {
+          "size": "20",
+          "stock": 1,
+          "code": "7900245324219"
+        },
+        {
+          "size": "21",
+          "stock": 2,
+          "code": "7900245324226"
+        },
+        {
+          "size": "22",
+          "stock": 1,
+          "code": "7900245324233"
+        },
+        {
+          "size": "23",
+          "stock": 1,
+          "code": "7900245324240"
+        },
+        {
+          "size": "24",
+          "stock": 2,
+          "code": "7900245324257"
+        },
+        {
+          "size": "25",
+          "stock": 0
+        },
+        {
+          "size": "26",
+          "stock": 1
+        },
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 0
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA MOSCOU NEO BLANCO 99",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793299678,
+      "updated_at": 1793299678
     }
   ]
 }
