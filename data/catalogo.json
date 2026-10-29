@@ -10287,6 +10287,61 @@
       "image": "",
       "created_at": 1793309223,
       "updated_at": 1793309223
+    },
+    {
+      "id": "0453aa904d1d",
+      "name": "CHAMPION",
+      "category": "CHAMPION PARAGUAY",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900407579075"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900407579082"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900407579099"
+        },
+        {
+          "size": "37",
+          "stock": 1
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900407579136"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900407579143"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "PELICA/NAPA TURIM-BLANCO MARINA /ROJO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793309771,
+      "updated_at": 1793309771
     }
   ]
 }
