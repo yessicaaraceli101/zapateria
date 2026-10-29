@@ -7022,6 +7022,58 @@
       "image": "",
       "created_at": 1793280604,
       "updated_at": 1793280604
+    },
+    {
+      "id": "0830181b10bf",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 170000,
+      "codes": [],
+      "stock": 17900294373691,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900294373640"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900294373657"
+        },
+        {
+          "size": "40",
+          "stock": 17900294373688
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 1
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NEGRO FLOTER RUSTICO NEO-NEGRO/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793280825,
+      "updated_at": 1793280825
     }
   ]
 }
