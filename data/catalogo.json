@@ -7566,7 +7566,7 @@
       "code": "",
       "price": 190000,
       "codes": [],
-      "stock": 27900015152234,
+      "stock": 8,
       "sizes": [
         {
           "size": "38",
@@ -7579,19 +7579,23 @@
         },
         {
           "size": "40",
-          "stock": 27900015152233
+          "stock": 2,
+          "code": "7900015152233"
         },
         {
           "size": "41",
-          "stock": 0
+          "stock": 3,
+          "code": "7900015152240"
         },
         {
           "size": "42",
-          "stock": 0
+          "stock": 1,
+          "code": "7900015152257"
         },
         {
           "size": "43",
-          "stock": 0
+          "stock": 1,
+          "code": "7900015152264"
         },
         {
           "size": "44",
@@ -7599,13 +7603,13 @@
         }
       ],
       "colors": "BLANCO",
-      "description": "",
+      "description": "NAPA VERMON NEO/NAP FLOT RUST NEO BLANCO/CARAMELO 876",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793286524,
-      "updated_at": 1793286524
+      "updated_at": 1793286646
     }
   ]
 }
