@@ -8789,6 +8789,70 @@
       "image": "",
       "created_at": 1793300328,
       "updated_at": 1793300328
+    },
+    {
+      "id": "76c36c478ced",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Niños",
+      "brand": "Molekinho",
+      "sku": "",
+      "code": "",
+      "price": 140000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "18",
+          "stock": 0
+        },
+        {
+          "size": "19",
+          "stock": 1,
+          "code": "7900190609225"
+        },
+        {
+          "size": "20",
+          "stock": 1,
+          "code": "7900190609232"
+        },
+        {
+          "size": "21",
+          "stock": 1,
+          "code": "7900190609249"
+        },
+        {
+          "size": "22",
+          "stock": 1,
+          "code": "7900190609256"
+        },
+        {
+          "size": "23",
+          "stock": 1,
+          "code": "7900190609263"
+        },
+        {
+          "size": "24",
+          "stock": 1,
+          "code": "7900190609270"
+        },
+        {
+          "size": "25",
+          "stock": 1
+        },
+        {
+          "size": "26",
+          "stock": 1
+        }
+      ],
+      "colors": "PINON",
+      "description": "NAPA MONACO PIÑON",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793300860,
+      "updated_at": 1793300860
     }
   ]
 }
