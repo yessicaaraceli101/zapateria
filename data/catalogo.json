@@ -10715,6 +10715,57 @@
       "image": "",
       "created_at": 1793314819,
       "updated_at": 1793314819
+    },
+    {
+      "id": "01053241eaa7",
+      "name": "CHATA -PEGADADA",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 235000,
+      "codes": [],
+      "stock": 7909940443771,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 3,
+          "code": "7909940493206"
+        },
+        {
+          "size": "39",
+          "stock": 7909940443768
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793315575,
+      "updated_at": 1793315575
     }
   ]
 }
