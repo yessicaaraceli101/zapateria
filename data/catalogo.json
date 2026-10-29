@@ -7835,6 +7835,61 @@
       "image": "",
       "created_at": 1793289298,
       "updated_at": 1793289427
+    },
+    {
+      "id": "91eadb420941",
+      "name": "CHAMPION",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 6,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900407281268"
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7900407281275"
+        },
+        {
+          "size": "41",
+          "stock": 2,
+          "code": "7900407281282"
+        },
+        {
+          "size": "42",
+          "stock": 1,
+          "code": "7900407281299"
+        },
+        {
+          "size": "43",
+          "stock": 1,
+          "code": "7900407281305"
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "VERMONT-CAMUR-CAFE-ARENA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793291534,
+      "updated_at": 1793291534
     }
   ]
 }
