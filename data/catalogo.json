@@ -10013,6 +10013,60 @@
       "image": "",
       "created_at": 1793307270,
       "updated_at": 1793307270
+    },
+    {
+      "id": "364218017d9c",
+      "name": "BOTA",
+      "category": "Botas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 320000,
+      "codes": [],
+      "stock": 7,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900350888606"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900350888613"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900350888637"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900350888651"
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "NAPA GENEBRA-CAFE TIPO TEXANA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793307618,
+      "updated_at": 1793307618
     }
   ]
 }
