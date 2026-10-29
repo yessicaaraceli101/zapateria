@@ -9364,6 +9364,60 @@
       "image": "",
       "created_at": 1793302940,
       "updated_at": 1793302940
+    },
+    {
+      "id": "970d06517751",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Caballero",
+      "brand": "BR Sport",
+      "sku": "",
+      "code": "",
+      "price": 125000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900350364902"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900350364919"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        },
+        {
+          "size": "41",
+          "stock": 4,
+          "code": "7900350364933"
+        },
+        {
+          "size": "42",
+          "stock": 1,
+          "code": "7900350364940"
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "GRIS/NEGRO",
+      "description": "GASPEA LEON GRIS/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793303205,
+      "updated_at": 1793303205
     }
   ]
 }
