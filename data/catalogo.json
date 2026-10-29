@@ -2158,7 +2158,8 @@
       "brand": "DAWI",
       "sku": "",
       "code": "",
-      "price": 70000,
+      "price": 35000,
+      "codes": [],
       "stock": 15,
       "sizes": [
         {
@@ -2205,7 +2206,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793122926,
-      "updated_at": 1793122926
+      "updated_at": 1793285190
     },
     {
       "id": "ae8d97f28fd1",
