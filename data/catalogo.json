@@ -10872,6 +10872,58 @@
       "image": "",
       "created_at": 1793316796,
       "updated_at": 1793316796
+    },
+    {
+      "id": "78795f00756e",
+      "name": "BOTAS CON CORDON",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 185000,
+      "codes": [],
+      "stock": 5,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 3,
+          "code": "878527226803"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "867973606802"
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "BOTAS DE TRABAJOS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793317121,
+      "updated_at": 1793317121
     }
   ]
 }
