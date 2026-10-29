@@ -1797,7 +1797,7 @@
       "sku": "",
       "code": "",
       "price": 85000,
-      "stock": 32,
+      "stock": 31,
       "sizes": [
         {
           "size": "28",
@@ -1833,7 +1833,7 @@
         },
         {
           "size": "37",
-          "stock": 3
+          "stock": 2
         },
         {
           "size": "38",
@@ -1855,7 +1855,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793120522,
-      "updated_at": 1793278693
+      "updated_at": 1793291884
     },
     {
       "id": "b21b5c499bbf",
