@@ -91,6 +91,26 @@ window.Z = (function () {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { addEyes(); });
   else setTimeout(addEyes, 0);
 
+  /* Quita el texto "Verificando..." que una versión vieja del panel pone al lado de la contraseña:
+     el estado correcto va debajo del botón Ingresar. */
+  function cleanPwNotes() {
+    document.querySelectorAll('.fld, .login-form label').forEach(function (lab) {
+      if (!lab.querySelector('input[type="password"], .pw-wrap')) return;
+      Array.prototype.slice.call(lab.childNodes).forEach(function (n) {
+        if (n.nodeType === 3 && /verificando/i.test(n.textContent)) n.textContent = '';
+        else if (n.nodeType === 1 && n !== lab.firstElementChild && !n.matches('span.pw-wrap, input, span, label') && /verificando/i.test(n.textContent || '')) n.remove();
+      });
+    });
+  }
+  function watchPwNotes() {
+    if (!window.MutationObserver) { setInterval(cleanPwNotes, 400); return; }
+    var mo = new MutationObserver(cleanPwNotes);
+    mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+    cleanPwNotes();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchPwNotes);
+  else watchPwNotes();
+
   return { GENDERS: GENDERS, esc: esc, money: money, lower: lower, num: num, natCmp: natCmp,
            instLabel: instLabel, stockOf: stockOf, brandByName: brandByName, initial: initial, shoe: shoe, WA_ICON: WA_ICON, addEyes: addEyes, pager: pager };
 })();

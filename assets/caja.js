@@ -110,6 +110,10 @@
       });
       movs.forEach(function (mv) { if (test(mv.fecha)) r[mv.caja][mv.tipo === 'ingreso' ? 'ing' : 'egr'] += mv.monto; });
       ['efectivo', 'transferencia'].forEach(function (k) { r[k].saldo = r[k].ing - r[k].egr; });
+      r.devoluciones = 0; r.devCant = 0;
+      ventas.forEach(function (v) {
+        (v.devoluciones || []).forEach(function (d) { if (test(d.fecha)) { r.devoluciones += d.monto; r.devCant++; } });
+      });
       r.total = r.efectivo.saldo + r.transferencia.saldo;
       return r;
     }
@@ -624,6 +628,7 @@
       ventas.forEach(function (v) {
         r.total += v.totales.total - (v.devuelto || 0);
       r.devoluciones = (r.devoluciones || 0) + (v.devuelto || 0);
+      r.devCant = (r.devCant || 0) + ((v.devoluciones || []).length);
       r.descuentos = (r.descuentos || 0) + (v.totales.descuento || 0);
         r.pago[v.pago.forma] = (r.pago[v.pago.forma] || 0) + (v.pago.monto != null ? v.pago.monto : v.totales.total);
       if (v.credito) r.pago.credito = (r.pago.credito || 0) + v.credito.monto;
@@ -679,7 +684,7 @@
           kpi('Efectivo', money(r.pago.efectivo || 0), '') +
           kpi('Transferencias', money(r.pago.transferencia || 0), '') +
           (r.descuentos ? kpi('Descuentos dados', money(r.descuentos), '') : '') +
-          (r.devoluciones ? kpi('Devoluciones', money(r.devoluciones), 'pasaron a nota de crédito') : '') +
+          (r.devoluciones ? kpi('Devoluciones', money(r.devoluciones), r.devCant + (r.devCant === 1 ? ' nota · ' : ' notas · ') + 'no sale plata, va a vale') : '') +
           gan +
         '</div>' +
         '<div class="rep-grid">' +

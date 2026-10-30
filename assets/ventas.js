@@ -547,7 +547,7 @@
     if (t.descuento || t.credito) {
       br += '<div><span>Subtotal</span><span>' + money(t.subtotal) + '</span></div>';
       if (t.descuento) br += '<div class="is-out"><span>Descuento' + (t.descuentoPct ? ' ' + t.descuentoPct + '%' : '') + '</span><span>− ' + money(t.descuento) + '</span></div>';
-      if (t.credito) br += '<div class="is-cr"><span>Nota de crédito ' + esc(credit.codigo) + ' <button type="button" class="row-x" id="crRemove" aria-label="Quitar crédito">×</button></span><span>− ' + money(t.credito) + '</span></div>';
+      if (t.credito) br += '<div class="is-cr"><span>Vale de devolución ' + esc(credit.codigo) + ' <button type="button" class="row-x" id="crRemove" aria-label="Quitar vale">×</button></span><span>− ' + money(t.credito) + '</span></div>';
     }
     $('#posBreak').innerHTML = br;
     $('#posTotalLbl').textContent = t.credito ? 'A pagar' : 'Total';
@@ -674,7 +674,7 @@
   function creditos() { return P.creditos || (P.creditos = { next: 1, lista: [] }); }
   function findCredit(code) {
     var k = String(code || '').trim().toUpperCase().replace(/\s+/g, '');
-    if (/^\d+$/.test(k)) k = 'NC-' + pad(+k, 6);
+    if (/^\d+$/.test(k)) k = 'ND-' + pad(+k, 6);
     return creditos().lista.filter(function (c) { return c.codigo === k; })[0] || null;
   }
   function useCredit(sale) {
@@ -691,11 +691,11 @@
   function applyCredit() {
     loadPrivate().then(function () {
       var c = findCredit($('#crCode').value);
-      if (!c) { flash('error', 'No existe la nota de crédito «' + $('#crCode').value + '».'); return; }
-      if (c.saldo <= 0) { flash('error', 'La nota de crédito ' + c.codigo + ' ya se usó completa.'); return; }
+      if (!c) { flash('error', 'No existe el vale de devolución «' + $('#crCode').value + '».'); return; }
+      if (c.saldo <= 0) { flash('error', 'El vale de devolución ' + c.codigo + ' ya se usó completo.'); return; }
       credit = { codigo: c.codigo, saldo: c.saldo };
       $('#crBox').hidden = true;
-      flash('ok', 'Nota de crédito ' + c.codigo + ' aplicada: saldo ' + money(c.saldo) + '.');
+      flash('ok', 'Vale de devolución ' + c.codigo + ' aplicado: saldo ' + money(c.saldo) + '.');
       updateTotals();
       focusQ();
     }, function (e) { flash('error', e.message); });
@@ -744,7 +744,7 @@
       });
       if (!items.length) { A.showMsg('error', 'Marcá cuántos productos devuelve.', null); return; }
       var monto = items.reduce(function (t, x) { return t + x.monto; }, 0);
-      var cr = creditos(), codigo = 'NC-' + pad(cr.next || 1, 6);
+      var cr = creditos(), codigo = 'ND-' + pad(cr.next || 1, 6);
       cr.next = (cr.next || 1) + 1;
       var nota = { codigo: codigo, fecha: new Date().toISOString(), monto: monto, saldo: monto, origen: v.numero,
                    cliente: { nombre: v.cliente.nombre || '', doc: v.cliente.doc || '', tipo: v.cliente.tipo },
@@ -758,7 +758,7 @@
       close();
       save([A.DATA_PATH, monthPath(m), CRED_PATH], 'Devolución de ' + v.numero + ' · ' + codigo + ' · ' + money(monto));
       renderVentas();
-      A.showMsg('ok', 'Devolución registrada. Nota de crédito ' + codigo + ' por ' + money(monto) + '. Se imprime para entregar al cliente.');
+      A.showMsg('ok', 'Devolución registrada. Nota de devolución ' + codigo + ' por ' + money(monto) + '. Se imprime para entregar al cliente.');
       printCreditNote(nota);
     };
     d.showModal();
@@ -772,17 +772,18 @@
     h += '<h1>' + esc(f.fantasia || st.store_name) + '</h1>';
     if (f.ruc) h += '<div class="c">RUC ' + esc(f.ruc) + '</div>';
     if (f.razon) h += '<div class="c">' + esc(f.razon) + '</div>';
-    h += '<div class="hr"></div><div class="c b big">NOTA DE CRÉDITO</div>';
+    h += '<div class="hr"></div><div class="c b big">NOTA DE DEVOLUCION</div>';
     h += '<div class="c b" style="font-size:20px;margin:4px 0">' + esc(n.codigo) + '</div>';
     h += L('Fecha', esc(fmtDate(n.fecha, true))) + L('Por devolución de', esc(n.origen));
     if (n.cliente && n.cliente.nombre) h += L('Cliente', esc(n.cliente.nombre));
     h += '<div class="hr"></div>';
     n.items.forEach(function (it) { h += '<div class="it">' + esc(it.descripcion) + L(it.cantidad + ' unid.', money(it.monto).replace('Gs. ', '')) + '</div>'; });
     if (n.motivo) h += '<div class="it">Motivo: ' + esc(n.motivo) + '</div>';
-    h += '<div class="hr"></div><div class="big b">' + L('CRÉDITO A FAVOR', money(n.monto)) + '</div>';
+    h += '<div class="hr"></div><div class="big b">' + L('VALE A FAVOR', money(n.monto)) + '</div>';
     if (n.saldo !== n.monto) h += L('Saldo disponible', money(n.saldo));
     h += '<div class="hr"></div><div class="c">Presentá este código en tu próxima compra.</div>';
     h += '<div class="c note">Comprobante interno, no válido como factura.</div>';
+    h += '<div class="hr"></div><div class="c note">SPYcomers · Tel (0983) 411 544 · www.spynetpy.com</div>';
     return h + '<div class="feed"></div></body></html>';
   }
   function printCreditNote(n) { printThermal(creditNoteHTML(n), P.ajustes || defaultAjustes()); }
@@ -1210,8 +1211,10 @@
     }
     h += '<div class="big b">' + L('TOTAL', money(T.total)) + '</div>';
     if (sale.credito) {
-      h += L('Nota de crédito ' + esc(sale.credito.codigo), '− ' + money(sale.credito.monto));
+      h += '<div class="c b">* CAMBIO POR DEVOLUCION *</div>';
+      h += L('Vale devolución ' + esc(sale.credito.codigo), '− ' + money(sale.credito.monto));
       h += '<div class="b">' + L('A PAGAR', money(sale.pago.monto)) + '</div>';
+      if (sale.credito.saldoRestante) h += '<div class="c">Te queda saldo en el vale: ' + money(sale.credito.saldoRestante) + '</div>';
     }
     h += '<div class="hr"></div>';
     h += L('Pago', esc(PAY[sale.pago.forma] || sale.pago.forma));
@@ -1224,6 +1227,7 @@
     if (!isFactura(sale)) h += '<div class="c note">Comprobante interno, no válido como factura.</div>';
     else if (!(sale.sifen && sale.sifen.cdc)) h += '<div class="c note">Pendiente de aprobación en SIFEN.</div>';
     else h += '<div class="c note">CDC ' + esc(sale.sifen.cdc) + '</div>';
+    h += '<div class="hr"></div><div class="c note">SPYcomers · Tel (0983) 411 544 · www.spynetpy.com</div>';
     return h + '<div class="feed"></div></body></html>';
   }
   function isFactura(sale) { return sale.tipo ? sale.tipo === 'factura' : !!sale.fiscal; }
@@ -1281,8 +1285,10 @@
     }
     lr('TOTAL', money(T2.total), { bold: true, size: 11 });
     if (sale.credito) {
-      lr('Nota de crédito ' + sale.credito.codigo, '- ' + money(sale.credito.monto));
+      c('* CAMBIO POR DEVOLUCION *', { bold: true });
+      lr('Vale devolución ' + sale.credito.codigo, '- ' + money(sale.credito.monto));
       lr('A PAGAR', money(sale.pago.monto), { bold: true });
+      if (sale.credito.saldoRestante) c('Saldo que queda en el vale: ' + money(sale.credito.saldoRestante));
     }
     hr();
     lr('Pago', PAY[sale.pago.forma] || sale.pago.forma);
@@ -1296,6 +1302,8 @@
     if (!isFactura(sale)) c('Comprobante interno, no válido como factura.', { size: 7 });
     else if (!(sale.sifen && sale.sifen.cdc)) c('Pendiente de aprobación en SIFEN.', { size: 7 });
     else c('CDC ' + sale.sifen.cdc, { size: 7 });
+    hr();
+    c('SPYcomers · Tel (0983) 411 544 · www.spynetpy.com', { size: 7 });
 
     // Alto de la hoja según el contenido
     var probe = new lib.jsPDF({ unit: 'mm', format: [W, 100], compress: true });
@@ -1548,7 +1556,7 @@
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
         '<td class="actions"><button type="button" class="btn btn-print btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
         (v.estado !== 'anulada' && A.can('devoluciones') && v.items.some(function (it, i) { return it.cantidad - devueltoDe(v, i) > 0; }) ? '<button type="button" class="btn btn-accent btn-sm" data-dev="' + esc(v.id) + '">Devolver</button>' : '') +
-        ((v.devoluciones || []).length ? '<button type="button" class="btn btn-secondary btn-sm" data-ncp="' + esc(v.id) + '">Nota de crédito</button>' : '') +
+        ((v.devoluciones || []).length ? '<button type="button" class="btn btn-secondary btn-sm" data-ncp="' + esc(v.id) + '">Nota de devolución</button>' : '') +
         '<button type="button" class="btn btn-pdf btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
         '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
         '<button type="button" class="btn btn-mail btn-sm" data-mail="' + esc(v.id) + '">Correo</button>' +

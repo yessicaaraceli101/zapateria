@@ -481,10 +481,23 @@
 
   $('#loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    // limpia cualquier texto de estado que una versión vieja del ojito deje al lado del campo
+    (function () {
+      var lab = $('#lPass') && $('#lPass').closest('label');
+      if (!lab) return;
+      Array.prototype.forEach.call(lab.childNodes, function (n) {
+        if (n.nodeType === 3 && /verificando/i.test(n.textContent)) n.textContent = '';
+        if (n.nodeType === 1 && n.tagName !== 'SPAN' && n.tagName !== 'INPUT' && /verificando/i.test(n.textContent)) n.remove();
+      });
+    })();
     var user = $('#lUser').value.trim(), pass = $('#lPass').value;
+    var st = $('#loginStatus');
+    var done = function () { if (st) st.textContent = ''; };
+    if (st) st.textContent = 'Verificando…';   // el estado va debajo del botón, nunca al lado del campo
     run($('#loginForm button'), 'Verificando…', async function () {
       var payload, found;
       try { found = await tryLogin(user, pass, S.auth); payload = found.payload; } catch (err) {
+        done();
         showMsg('error', 'Usuario o contraseña incorrectos.', '#gateMsgs');
         $('#lPass').value = ''; $('#lPass').focus();
         return;
@@ -507,7 +520,7 @@
           return;
         }
         throw err;
-      }
+      } finally { done(); }
     });
   });
 

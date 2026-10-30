@@ -29,6 +29,7 @@
       <label class="fld"><span>Usuario</span><input id="lUser" autocomplete="username" required></label>
       <label class="fld"><span>Contraseña</span><input id="lPass" type="password" autocomplete="current-password" required></label>
       <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+      <p class="login-status" id="loginStatus" aria-live="polite"></p>
     </form>
 
 
@@ -42,7 +43,7 @@
     <div class="adm-head-in">
       <a class="adm-brand" href="admin.html">
         <span id="admLogo" class="logo logo-ph" aria-hidden="true"></span>
-        <span class="adm-name" id="admName"></span>
+        <span class="adm-brand-txt"><span class="adm-name" id="admName"></span><span class="adm-sign">Spycomers</span></span>
         <small>/ admin</small>
       </a>
       <nav class="adm-nav">
@@ -161,9 +162,9 @@
             </div>
           </div>
           <div class="pos-credit">
-            <button type="button" class="link-btn" id="crToggle">Usar nota de crédito</button>
+            <button type="button" class="link-btn" id="crToggle">Usar vale de devolución</button>
             <div class="cr-row" id="crBox" hidden>
-              <input id="crCode" placeholder="Código, ej: NC-000001" autocomplete="off" aria-label="Código de la nota de crédito">
+              <input id="crCode" placeholder="Código, ej: ND-000001" autocomplete="off" aria-label="Código del vale de devolución">
               <button type="button" class="btn btn-secondary btn-sm" id="crApply">Aplicar</button>
             </div>
           </div>
@@ -571,10 +572,10 @@
         <p class="hint" id="devInfo"></p>
         <div class="table-wrap"><table class="tbl tbl-dev"><thead><tr><th>Producto</th><th class="ta-r">Vendidos</th><th class="ta-r">Devuelve</th><th class="ta-r">Monto</th></tr></thead><tbody id="devRows"></tbody></table></div>
         <label class="fld"><span>Motivo</span><input id="devMotivo" maxlength="160" placeholder="Ej: cambio de talle, falla de fábrica" autocomplete="off"></label>
-        <div class="dev-total"><span>Crédito a favor del cliente</span><strong id="devTotal">Gs. 0</strong></div>
-        <p class="hint">El stock vuelve solo. Se genera una <strong>nota de crédito</strong> con un código para usar en una próxima compra.</p>
+        <div class="dev-total"><span>Vale a favor del cliente</span><strong id="devTotal">Gs. 0</strong></div>
+        <p class="hint">El stock vuelve solo. Se genera una <strong>nota de devolución</strong> con un código (vale a favor) para descontar en una próxima compra. No sale plata de la caja.</p>
       </div>
-      <div class="dlg-foot"><button type="button" class="btn btn-secondary" data-devclose>Cancelar</button><button type="submit" class="btn btn-accent" id="devOk">Devolver y generar crédito</button></div>
+      <div class="dlg-foot"><button type="button" class="btn btn-secondary" data-devclose>Cancelar</button><button type="submit" class="btn btn-accent" id="devOk">Devolver y generar vale</button></div>
     </form>
   </dialog>
 

@@ -807,8 +807,9 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
 .perm-grid { display: grid; gap: 6px 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .perm-grid .perm-extra { grid-column: 1 / -1; color: #b45309; }
 /* Ojito de la contraseña */
-.pw-wrap { position: relative; display: block; width: 100%; }
-.pw-wrap input { width: 100%; padding-right: 46px !important; }
+.pw-wrap { position: relative; display: block; width: 100%; box-sizing: border-box; }
+.pw-wrap input { width: 100%; box-sizing: border-box; padding-right: 46px !important; }
+.fld .pw-wrap { margin: 0; }
 .pw-eye { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border: 0; border-radius: 8px;
   background: transparent; color: var(--muted); cursor: pointer; display: grid; place-items: center; }
 .pw-eye:hover { background: var(--surface-2); color: var(--ink); }
@@ -855,3 +856,15 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
   .pager { margin-left: 0; justify-content: space-between; }
   .pager-btns button { min-width: 34px; height: 36px; }
 }
+
+/* El campo de contraseña y su ojito nunca se salen del recuadro */
+.pw-wrap { max-width: 100%; box-sizing: border-box; }
+.pw-wrap input { max-width: 100%; box-sizing: border-box; }
+/* Si una versión anterior metía un texto de estado al lado del campo, se oculta
+   (el estado correcto va dentro del botón Ingresar) */
+.login-form label > span.run-note, .login-form label > small, .login-form .fld > :not(label):not(span):not(input):not(.pw-wrap) { display: none !important; }
+.login-status { text-align: center; margin: 10px 0 0; min-height: 1.2em; color: var(--primary-text); font-weight: 600; }
+.login-status:empty { display: none; }
+/* Firma SPYcomers en el encabezado del panel */
+.adm-brand-txt { display: inline-grid; line-height: 1.05; }
+.adm-sign { font-size: .72rem; font-weight: 600; opacity: .85; letter-spacing: .01em; }
