@@ -30,15 +30,10 @@
   function pager(el, key, total, rerender) {
     var max = Math.max(1, Math.ceil(total / PAGE));
     if (page[key] > max) page[key] = max;
-    if (total <= PAGE) { el.innerHTML = total ? '<span class="pager-info">' + total + (total === 1 ? ' registro' : ' registros') + '</span>' : ''; return (page[key] - 1) * PAGE; }
-    var from = (page[key] - 1) * PAGE, nums = '';
-    for (var i = 1; i <= max; i++) if (Math.abs(i - page[key]) <= 2 || i === 1 || i === max) nums += '<button type="button" data-pg="' + i + '" class="' + (i === page[key] ? 'on' : '') + '">' + i + '</button>';
-    el.innerHTML = '<span class="pager-info">' + (from + 1) + '–' + Math.min(from + PAGE, total) + ' de ' + total + '</span><div class="pager-btns">' +
-      '<button type="button" data-pg="' + (page[key] - 1) + '"' + (page[key] === 1 ? ' disabled' : '') + '>‹</button>' + nums +
-      '<button type="button" data-pg="' + (page[key] + 1) + '"' + (page[key] === max ? ' disabled' : '') + '>›</button></div>';
-    el.onclick = function (e) { var b = e.target.closest('[data-pg]'); if (b && !b.disabled) { page[key] = +b.dataset.pg; rerender(); } };
-    return from;
+    Z.pager(el, { page: page[key], per: PAGE, total: total, onPage: function (n) { page[key] = n; rerender(); } });
+    return (page[key] - 1) * PAGE;
   }
+
   function filterBy(list, q, fields) {
     var w = lower(q).split(/\s+/).filter(Boolean), d = norm(q);
     if (!w.length) return list;

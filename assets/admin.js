@@ -67,14 +67,16 @@
   /* ---------------- usuarios: administrador y cajero ----------------
      Cada usuario tiene su propia copia cifrada (con su usuario y contraseña) del permiso de guardado. */
   var ROLES = { admin: 'Administrador', cajero: 'Cajero' };
-  var CAJERO_TABS = ['caja', 'vender', 'productos', 'ventas', 'clientes'];   // lo que ve un cajero si el administrador no eligió otra cosa
+  var CAJERO_TABS = ['caja', 'vender', 'productos', 'ventas', 'clientes', 'descuentos'];   // lo que ve un cajero si el administrador no eligió otra cosa
   /* Permisos que el administrador puede dar o quitar a cada cajero */
   var PERMS = [
     { k: 'caja', t: 'Caja' }, { k: 'vender', t: 'Vender' }, { k: 'productos', t: 'Productos' }, { k: 'ventas', t: 'Ventas' },
     { k: 'clientes', t: 'Clientes' }, { k: 'compras', t: 'Compras' }, { k: 'proveedores', t: 'Proveedores' },
     { k: 'reportes', t: 'Reportes' }, { k: 'marcas', t: 'Marcas' },
     { k: 'anular', t: 'Anular ventas y compras', extra: true }, { k: 'borrarClientes', t: 'Eliminar clientes y proveedores', extra: true },
-    { k: 'costos', t: 'Ver y cambiar el costo de los productos', extra: true }
+    { k: 'costos', t: 'Ver y cambiar el costo de los productos', extra: true },
+    { k: 'descuentos', t: 'Hacer descuentos al vender', extra: true },
+    { k: 'devoluciones', t: 'Hacer devoluciones (genera crédito)', extra: true }
   ];
   function permsOf(entry) { return entry && Array.isArray(entry.perms) ? entry.perms : CAJERO_TABS; }
   function userList(auth) {
@@ -625,11 +627,26 @@
   }
   var TRASH = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
 
+  /* Productos con paginación: la búsqueda filtra y después se muestra solo la página actual */
+  var prodPage = 1;
   function filterTable() {
-    var q = lower($('#tableSearch').value.trim());
-    $$('#prodRows tr[data-search]').forEach(function (tr) { tr.hidden = !!q && tr.dataset.search.indexOf(q) === -1; });
+    var q = lower($('#tableSearch').value.trim()), per = +$('#prodPer').value || 20;
+    var rows = $$('#prodRows tr[data-search]');
+    var match = rows.filter(function (tr) { return !q || tr.dataset.search.indexOf(q) !== -1; });
+    var max = Math.max(1, Math.ceil(match.length / per));
+    if (prodPage > max) prodPage = max;
+    var from = (prodPage - 1) * per;
+    rows.forEach(function (tr) { tr.hidden = true; });
+    match.slice(from, from + per).forEach(function (tr) { tr.hidden = false; });
+    var empty = $('#prodNoMatch');
+    if (rows.length && !match.length) {
+      if (!empty) $('#prodRows').insertAdjacentHTML('beforeend', '<tr id="prodNoMatch"><td colspan="9" class="tbl-empty">No hay productos con «' + esc(q) + '».</td></tr>');
+      else empty.querySelector('td').textContent = 'No hay productos con «' + q + '».';
+    } else if (empty) empty.remove();
+    Z.pager($('#prodPager'), { page: prodPage, per: per, total: match.length, onPage: function (n) { prodPage = n; filterTable(); window.scrollTo({ top: $('[data-pane="productos"]').offsetTop - 10, behavior: 'smooth' }); } });
   }
-  $('#tableSearch').addEventListener('input', filterTable);
+  $('#tableSearch').addEventListener('input', function () { prodPage = 1; filterTable(); });
+  $('#prodPer').addEventListener('change', function () { prodPage = 1; filterTable(); });
 
   function findProduct(id) { return S.data.products.filter(function (p) { return p.id === id; })[0]; }
 
@@ -1078,6 +1095,7 @@
           '<button class="btn btn-accent btn-sm" type="submit">Guardar</button></form>' +
       '</div>';
     }).join('');
+    if (Z.addEyes) Z.addEyes(box);
   }
   function findUser(name) { return userList().filter(function (u) { return u.user && lower(u.user) === lower(name); })[0]; }
   function admins() { return userList().filter(function (u) { return !u.legacy && u.role !== 'cajero'; }); }

@@ -16,6 +16,7 @@
   var CAJA_PATH = 'data/privado/cajas.json';
   var CONT_PATH = 'data/privado/contactos.json';
   var COST_PATH = 'data/privado/costos.json';
+  var CRED_PATH = 'data/privado/creditos.json';
   var PAY = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', transferencia: 'Transferencia', qr: 'QR / billetera' };
   var P = { ajustes: null, months: {}, loading: null };
   var cart = [], payMethod = 'efectivo', docType = 'ticket';
@@ -80,6 +81,7 @@
   /* ---------------- datos privados (cifrados) ---------------- */
   A.fileSources[AJ_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.ajustes)) + '\n'; };
   A.fileSources[CAJA_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.caja)) + '\n'; };
+  A.fileSources[CRED_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.creditos || { next: 1, lista: [] })) + '\n'; };
   A.fileSources[COST_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.costos || {})) + '\n'; };
   A.fileSources[CONT_PATH] = async function () { return JSON.stringify(await A.encryptJSON(P.contactos)) + '\n'; };
   function ensureMonthSource(m) {
@@ -113,7 +115,7 @@
     if (P.loading) return P.loading;
     var m = monthKey();
     P.loading = (async function () {
-      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m)), readPrivate(CAJA_PATH), readPrivate(CONT_PATH), readPrivate(COST_PATH)]);
+      var res = await Promise.all([readPrivate(AJ_PATH), readPrivate(monthPath(m)), readPrivate(CAJA_PATH), readPrivate(CONT_PATH), readPrivate(COST_PATH), readPrivate(CRED_PATH)]);
       var d = defaultAjustes(), aj = res[0] || {};
       P.ajustes = Object.assign(d, aj, {
         fiscal: Object.assign(d.fiscal, aj.fiscal || {}),
@@ -125,6 +127,7 @@
       P.caja = Object.assign({ abierta: null, cierres: [] }, res[2] || {});
       P.contactos = Object.assign({ clientes: [], proveedores: [] }, res[3] || {});
       P.costos = res[4] || {};
+      P.creditos = Object.assign({ next: 1, lista: [] }, res[5] || {});
       if (A.V && A.V.hooks.contactos) A.V.hooks.contactos();
       ensureMonthSource(m);
       if (A.V && A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
@@ -475,6 +478,20 @@
     });
   }
 
+  /* Descuento de la venta y nota de crédito usada */
+  var disc = { mode: 'gs', value: 0 }, credit = null;
+  function saleTotals() {
+    var g = totals(cart), sub = g.total;
+    var d = disc.mode === 'pct' ? Math.round(sub * Math.min(100, disc.value) / 100) : Math.min(disc.value, sub);
+    var net = sub - d, f = sub ? net / sub : 1;
+    var t = { subtotal: sub, descuento: d, descuentoPct: disc.mode === 'pct' ? Math.min(100, disc.value) : 0, total: net,
+              gravada10: Math.round(g.gravada10 * f), gravada5: Math.round(g.gravada5 * f), exenta: Math.round(g.exenta * f) };
+    t.iva10 = Math.round(t.gravada10 / 11); t.iva5 = Math.round(t.gravada5 / 21);
+    t.credito = credit ? Math.min(credit.saldo, net) : 0;
+    t.aPagar = net - t.credito;
+    return t;
+  }
+
   function totals(lines) {
     var t = { total: 0, gravada10: 0, gravada5: 0, exenta: 0 };
     lines.forEach(function (l) {
@@ -526,9 +543,16 @@
   });
 
   function updateTotals() {
-    var t = totals(cart);
-    $('#posTotal').textContent = money(t.total);
-    renderQuickCash(t.total);
+    var t = saleTotals(), br = '';
+    if (t.descuento || t.credito) {
+      br += '<div><span>Subtotal</span><span>' + money(t.subtotal) + '</span></div>';
+      if (t.descuento) br += '<div class="is-out"><span>Descuento' + (t.descuentoPct ? ' ' + t.descuentoPct + '%' : '') + '</span><span>− ' + money(t.descuento) + '</span></div>';
+      if (t.credito) br += '<div class="is-cr"><span>Nota de crédito ' + esc(credit.codigo) + ' <button type="button" class="row-x" id="crRemove" aria-label="Quitar crédito">×</button></span><span>− ' + money(t.credito) + '</span></div>';
+    }
+    $('#posBreak').innerHTML = br;
+    $('#posTotalLbl').textContent = t.credito ? 'A pagar' : 'Total';
+    $('#posTotal').textContent = money(t.aPagar);
+    renderQuickCash(t.aPagar);
     updateChange();
   }
   function renderQuickCash(total) {
@@ -546,7 +570,7 @@
     }).join('');
   }
   function updateChange() {
-    var total = totals(cart).total, paid = num(paidIn.value);
+    var total = saleTotals().aPagar, paid = num(paidIn.value);
     var el = $('#posChange');
     if (!paid) { el.textContent = money(0); el.classList.remove('is-neg'); return; }
     var ch = paid - total;
@@ -616,6 +640,152 @@
       }
     });
   });
+
+  /* ---------------- descuento ---------------- */
+  function spreadDiscount(sale) {
+    var t = sale.totales, d = t.descuento || 0, left = d;
+    sale.items.forEach(function (it, i) {
+      it.bruto = it.subtotal;
+      var share = i === sale.items.length - 1 ? left : Math.round(it.subtotal * d / (t.subtotal || 1));
+      share = Math.min(share, left); left -= share;
+      it.descuento = share;
+      it.subtotal = it.bruto - share;
+    });
+  }
+  $('#posDesc').addEventListener('input', function () {
+    var v = num(this.value);
+    if (disc.mode === 'pct' && v > 100) { v = 100; this.value = '100'; }
+    disc.value = v;
+    updateTotals();
+  });
+  $$('[data-dmode]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      disc.mode = b.dataset.dmode;
+      $$('[data-dmode]').forEach(function (x) { x.classList.toggle('on', x === b); });
+      if (disc.mode === 'pct' && disc.value > 100) { disc.value = 100; $('#posDesc').value = '100'; }
+      updateTotals();
+    });
+  });
+  function applyDiscPerm() { $('#posDiscBox').hidden = !A.can('descuentos'); }
+  A.on('ready', applyDiscPerm);
+  A.on('tab', function (n) { if (n === 'vender') applyDiscPerm(); });
+
+  /* ---------------- notas de crédito ---------------- */
+  function creditos() { return P.creditos || (P.creditos = { next: 1, lista: [] }); }
+  function findCredit(code) {
+    var k = String(code || '').trim().toUpperCase().replace(/\s+/g, '');
+    if (/^\d+$/.test(k)) k = 'NC-' + pad(+k, 6);
+    return creditos().lista.filter(function (c) { return c.codigo === k; })[0] || null;
+  }
+  function useCredit(sale) {
+    var c = findCredit(sale.credito.codigo);
+    if (!c) return;
+    c.saldo = Math.max(0, c.saldo - sale.credito.monto);
+    c.usos = (c.usos || []).concat({ fecha: sale.fecha, venta: sale.numero, monto: sale.credito.monto });
+    sale.credito.saldoRestante = c.saldo;
+  }
+  $('#crToggle').addEventListener('click', function () {
+    $('#crBox').hidden = !$('#crBox').hidden;
+    if (!$('#crBox').hidden) $('#crCode').focus();
+  });
+  function applyCredit() {
+    loadPrivate().then(function () {
+      var c = findCredit($('#crCode').value);
+      if (!c) { flash('error', 'No existe la nota de crédito «' + $('#crCode').value + '».'); return; }
+      if (c.saldo <= 0) { flash('error', 'La nota de crédito ' + c.codigo + ' ya se usó completa.'); return; }
+      credit = { codigo: c.codigo, saldo: c.saldo };
+      $('#crBox').hidden = true;
+      flash('ok', 'Nota de crédito ' + c.codigo + ' aplicada: saldo ' + money(c.saldo) + '.');
+      updateTotals();
+      focusQ();
+    }, function (e) { flash('error', e.message); });
+  }
+  $('#crApply').addEventListener('click', applyCredit);
+  $('#crCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); applyCredit(); } });
+  document.addEventListener('click', function (e) { if (e.target.closest('#crRemove')) { credit = null; updateTotals(); } });
+
+  /* ---------------- devoluciones ---------------- */
+  function devueltoDe(v, idx) {
+    return (v.devoluciones || []).reduce(function (t, d) { return t + d.items.filter(function (x) { return x.idx === idx; }).reduce(function (a, x) { return a + x.cantidad; }, 0); }, 0);
+  }
+  function openReturn(v, m) {
+    if (!A.can('devoluciones')) { A.showMsg('error', 'No tenés permiso para hacer devoluciones.'); return; }
+    var d = $('#devDlg'), rows = $('#devRows');
+    $('#devTitle').textContent = 'Devolución · ' + v.numero;
+    $('#devInfo').textContent = 'Venta del ' + fmtDate(v.fecha, true) + ' · ' + (v.cliente.tipo === 'innominado' ? 'Consumidor final' : (v.cliente.nombre || v.cliente.doc));
+    rows.innerHTML = v.items.map(function (it, i) {
+      var max = it.cantidad - devueltoDe(v, i), unit = it.subtotal / it.cantidad;
+      return '<tr><td>' + esc(it.descripcion) + '<span class="t-sub">' + money(Math.round(unit)) + ' c/u' + (it.descuento ? ' (con descuento)' : '') + '</span></td>' +
+        '<td class="ta-r">' + it.cantidad + (max < it.cantidad ? '<span class="t-sub">ya devueltos: ' + (it.cantidad - max) + '</span>' : '') + '</td>' +
+        '<td class="ta-r"><input class="in-sm dev-q" data-i="' + i + '" type="number" min="0" max="' + max + '" value="0"' + (max <= 0 ? ' disabled' : '') + ' aria-label="Cantidad a devolver"></td>' +
+        '<td class="ta-r nowrap" data-dm="' + i + '">Gs. 0</td></tr>';
+    }).join('');
+    $('#devMotivo').value = '';
+    function calc() {
+      var tot = 0;
+      $$('.dev-q', rows).forEach(function (inp) {
+        var i = +inp.dataset.i, it = v.items[i], q = Math.max(0, Math.min(+inp.max, Math.floor(+inp.value || 0)));
+        var mnt = Math.round(it.subtotal / it.cantidad * q);
+        rows.querySelector('[data-dm="' + i + '"]').textContent = money(mnt);
+        tot += mnt;
+      });
+      $('#devTotal').textContent = money(tot);
+      return tot;
+    }
+    rows.oninput = calc;
+    function close() { if (d.open) d.close(); $('#devForm').onsubmit = null; }
+    $$('[data-devclose]', d).forEach(function (b) { b.onclick = close; });
+    $('#devForm').onsubmit = function (e) {
+      e.preventDefault();
+      var items = [];
+      $$('.dev-q', rows).forEach(function (inp) {
+        var i = +inp.dataset.i, it = v.items[i], q = Math.max(0, Math.min(+inp.max, Math.floor(+inp.value || 0)));
+        if (q) items.push({ idx: i, product_id: it.product_id, talle: it.talle, descripcion: it.descripcion, cantidad: q, monto: Math.round(it.subtotal / it.cantidad * q) });
+      });
+      if (!items.length) { A.showMsg('error', 'Marcá cuántos productos devuelve.', null); return; }
+      var monto = items.reduce(function (t, x) { return t + x.monto; }, 0);
+      var cr = creditos(), codigo = 'NC-' + pad(cr.next || 1, 6);
+      cr.next = (cr.next || 1) + 1;
+      var nota = { codigo: codigo, fecha: new Date().toISOString(), monto: monto, saldo: monto, origen: v.numero,
+                   cliente: { nombre: v.cliente.nombre || '', doc: v.cliente.doc || '', tipo: v.cliente.tipo },
+                   items: items.map(function (x) { return { descripcion: x.descripcion, cantidad: x.cantidad, monto: x.monto }; }),
+                   motivo: $('#devMotivo').value.trim(), usuario: S.user, usos: [] };
+      cr.lista.push(nota);
+      v.devoluciones = (v.devoluciones || []).concat({ id: A.rid(), fecha: nota.fecha, items: items, monto: monto, credito: codigo, motivo: nota.motivo, usuario: S.user });
+      v.devuelto = (v.devuelto || 0) + monto;
+      applyStock(items, +1);
+      A.renderAll();
+      close();
+      save([A.DATA_PATH, monthPath(m), CRED_PATH], 'Devolución de ' + v.numero + ' · ' + codigo + ' · ' + money(monto));
+      renderVentas();
+      A.showMsg('ok', 'Devolución registrada. Nota de crédito ' + codigo + ' por ' + money(monto) + '. Se imprime para entregar al cliente.');
+      printCreditNote(nota);
+    };
+    d.showModal();
+    var first = $('.dev-q:not([disabled])', rows);
+    if (first) { first.value = 1; first.max = first.max; calc(); first.focus(); first.select(); }
+  }
+  function creditNoteHTML(n) {
+    var aj = P.ajustes || defaultAjustes(), f = aj.fiscal, st = S.data.store;
+    var L = function (a, b) { return '<div class="l"><span>' + a + '</span><span>' + b + '</span></div>'; };
+    var h = '<!doctype html><html><head><meta charset="utf-8"><title>&#8203;</title><style>' + ticketCSS(aj) + '</style></head><body>';
+    h += '<h1>' + esc(f.fantasia || st.store_name) + '</h1>';
+    if (f.ruc) h += '<div class="c">RUC ' + esc(f.ruc) + '</div>';
+    if (f.razon) h += '<div class="c">' + esc(f.razon) + '</div>';
+    h += '<div class="hr"></div><div class="c b big">NOTA DE CRÉDITO</div>';
+    h += '<div class="c b" style="font-size:20px;margin:4px 0">' + esc(n.codigo) + '</div>';
+    h += L('Fecha', esc(fmtDate(n.fecha, true))) + L('Por devolución de', esc(n.origen));
+    if (n.cliente && n.cliente.nombre) h += L('Cliente', esc(n.cliente.nombre));
+    h += '<div class="hr"></div>';
+    n.items.forEach(function (it) { h += '<div class="it">' + esc(it.descripcion) + L(it.cantidad + ' unid.', money(it.monto).replace('Gs. ', '')) + '</div>'; });
+    if (n.motivo) h += '<div class="it">Motivo: ' + esc(n.motivo) + '</div>';
+    h += '<div class="hr"></div><div class="big b">' + L('CRÉDITO A FAVOR', money(n.monto)) + '</div>';
+    if (n.saldo !== n.monto) h += L('Saldo disponible', money(n.saldo));
+    h += '<div class="hr"></div><div class="c">Presentá este código en tu próxima compra.</div>';
+    h += '<div class="c note">Comprobante interno, no válido como factura.</div>';
+    return h + '<div class="feed"></div></body></html>';
+  }
+  function printCreditNote(n) { printThermal(creditNoteHTML(n), P.ajustes || defaultAjustes()); }
 
   /* ---------------- clientes y proveedores guardados ---------------- */
   function docNorm(x) { return String(x || '').replace(/[^0-9a-z]/gi, '').toLowerCase(); }
@@ -769,6 +939,9 @@
     client = { tipo: 'innominado', doc: '', dv: '', nombre: '', email: '', tel: '' };
     $('#cDoc').value = ''; $('#cName').value = ''; $('#cMail').value = ''; $('#cTel').value = '';
     $('#cFind').value = ''; $('#cSave').checked = true;
+    disc = { mode: 'gs', value: 0 }; credit = null;
+    $('#posDesc').value = ''; $$('[data-dmode]').forEach(function (b) { b.classList.toggle('on', b.dataset.dmode === 'gs'); });
+    $('#crCode').value = ''; $('#crBox').hidden = true;
     setDoc('ticket');
     $('#tBank').value = ''; $('#tRef').value = ''; $('#tFrom').value = '';
     $('#clientForm').hidden = true;
@@ -809,9 +982,10 @@
       if (A.V.hooks.cajaWarn) A.V.hooks.cajaWarn();
       return;
     }
-    var t = totals(cart);
-    var paid = payMethod === 'efectivo' ? (num(paidIn.value) || t.total) : t.total;
-    if (paid < t.total) { flash('error', 'El monto recibido es menor al total.'); paidIn.focus(); return; }
+    var t = saleTotals();
+    if (t.descuento && !A.can('descuentos')) { flash('error', 'No tenés permiso para hacer descuentos.'); return; }
+    var paid = payMethod === 'efectivo' ? (num(paidIn.value) || t.aPagar) : t.aPagar;
+    if (paid < t.aPagar) { flash('error', 'El monto recibido es menor al total.'); paidIn.focus(); return; }
 
     charging = true;
     var btn = $('#posCharge');
@@ -844,18 +1018,22 @@
                    cantidad: l.qty, precio: l.price, iva: l.iva, subtotal: l.qty * l.price };
         }),
         totales: t, condicion: 'contado',
-        pago: transfer ? { forma: payMethod, monto: t.total, banco: transfer.banco, comprobante: transfer.comprobante, remitente: transfer.remitente }
-                       : { forma: payMethod, monto: t.total }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.total : 0,
+        pago: transfer ? { forma: payMethod, monto: t.aPagar, banco: transfer.banco, comprobante: transfer.comprobante, remitente: transfer.remitente }
+                       : { forma: payMethod, monto: t.aPagar }, recibido: paid, vuelto: payMethod === 'efectivo' ? paid - t.aPagar : 0,
+        credito: t.credito ? { codigo: credit.codigo, monto: t.credito } : null,
         estado: 'emitida', usuario: S.user, caja: cajaId,
         fiscal: fiscal ? { timbrado: f.timbrado, est: pad(f.est || '1', 3), pto: pad(f.pto || '1', 3) } : null,
         sifen: fiscal ? { estado: 'pendiente', cdc: '' } : null
       };
+      spreadDiscount(sale);
+      if (sale.credito) useCredit(sale);
       applyStock(sale.items, -1);
       P.months[m].ventas.push(sale);
       A.renderAll();
       resetSale();
       showDone(sale);
       var paths = [A.DATA_PATH, AJ_PATH, monthPath(m)];
+      if (sale.credito) paths.push(CRED_PATH);
       if (sale.cliente.tipo !== 'innominado' && sale.cliente.doc && $('#cSave').checked && upsertCliente(sale.cliente)) paths.push(CONT_PATH);
       save(paths, 'Venta ' + numero + ' · ' + money(t.total));
       if (fiscal && ffReady()) sifenAfterSale(sale); else autoEmail(sale);
@@ -1022,10 +1200,19 @@
     h += '<div class="hr"></div>';
     sale.items.forEach(function (it) {
       h += '<div class="it">' + esc(it.descripcion) +
-        L(it.cantidad + ' x ' + money(it.precio).replace('Gs. ', ''), money(it.subtotal).replace('Gs. ', '')) + '</div>';
+        L(it.cantidad + ' x ' + money(it.precio).replace('Gs. ', ''), money(it.bruto != null ? it.bruto : it.subtotal).replace('Gs. ', '')) + '</div>';
     });
     h += '<div class="hr"></div>';
-    h += '<div class="big b">' + L('TOTAL', money(sale.totales.total)) + '</div>';
+    var T = sale.totales;
+    if (T.descuento) {
+      h += L('Subtotal', money(T.subtotal));
+      h += L('Descuento' + (T.descuentoPct ? ' ' + T.descuentoPct + '%' : ''), '− ' + money(T.descuento));
+    }
+    h += '<div class="big b">' + L('TOTAL', money(T.total)) + '</div>';
+    if (sale.credito) {
+      h += L('Nota de crédito ' + esc(sale.credito.codigo), '− ' + money(sale.credito.monto));
+      h += '<div class="b">' + L('A PAGAR', money(sale.pago.monto)) + '</div>';
+    }
     h += '<div class="hr"></div>';
     h += L('Pago', esc(PAY[sale.pago.forma] || sale.pago.forma));
     if (sale.pago.banco) h += L('Banco', esc(sale.pago.banco));
@@ -1084,10 +1271,19 @@
     hr();
     sale.items.forEach(function (it) {
       add({ t: it.descripcion });
-      lr(it.cantidad + ' x ' + plain(money(it.precio)), plain(money(it.subtotal)));
+      lr(it.cantidad + ' x ' + plain(money(it.precio)), plain(money(it.bruto != null ? it.bruto : it.subtotal)));
     });
     hr();
-    lr('TOTAL', money(sale.totales.total), { bold: true, size: 11 });
+    var T2 = sale.totales;
+    if (T2.descuento) {
+      lr('Subtotal', money(T2.subtotal));
+      lr('Descuento' + (T2.descuentoPct ? ' ' + T2.descuentoPct + '%' : ''), '- ' + money(T2.descuento));
+    }
+    lr('TOTAL', money(T2.total), { bold: true, size: 11 });
+    if (sale.credito) {
+      lr('Nota de crédito ' + sale.credito.codigo, '- ' + money(sale.credito.monto));
+      lr('A PAGAR', money(sale.pago.monto), { bold: true });
+    }
     hr();
     lr('Pago', PAY[sale.pago.forma] || sale.pago.forma);
     if (sale.pago.banco) lr('Banco', sale.pago.banco);
@@ -1309,22 +1505,9 @@
     return { items: list.slice(from, from + PAGE_SIZE), from: from, total: list.length, page: pages[key], max: max };
   }
   function renderPager(el, key, pg, rerender) {
-    if (pg.total <= PAGE_SIZE) { el.innerHTML = pg.total ? '<span class="pager-info">' + pg.total + (pg.total === 1 ? ' registro' : ' registros') + '</span>' : ''; return; }
-    var nums = '', start = Math.max(1, Math.min(pg.page - 2, pg.max - 4)), end = Math.min(pg.max, start + 4);
-    for (var i = start; i <= end; i++) {
-      nums += '<button type="button" class="pg-num' + (i === pg.page ? ' on' : '') + '" data-pg="' + i + '"' + (i === pg.page ? ' aria-current="page"' : '') + '>' + i + '</button>';
-    }
-    el.innerHTML = '<span class="pager-info">' + (pg.from + 1) + '–' + (pg.from + pg.items.length) + ' de ' + pg.total + '</span>' +
-      '<div class="pager-btns">' +
-      '<button type="button" class="pg-nav" data-pg="' + (pg.page - 1) + '"' + (pg.page === 1 ? ' disabled' : '') + ' aria-label="Página anterior">‹</button>' + nums +
-      '<button type="button" class="pg-nav" data-pg="' + (pg.page + 1) + '"' + (pg.page === pg.max ? ' disabled' : '') + ' aria-label="Página siguiente">›</button></div>';
-    el.onclick = function (e) {
-      var b = e.target.closest('[data-pg]');
-      if (!b || b.disabled) return;
-      pages[key] = +b.dataset.pg;
-      rerender();
-    };
+    Z.pager(el, { page: pg.page, per: PAGE_SIZE, total: pg.total, onPage: function (n) { pages[key] = n; rerender(); } });
   }
+
 
   async function renderVentas() {
     var m = saleMonthIn.value || monthKey(), body = $('#saleRows');
@@ -1337,9 +1520,9 @@
     var ok = data.ventas.filter(function (v) { return v.estado !== 'anulada'; });
     var today = todayISO();
     var hoy = ok.filter(function (v) { return fmtISODate(v.fecha) === today; });
-    var sum = function (arr) { return arr.reduce(function (t, v) { return t + v.totales.total; }, 0); };
+    var sum = function (arr) { return arr.reduce(function (t, v) { return t + v.totales.total - (v.devuelto || 0); }, 0); };
     var byPay = {};
-    ok.forEach(function (v) { byPay[v.pago.forma] = (byPay[v.pago.forma] || 0) + v.totales.total; });
+    ok.forEach(function (v) { byPay[v.pago.forma] = (byPay[v.pago.forma] || 0) + (v.pago.monto != null ? v.pago.monto : v.totales.total); });
     var k = '';
     if (m === monthKey()) k += kpi('Hoy', money(sum(hoy)), hoy.length + (hoy.length === 1 ? ' venta' : ' ventas'));
     k += kpi('Total del mes', money(sum(ok)), ok.length + (ok.length === 1 ? ' venta' : ' ventas'));
@@ -1359,9 +1542,13 @@
           (v.correo ? ' · enviado a ' + esc(v.correo.a) : '') + '</span></td>' +
         '<td>' + esc(PAY[v.pago.forma] || v.pago.forma) +
           (v.pago.banco ? '<span class="t-sub">' + esc(v.pago.banco + ' · N° ' + v.pago.comprobante + ' · ' + v.pago.remitente) + '</span>' : '') + '</td>' +
-        '<td class="ta-r nowrap"><strong>' + money(v.totales.total) + '</strong></td>' +
+        '<td class="ta-r nowrap"><strong>' + money(v.totales.total) + '</strong>' +
+          (v.totales.descuento ? '<span class="t-sub">desc. ' + money(v.totales.descuento) + '</span>' : '') +
+          (v.devuelto ? '<span class="t-sub is-out">devuelto ' + money(v.devuelto) + '</span>' : '') + '</td>' +
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
         '<td class="actions"><button type="button" class="btn btn-print btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
+        (v.estado !== 'anulada' && A.can('devoluciones') && v.items.some(function (it, i) { return it.cantidad - devueltoDe(v, i) > 0; }) ? '<button type="button" class="btn btn-secondary btn-sm" data-dev="' + esc(v.id) + '">Devolver</button>' : '') +
+        ((v.devoluciones || []).length ? '<button type="button" class="btn btn-secondary btn-sm" data-ncp="' + esc(v.id) + '">Nota de crédito</button>' : '') +
         '<button type="button" class="btn btn-pdf btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
         '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
         '<button type="button" class="btn btn-mail btn-sm" data-mail="' + esc(v.id) + '">Correo</button>' +
@@ -1381,6 +1568,12 @@
     var m = saleMonthIn.value || monthKey(), list = (P.months[m] || { ventas: [] }).ventas, b;
     var find = function (id) { return list.filter(function (v) { return v.id === id; })[0]; };
     if ((b = e.target.closest('[data-ticket]'))) { printTicket(find(b.dataset.ticket)); return; }
+    if ((b = e.target.closest('[data-dev]'))) { openReturn(find(b.dataset.dev), m); return; }
+    if ((b = e.target.closest('[data-ncp]'))) {
+      var vv = find(b.dataset.ncp);
+      (vv.devoluciones || []).forEach(function (dv) { var n = creditos().lista.filter(function (c) { return c.codigo === dv.credito; })[0]; if (n) printCreditNote(n); });
+      return;
+    }
     if ((b = e.target.closest('[data-pdf]'))) { downloadPdf(find(b.dataset.pdf)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-mail]'))) { sendEmail(find(b.dataset.mail)).catch(function (er) { A.showMsg('error', er.message); }); return; }
     if ((b = e.target.closest('[data-wa]'))) { sendWhatsApp(find(b.dataset.wa)).catch(function (er) { A.showMsg('error', er.message); }); return; }
@@ -1775,7 +1968,7 @@
       receptor: receptor, tipoDocumento: 'FACTURA', moneda: 'PYG', pago: { contado: contado },
       itens: sale.items.map(function (it) {
         return { codigo: String(it.codigo || it.product_id || '1'), descripcion: it.descripcion, cantidad: it.cantidad,
-                 iva: it.iva == null ? 10 : +it.iva, precioUnitario: it.precio, unidadMedida: 'UNIDAD' };
+                 iva: it.iva == null ? 10 : +it.iva, precioUnitario: Math.round(it.subtotal / it.cantidad), unidadMedida: 'UNIDAD' };
       })
     };
   }

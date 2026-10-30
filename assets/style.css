@@ -806,3 +806,52 @@ td.is-in, td.is-out, td.is-bal { font-weight: 700; }
 .user-perms { display: grid; gap: 8px; padding: 10px; border: 1px dashed var(--line); border-radius: var(--radius-sm); background: var(--surface-2); }
 .perm-grid { display: grid; gap: 6px 14px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .perm-grid .perm-extra { grid-column: 1 / -1; color: #b45309; }
+/* Ojito de la contraseña */
+.pw-wrap { position: relative; display: block; width: 100%; }
+.pw-wrap input { width: 100%; padding-right: 46px !important; }
+.pw-eye { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--muted); cursor: pointer; display: grid; place-items: center; }
+.pw-eye:hover { background: var(--surface-2); color: var(--ink); }
+.pw-eye.is-on { color: var(--primary-text); }
+.user-pass .pw-wrap { flex: 1 1 180px; width: auto; }
+
+/* ---------- Descuento, nota de crédito y devolución ---------- */
+.pos-disc { display: grid; gap: 4px; }
+.disc-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; }
+.disc-row input { min-height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-weight: 700; }
+.disc-mode button { min-height: 42px; }
+.pos-credit { display: grid; gap: 6px; }
+.pos-credit .link-btn { justify-self: start; font-size: .9rem; }
+.cr-row { display: flex; gap: 8px; }
+.cr-row input { flex: 1; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); text-transform: uppercase; }
+.pos-break { display: grid; gap: 4px; font-size: .92rem; }
+.pos-break:empty { display: none; }
+.pos-break > div { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.pos-break .is-out { color: #dc2626; font-weight: 700; }
+.pos-break .is-cr { color: #0b6aa6; font-weight: 700; }
+.pos-break .row-x { width: 24px; height: 24px; font-size: 1rem; }
+.t-sub.is-out { color: #dc2626; }
+.tbl-dev { min-width: 520px; }
+.tbl-dev input { width: 80px; text-align: center; }
+.dev-total { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: var(--radius-sm); background: #f4f9fe; border: 1px solid #cfe3f5; font-weight: 700; }
+.dev-total strong { font-family: var(--font-head); font-size: 1.4rem; color: #1a6fd8; }
+.disc-row { grid-template-columns: minmax(0, 1fr) 100px; }
+.disc-row input { min-width: 0; width: 100%; }
+.cr-row input { min-width: 0; }
+
+/* ---------- Paginación ---------- */
+.list-foot { padding: 4px 2px; }
+.per-page { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); font-weight: 600; }
+.per-page select { min-height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-weight: 700; }
+.pager { gap: 14px; }
+.pager-info { font-weight: 600; }
+.pager-btns { align-items: center; gap: 4px; }
+.pager-btns button { min-width: 38px; height: 38px; border-radius: 10px; font-size: .95rem; }
+.pager-btns button:first-child, .pager-btns button:last-child { font-size: 1.2rem; line-height: 1; }
+.pager-btns button.on { box-shadow: 0 2px 6px rgba(26, 145, 218, .35); }
+.pg-dots { min-width: 22px; text-align: center; color: var(--muted); font-weight: 700; }
+@media (max-width: 560px) {
+  .list-foot { flex-direction: column; align-items: stretch; }
+  .pager { margin-left: 0; justify-content: space-between; }
+  .pager-btns button { min-width: 34px; height: 36px; }
+}

@@ -101,7 +101,7 @@
       ventas.forEach(function (v) {
         if (v.estado === 'anulada' || !test(v.fecha)) return;
         var k = v.pago.forma === 'transferencia' ? 'transferencia' : 'efectivo';
-        r[k].ing += v.totales.total; r[k].ventas++;
+        r[k].ing += (v.pago.monto != null ? v.pago.monto : v.totales.total); r[k].ventas++;
       });
       (compras || []).forEach(function (c) {
         if (c.estado === 'anulada' || !compraPaga(c) || !test(c.registrada || c.fecha)) return;
@@ -123,7 +123,7 @@
       var ms = monthsBetween(cj.abierta, new Date().toISOString()), cant = 0, ventas = 0, ing = 0, egr = 0;
       for (var i = 0; i < ms.length; i++) {
         var d = await loadMonth(ms[i]);
-        d.ventas.forEach(function (v) { if (v.caja === cj.id && v.estado !== 'anulada') { cant++; ventas += v.totales.total; } });
+        d.ventas.forEach(function (v) { if (v.caja === cj.id && v.estado !== 'anulada') { cant++; ventas += (v.pago.monto != null ? v.pago.monto : v.totales.total); } });
         (d.compras || []).forEach(function (c) { if (c.caja === cj.id && c.estado !== 'anulada') egr += c.total; });
       }
       (cj.movimientos || []).forEach(function (mv) { if (mv.tipo === 'ingreso') ing += +mv.monto || 0; else egr += +mv.monto || 0; });
@@ -330,8 +330,7 @@
         '<div class="kpis kpis-6">' +
           kpi('Ingreso (ventas)', money(ing), nDias + (nDias === 1 ? ' día' : ' días')) +
           kpi('Egreso (compras)', money(egr), '') +
-          '<div class="kpi kpi-main"><span>Saldo</span><strong>' + money(ing - egr) + '</strong><small>ingreso menos egreso</small></div>' +
-          kpi('Promedio por día', money(nDias ? Math.round(ing / nDias) : 0), 'de ventas') +
+          '<div class="kpi kpi-main"><span>Saldo</span><strong>' + money(ing - egr) + '</strong><small>' + money(ing).replace('Gs. ', '') + ' − ' + money(egr).replace('Gs. ', '') + ' (ingreso − egreso)</small></div>' +
           kpi('Mejor día', best && best.ing ? fmtDay(best.day, false) : '—', best && best.ing ? money(best.ing) : '') +
           kpi('Fines de semana', money(wk.ing), ing ? Math.round(wk.ing / ing * 100) + '% de las ventas' : '') +
         '</div><p class="cj-insight">' + esc(frase) + '</p>';
@@ -623,8 +622,11 @@
       var r = { rg: rg, total: 0, cant: ventas.length, unidades: 0, pago: {}, doc: { ticket: 0, factura: 0 }, porDia: {}, prod: {}, cat: {}, marca: {},
                 compras: 0, cantCompras: compras.length, costoVendido: 0, conCosto: 0, sinCosto: 0 };
       ventas.forEach(function (v) {
-        r.total += v.totales.total;
-        r.pago[v.pago.forma] = (r.pago[v.pago.forma] || 0) + v.totales.total;
+        r.total += v.totales.total - (v.devuelto || 0);
+      r.devoluciones = (r.devoluciones || 0) + (v.devuelto || 0);
+      r.descuentos = (r.descuentos || 0) + (v.totales.descuento || 0);
+        r.pago[v.pago.forma] = (r.pago[v.pago.forma] || 0) + (v.pago.monto != null ? v.pago.monto : v.totales.total);
+      if (v.credito) r.pago.credito = (r.pago.credito || 0) + v.credito.monto;
         r.doc[isFactura(v) ? 'factura' : 'ticket'] += v.totales.total;
         var day = isoDay(new Date(v.fecha));
         r.porDia[day] = (r.porDia[day] || 0) + v.totales.total;
@@ -676,6 +678,8 @@
           kpi('Unidades vendidas', A.fmtNum(r.unidades) || '0', '') +
           kpi('Efectivo', money(r.pago.efectivo || 0), '') +
           kpi('Transferencias', money(r.pago.transferencia || 0), '') +
+          (r.descuentos ? kpi('Descuentos dados', money(r.descuentos), '') : '') +
+          (r.devoluciones ? kpi('Devoluciones', money(r.devoluciones), 'pasaron a nota de crédito') : '') +
           gan +
         '</div>' +
         '<div class="rep-grid">' +
