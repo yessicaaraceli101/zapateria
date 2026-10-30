@@ -28,6 +28,14 @@
       "iv": "VP5vVTZvToAkPvh1",
       "ct": "xBpZT3cEG4YpxfjvGLvhoXa/2+kXboSCA47mOSvgu4/FgkS3YNIKBwyB+N7nvffoWca816kEiN/ZkWSoM7dTLR3XeAvZSvCyVqhOuJpg/CUYQXNdP9SJvPdXIU6BpMEaRcY/XXTPO4KYq6AwF2g1W2cZdqaFXE3/MidIvAahliGj+fuvvn55FBjdyNzRtQj9TuhvjdL9Y5X5APDTqmggKXOb0GcqHDYgloy7cokIZ9ydrA==",
       "iterations": 310000
+    },
+    {
+      "user": "Yessica",
+      "role": "admin",
+      "salt": "mb++t/KP8I8qfRlFRojT4g==",
+      "iv": "ujMiqDQb0VRsV/Kr",
+      "ct": "YXVwNdlH0wyOVpRfOpJqMReX4wP8JSBAW4jXHFfv5QKxzh3aL2Sq3WnXt78YEsIt9XPuiMI7oXP4SI/BHcVSyz7DOn94APBBdcOhiYrFzgQChfQIU2YSfPp7HN47YLqMqFNjOJuXR5RjLgrQiGDCImmlu0mE2OXY6lBdUQCkFqjq7mBERkUtjxaBl+qj6xUVVbhhgFBeCtA9vm8t/+ZpOk4U//C2AWQ+Y03P/1/1LBxM5w==",
+      "iterations": 310000
     }
   ]
 }
