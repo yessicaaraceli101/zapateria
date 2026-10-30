@@ -1547,7 +1547,7 @@
           (v.devuelto ? '<span class="t-sub is-out">devuelto ' + money(v.devuelto) + '</span>' : '') + '</td>' +
         '<td>' + (v.estado === 'anulada' ? '<span class="pill pill-off">Anulada</span>' : '<span class="pill pill-on">Emitida</span>') + '</td>' +
         '<td class="actions"><button type="button" class="btn btn-print btn-sm" data-ticket="' + esc(v.id) + '">Imprimir</button>' +
-        (v.estado !== 'anulada' && A.can('devoluciones') && v.items.some(function (it, i) { return it.cantidad - devueltoDe(v, i) > 0; }) ? '<button type="button" class="btn btn-secondary btn-sm" data-dev="' + esc(v.id) + '">Devolver</button>' : '') +
+        (v.estado !== 'anulada' && A.can('devoluciones') && v.items.some(function (it, i) { return it.cantidad - devueltoDe(v, i) > 0; }) ? '<button type="button" class="btn btn-accent btn-sm" data-dev="' + esc(v.id) + '">Devolver</button>' : '') +
         ((v.devoluciones || []).length ? '<button type="button" class="btn btn-secondary btn-sm" data-ncp="' + esc(v.id) + '">Nota de crédito</button>' : '') +
         '<button type="button" class="btn btn-pdf btn-sm" data-pdf="' + esc(v.id) + '">PDF</button>' +
         '<button type="button" class="btn btn-wa-sm btn-sm" data-wa="' + esc(v.id) + '">WhatsApp</button>' +
