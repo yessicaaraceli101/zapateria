@@ -10926,6 +10926,56 @@
       "image": "",
       "created_at": 1793317121,
       "updated_at": 1793317227
+    },
+    {
+      "id": "ce4a543e081e",
+      "name": "ZAPATO",
+      "category": "Zapatos",
+      "gender": "Caballero",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 180000,
+      "codes": [],
+      "stock": 3,
+      "sizes": [
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 1
+        },
+        {
+          "size": "40",
+          "stock": 1
+        },
+        {
+          "size": "41",
+          "stock": 0
+        },
+        {
+          "size": "42",
+          "stock": 0
+        },
+        {
+          "size": "43",
+          "stock": 1
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON TABACO",
+      "description": "V'KARELLUS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793364213,
+      "updated_at": 1793364213
     }
   ]
 }
