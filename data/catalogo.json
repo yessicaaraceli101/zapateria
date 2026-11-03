@@ -2203,7 +2203,7 @@
       "colors": "NEGRO",
       "description": "CALZADO DAWI CON CORDONES M FASHION PARA DAMA",
       "installments": [],
-      "visible": false,
+      "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793122926,
