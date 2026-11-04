@@ -11081,6 +11081,58 @@
       "image": "",
       "created_at": 1793810419,
       "updated_at": 1793810419
+    },
+    {
+      "id": "1c4dc97677b1",
+      "name": "SANDALIA BAJO ENTRE DEDOS",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 130000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466110202"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466110219"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900466110233"
+        },
+        {
+          "size": "38",
+          "stock": 3,
+          "code": "7900466110257"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900466110264"
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7900466110271"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "NAPA GARDA-NEGRO 01",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793811161,
+      "updated_at": 1793811161
     }
   ]
 }
