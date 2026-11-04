@@ -10976,6 +10976,55 @@
       "image": "",
       "created_at": 1793364213,
       "updated_at": 1793364213
+    },
+    {
+      "id": "d4ea6b5e7925",
+      "name": "sandalia bajo entre dedos",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 130000,
+      "codes": [],
+      "stock": 4,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 0
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900466107431"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466678627"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466678634"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "METALIZADO MILANO-PLATA",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793810061,
+      "updated_at": 1793810061
     }
   ]
 }
