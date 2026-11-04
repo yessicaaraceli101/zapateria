@@ -11025,6 +11025,61 @@
       "image": "",
       "created_at": 1793810061,
       "updated_at": 1793810061
+    },
+    {
+      "id": "27153464b5af",
+      "name": "sandalia bajo entre dedos",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 130000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900466107394"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466107400"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466107417"
+        },
+        {
+          "size": "37",
+          "stock": 2
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466107455"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466107462"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO OFF",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793810419,
+      "updated_at": 1793810419
     }
   ]
 }
