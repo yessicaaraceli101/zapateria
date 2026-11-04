@@ -11189,6 +11189,56 @@
       "image": "",
       "created_at": 1793811457,
       "updated_at": 1793811457
+    },
+    {
+      "id": "bf31b8380eee",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 120000,
+      "codes": [],
+      "stock": 4,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466357454"
+        },
+        {
+          "size": "36",
+          "stock": 1,
+          "code": "7900466357461"
+        },
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900466357485"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466357508"
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "PELICA-CHOCOLATE 1271",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793811706,
+      "updated_at": 1793811706
     }
   ]
 }
