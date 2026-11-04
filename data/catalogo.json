@@ -11075,7 +11075,7 @@
       "colors": "BLANCO OFF",
       "description": "",
       "installments": [],
-      "visible": true,
+      "visible": false,
       "iva": 10,
       "image": "",
       "created_at": 1793810419,
