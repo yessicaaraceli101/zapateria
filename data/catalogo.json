@@ -11291,6 +11291,52 @@
       "image": "",
       "created_at": 1793811964,
       "updated_at": 1793811964
+    },
+    {
+      "id": "bea8b602703c",
+      "name": "ZANDALIA CON TACO",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 17900407809172,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 17900407809172
+        },
+        {
+          "size": "36",
+          "stock": 0
+        },
+        {
+          "size": "37",
+          "stock": 0
+        },
+        {
+          "size": "38",
+          "stock": 0
+        },
+        {
+          "size": "39",
+          "stock": 0
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "CHOCOLATE",
+      "description": "",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793812075,
+      "updated_at": 1793812075
     }
   ]
 }
