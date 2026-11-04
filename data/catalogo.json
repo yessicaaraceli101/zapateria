@@ -11239,6 +11239,58 @@
       "image": "",
       "created_at": 1793811706,
       "updated_at": 1793811706
+    },
+    {
+      "id": "6af16b918a3f",
+      "name": "SANDALIA CON TACO",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900407840052"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900407840069"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900407840076"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900407840090"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900407840113"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900407840120"
+        }
+      ],
+      "colors": "CAMEL",
+      "description": "PELICA CAMEL 1165",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793811964,
+      "updated_at": 1793811964
     }
   ]
 }
