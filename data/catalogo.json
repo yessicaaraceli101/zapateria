@@ -11133,6 +11133,62 @@
       "image": "",
       "created_at": 1793811161,
       "updated_at": 1793811161
+    },
+    {
+      "id": "e6f6b7b9b88f",
+      "name": "ZAPATILLA",
+      "category": "Zapatillas",
+      "gender": "Dama",
+      "brand": "Vizzano",
+      "sku": "",
+      "code": "",
+      "price": 120000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900466393575"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466393582"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466393599"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900466393612"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466393636"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466393643"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "MARRON",
+      "description": "PELICA-CAMEL",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793811457,
+      "updated_at": 1793811457
     }
   ]
 }
