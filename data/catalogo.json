@@ -11343,6 +11343,58 @@
       "image": "",
       "created_at": 1793812075,
       "updated_at": 1793812273
+    },
+    {
+      "id": "52d630527e1a",
+      "name": "CHATITA",
+      "category": "CHATITA",
+      "gender": "Dama",
+      "brand": "Modare",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 12,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900245799932"
+        },
+        {
+          "size": "35",
+          "stock": 2,
+          "code": "7900245799949"
+        },
+        {
+          "size": "36",
+          "stock": 3,
+          "code": "7900245799956"
+        },
+        {
+          "size": "37",
+          "stock": 3,
+          "code": "7900245799970"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900245799994"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900245800003"
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NAPA FLOASHTHER NATURE BLANCO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793885168,
+      "updated_at": 1793885168
     }
   ]
 }
