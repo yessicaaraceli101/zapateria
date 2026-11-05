@@ -10446,7 +10446,7 @@
       "colors": "NUDE",
       "description": "NUDE PELICA",
       "installments": [],
-      "visible": true,
+      "visible": false,
       "iva": 10,
       "image": "",
       "created_at": 1793310902,
