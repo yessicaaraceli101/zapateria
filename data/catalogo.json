@@ -2058,7 +2058,7 @@
       "code": "",
       "price": 50000,
       "codes": [],
-      "stock": 21,
+      "stock": 20,
       "sizes": [
         {
           "size": "35",
@@ -2082,7 +2082,7 @@
         },
         {
           "size": "40",
-          "stock": 21
+          "stock": 20
         }
       ],
       "colors": "VARIADOS",
@@ -2092,7 +2092,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793122206,
-      "updated_at": 1793300434
+      "updated_at": 1793888467
     },
     {
       "id": "a026860f6dc2",
