@@ -11322,6 +11322,77 @@
       "image": "",
       "created_at": 1793885168,
       "updated_at": 1793885168
+    },
+    {
+      "id": "a65a0765d6b5",
+      "name": "BOTITA",
+      "category": "BOTA",
+      "gender": "Niños",
+      "brand": "Molekinha",
+      "sku": "",
+      "code": "",
+      "price": 150000,
+      "codes": [],
+      "stock": 11,
+      "sizes": [
+        {
+          "size": "25",
+          "stock": 1,
+          "code": "7900123405139"
+        },
+        {
+          "size": "26",
+          "stock": 1,
+          "code": "7900123405146"
+        },
+        {
+          "size": "27",
+          "stock": 1,
+          "code": "7900123405153"
+        },
+        {
+          "size": "28",
+          "stock": 1,
+          "code": "7900123403753"
+        },
+        {
+          "size": "29",
+          "stock": 1,
+          "code": "7900123405160"
+        },
+        {
+          "size": "30",
+          "stock": 1,
+          "code": "7900123405177"
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 1,
+          "code": "7900123405191"
+        },
+        {
+          "size": "33",
+          "stock": 2,
+          "code": "7900123405207"
+        },
+        {
+          "size": "34",
+          "stock": 2,
+          "code": "7900123405214"
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "NP SARDEN N/NP PELE STRE/GL MINI BLANCO/ROSA/DORADO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793988430,
+      "updated_at": 1793988430
     }
   ]
 }
