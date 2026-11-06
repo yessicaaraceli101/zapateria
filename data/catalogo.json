@@ -11393,6 +11393,60 @@
       "image": "",
       "created_at": 1793988430,
       "updated_at": 1793988430
+    },
+    {
+      "id": "7485fece4121",
+      "name": "CROCK",
+      "category": "CROCK",
+      "gender": "Niños",
+      "brand": "",
+      "sku": "",
+      "code": "",
+      "price": 30000,
+      "codes": [],
+      "stock": 15,
+      "sizes": [
+        {
+          "size": "27",
+          "stock": 0
+        },
+        {
+          "size": "28",
+          "stock": 0
+        },
+        {
+          "size": "29",
+          "stock": 0
+        },
+        {
+          "size": "30",
+          "stock": 0
+        },
+        {
+          "size": "31",
+          "stock": 0
+        },
+        {
+          "size": "32",
+          "stock": 15
+        },
+        {
+          "size": "33",
+          "stock": 0
+        },
+        {
+          "size": "34",
+          "stock": 0
+        }
+      ],
+      "colors": "VARIADOS",
+      "description": "CROCS VARIOS COLORES NIÑOS/AS",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1793991353,
+      "updated_at": 1793991353
     }
   ]
 }
