@@ -11227,7 +11227,7 @@
       "brand": "Vizzano",
       "sku": "",
       "code": "",
-      "price": 200000,
+      "price": 180000,
       "codes": [],
       "stock": 8,
       "sizes": [
@@ -11262,14 +11262,14 @@
           "code": "7900407809233"
         }
       ],
-      "colors": "CHOCOLATE",
+      "colors": "CHOCOLATE cacao",
       "description": "NAPA-GARDA CACAO",
       "installments": [],
       "visible": true,
       "iva": 10,
       "image": "",
       "created_at": 1793812075,
-      "updated_at": 1793812273
+      "updated_at": 1794255508
     },
     {
       "id": "52d630527e1a",
