@@ -11549,6 +11549,52 @@
       "image": "",
       "created_at": 1794341928,
       "updated_at": 1794341928
+    },
+    {
+      "id": "ec252c878008",
+      "name": "CHAMPION",
+      "category": "Deportivos",
+      "gender": "",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900493151377"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900493151384"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900493151391"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "7900493151407"
+        },
+        {
+          "size": "41",
+          "stock": 1
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "GASPEA HOD/NYLON -NEGRO/BLANCO GRAFITO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1794342480,
+      "updated_at": 1794342480
     }
   ]
 }
