@@ -11646,6 +11646,57 @@
       "image": "",
       "created_at": 1794343095,
       "updated_at": 1794343095
+    },
+    {
+      "id": "4e5a52c9a902",
+      "name": "CHAMPION",
+      "category": "Deportivos",
+      "gender": "Dama",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466902975"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466902982"
+        },
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900466903002"
+        },
+        {
+          "size": "38",
+          "stock": 3,
+          "code": "7900466903026"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466903033"
+        },
+        {
+          "size": "40",
+          "stock": 0
+        }
+      ],
+      "colors": "PRETO/VIOLETA",
+      "description": "GASPEA BNAH/NYLON-PRETO/COBALTO/VIOLETA 1221",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1794343548,
+      "updated_at": 1794343548
     }
   ]
 }
