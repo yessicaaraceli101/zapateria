@@ -11447,6 +11447,53 @@
       "image": "",
       "created_at": 1793991353,
       "updated_at": 1793991399
+    },
+    {
+      "id": "55eb18b308c9",
+      "name": "CHAMPION",
+      "category": "Deportivos",
+      "gender": "Caballero",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900493151308"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900493151315"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900493151322"
+        },
+        {
+          "size": "40",
+          "stock": 1,
+          "code": "7900493151339"
+        },
+        {
+          "size": "41",
+          "stock": 2,
+          "code": "7900493151346"
+        }
+      ],
+      "colors": "VERMELHO",
+      "description": "GASPEA HOD/NYLON-VERMELHO INTENSO 1527/PRETO 01/BLANCO 99",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1794341350,
+      "updated_at": 1794341350
     }
   ]
 }
