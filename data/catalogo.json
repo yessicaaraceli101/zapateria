@@ -11494,6 +11494,61 @@
       "image": "",
       "created_at": 1794341350,
       "updated_at": 1794341350
+    },
+    {
+      "id": "014f863d41ca",
+      "name": "CHAMPION",
+      "category": "Deportivos",
+      "gender": "Caballero",
+      "brand": "Actvitta",
+      "sku": "",
+      "code": "",
+      "price": 300000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "37",
+          "stock": 1,
+          "code": "7900493284211"
+        },
+        {
+          "size": "38",
+          "stock": 2,
+          "code": "7900493284228"
+        },
+        {
+          "size": "39",
+          "stock": 2,
+          "code": "7900493284235"
+        },
+        {
+          "size": "40",
+          "stock": 2,
+          "code": "7900493284242"
+        },
+        {
+          "size": "41",
+          "stock": 1,
+          "code": "7900493284259"
+        },
+        {
+          "size": "43",
+          "stock": 0
+        },
+        {
+          "size": "44",
+          "stock": 0
+        }
+      ],
+      "colors": "BLANCO",
+      "description": "GASPEA HOP/NYLON BLANCO/ROYAL 1317/CHUMBO 1321/NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1794341928,
+      "updated_at": 1794341928
     }
   ]
 }
