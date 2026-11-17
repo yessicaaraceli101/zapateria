@@ -11748,6 +11748,58 @@
       "image": "",
       "created_at": 1794344062,
       "updated_at": 1794344062
+    },
+    {
+      "id": "110b368b3447",
+      "name": "SANDALIA CON PLATAFORMA",
+      "category": "SANDALIAS",
+      "gender": "Dama",
+      "brand": "Beira Rio",
+      "sku": "",
+      "code": "",
+      "price": 200000,
+      "codes": [],
+      "stock": 8,
+      "sizes": [
+        {
+          "size": "34",
+          "stock": 1,
+          "code": "7900466904146"
+        },
+        {
+          "size": "35",
+          "stock": 1,
+          "code": "7900466904153"
+        },
+        {
+          "size": "36",
+          "stock": 2,
+          "code": "7900466904160"
+        },
+        {
+          "size": "37",
+          "stock": 2,
+          "code": "7900466904184"
+        },
+        {
+          "size": "38",
+          "stock": 1,
+          "code": "7900466904207"
+        },
+        {
+          "size": "39",
+          "stock": 1,
+          "code": "7900466904214"
+        }
+      ],
+      "colors": "NEGRO",
+      "description": "BEIRA RIO NAPA-MADRI NEGRO",
+      "installments": [],
+      "visible": true,
+      "iva": 10,
+      "image": "",
+      "created_at": 1794934647,
+      "updated_at": 1794934647
     }
   ]
 }
