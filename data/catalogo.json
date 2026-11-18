@@ -11757,7 +11757,7 @@
       "brand": "Beira Rio",
       "sku": "",
       "code": "",
-      "price": 200000,
+      "price": 130000,
       "codes": [],
       "stock": 8,
       "sizes": [
@@ -11799,7 +11799,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1794934647,
-      "updated_at": 1794934647
+      "updated_at": 1795024362
     }
   ]
 }
