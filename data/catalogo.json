@@ -10383,7 +10383,7 @@
       "id": "0c71edeb4cf1",
       "name": "ZAPATO",
       "category": "Zapatos",
-      "gender": "Dama",
+      "gender": "Caballero",
       "brand": "BR Sport",
       "sku": "",
       "code": "",
@@ -10432,7 +10432,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793311293,
-      "updated_at": 1793889316
+      "updated_at": 1795193868
     },
     {
       "id": "105152bfc0b7",
