@@ -6438,7 +6438,7 @@
       "code": "",
       "price": 150000,
       "codes": [],
-      "stock": 9,
+      "stock": 8,
       "sizes": [
         {
           "size": "34",
@@ -6447,7 +6447,7 @@
         },
         {
           "size": "35",
-          "stock": 2,
+          "stock": 1,
           "code": "7900067040281"
         },
         {
@@ -6481,7 +6481,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793221553,
-      "updated_at": 1793886611
+      "updated_at": 1795266349
     },
     {
       "id": "697edbd35ad6",
