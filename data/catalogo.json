@@ -2161,7 +2161,7 @@
       "code": "",
       "price": 50000,
       "codes": [],
-      "stock": 16,
+      "stock": 15,
       "sizes": [
         {
           "size": "27",
@@ -2197,7 +2197,7 @@
         },
         {
           "size": "36",
-          "stock": 16
+          "stock": 15
         }
       ],
       "colors": "NEGRO",
@@ -2207,7 +2207,7 @@
       "iva": 10,
       "image": "",
       "created_at": 1793122926,
-      "updated_at": 1794073787
+      "updated_at": 1795787819
     },
     {
       "id": "ae8d97f28fd1",
